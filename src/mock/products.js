@@ -1,0 +1,57 @@
+export const products = [
+  {
+    id: 1,
+    name: 'برجر كلاسيك',
+    image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=600&q=80',
+    description: 'قطعة لحم بقري شهية مع خس وطماطم وصوص خاص.',
+    price: 7.99,
+    originalPrice: 8.99,
+    discountedPrice: 7.99,
+    category: 'البرجر',
+    addOns: [
+      { id: 'a1', name: 'جبنة إضافية', price: 1.0 },
+      { id: 'a2', name: 'لحم مقدد', price: 1.5 },
+      { id: 'a3', name: 'مخلل', price: 0.5 },
+    ],
+  },
+  {
+    id: 2,
+    name: 'بيتزا نباتية',
+    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=600&q=80',
+    description: 'عجينة مقرمشة مع صلصة طماطم وجبنة موتزاريلا وخضار طازجة.',
+    price: 10.5,
+    originalPrice: 12.5,
+    discountedPrice: 10.5,
+    category: 'البيتزا',
+    addOns: [
+      { id: 'b1', name: 'زيتون', price: 0.7 },
+      { id: 'b2', name: 'جبنة إضافية', price: 1.0 },
+      { id: 'b3', name: 'فطر', price: 0.8 },
+    ],
+  },
+  {
+    id: 3,
+    name: 'شاورما دجاج',
+    image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80',
+    description: 'دجاج طري مع صوص الثوم والمخلل ملفوف في خبز البيتا.',
+    price: 7.5,
+    category: 'الشاورما',
+    addOns: [
+      { id: 'c1', name: 'صوص ثوم إضافي', price: 0.5 },
+      { id: 'c2', name: 'صوص حار', price: 0.5 },
+      { id: 'c3', name: 'بطاطس', price: 1.2 },
+    ],
+  },
+  {
+    id: 4,
+    name: 'سلطة سيزر',
+    image: 'https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=600&q=80',
+    description: 'خس طازج مع جبنة بارميزان وقطع خبز محمصة وصوص سيزر.',
+    price: 6.0,
+    category: 'السلطات',
+    addOns: [
+      { id: 'd1', name: 'دجاج مشوي', price: 2.0 },
+      { id: 'd2', name: 'بارميزان إضافي', price: 0.7 },
+    ],
+  },
+]

@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .bg-primary { @apply bg-orange-500; }
+  .bg-primary-dark { @apply bg-orange-600; }
+  .text-primary { @apply text-orange-500; }
+}
