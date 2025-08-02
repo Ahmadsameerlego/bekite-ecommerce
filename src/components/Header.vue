@@ -8,6 +8,11 @@
         <RouterLink to="/" class="hover:text-primary">الرئيسية</RouterLink>
         <RouterLink to="/login" class="hover:text-primary">تسجيل الدخول</RouterLink>
         <RouterLink to="/register" class="hover:text-primary">إنشاء حساب</RouterLink>
+        <RouterLink to="/profile" class="hover:text-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+          </svg>
+        </RouterLink>
         <div class="relative">
           <button class="relative" @click="goToCart">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -33,6 +38,12 @@
         <RouterLink to="/" class="hover:text-primary" @click="open = false">الرئيسية</RouterLink>
         <RouterLink to="/login" class="hover:text-primary" @click="open = false">تسجيل الدخول</RouterLink>
         <RouterLink to="/register" class="hover:text-primary" @click="open = false">إنشاء حساب</RouterLink>
+        <RouterLink to="/profile" class="hover:text-primary flex items-center gap-2" @click="open = false">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+          </svg>
+          الملف الشخصي
+        </RouterLink>
         <div class="relative">
           <button class="relative" @click="goToCart">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
