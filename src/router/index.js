@@ -36,6 +36,21 @@ const routes = [
     name: 'Profile',
     component: () => import('../pages/Profile.vue'),
   },
+  {
+    path: '/contact',
+    name: 'Contact',
+    component: () => import('../pages/Contact.vue'),
+  },
+  {
+    path: '/privacy',
+    name: 'Privacy',
+    component: () => import('../pages/Privacy.vue'),
+  },
+  {
+    path: '/terms',
+    name: 'Terms',
+    component: () => import('../pages/Terms.vue'),
+  },
 ]
 
 const router = createRouter({
