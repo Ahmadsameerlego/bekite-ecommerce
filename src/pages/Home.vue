@@ -1,12 +1,12 @@
 <template>
-  <div dir="rtl" class="bg-gradient-to-br from-orange-50 via-red-50 to-yellow-50 text-right">
+  <div class="bg-gradient-to-br from-orange-50 via-red-50 to-yellow-50">
     <HeroSection />
 
     <!-- Menu Section -->
     <div class="container mx-auto px-4 py-12">
       <div class="text-center mb-12">
-        <h2 class="text-4xl font-bold mb-4 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">المنيو</h2>
-        <p class="text-gray-600 text-lg">اكتشف تشكيلة متنوعة من أشهى الأطباق</p>
+        <h2 class="text-4xl font-bold mb-4 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">{{ $t('home.menu.title') }}</h2>
+        <p class="text-gray-600 text-lg">{{ $t('home.menu.subtitle') }}</p>
       </div>
       <div class="overflow-x-auto pb-4">
         <div class="flex gap-6" :class="sliderClass">
@@ -25,8 +25,8 @@
     <div v-if="offers.length" class="bg-gradient-to-r from-red-50 to-orange-50 py-12">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
-          <h2 class="text-4xl font-bold mb-4 text-red-600">العروض والخصومات</h2>
-          <p class="text-gray-600 text-lg">احصل على أفضل الأسعار</p>
+          <h2 class="text-4xl font-bold mb-4 text-red-600">{{ $t('home.offers.title') }}</h2>
+          <p class="text-gray-600 text-lg">{{ $t('home.offers.subtitle') }}</p>
         </div>
         <div class="overflow-x-auto pb-4">
           <div class="flex gap-6" :class="sliderClass">
@@ -68,8 +68,8 @@
     <div class="bg-gradient-to-r from-gray-50 to-gray-100 py-16">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
-          <h2 class="text-4xl font-bold mb-4 text-gray-800">لماذا تختارنا؟</h2>
-          <p class="text-gray-600 text-lg">نقدم لك أفضل تجربة طعام</p>
+          <h2 class="text-4xl font-bold mb-4 text-gray-800">{{ $t('home.whyChooseUs.title') }}</h2>
+          <p class="text-gray-600 text-lg">{{ $t('home.whyChooseUs.subtitle') }}</p>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           <div class="text-center">
@@ -78,8 +78,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
               </svg>
             </div>
-            <h3 class="text-xl font-bold mb-2">توصيل سريع</h3>
-            <p class="text-gray-600">خلال 30 دقيقة أو أقل</p>
+            <h3 class="text-xl font-bold mb-2">{{ $t('home.whyChooseUs.fastDelivery.title') }}</h3>
+            <p class="text-gray-600">{{ $t('home.whyChooseUs.fastDelivery.description') }}</p>
           </div>
           <div class="text-center">
             <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -87,8 +87,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
               </svg>
             </div>
-            <h3 class="text-xl font-bold mb-2">طعام طازج</h3>
-            <p class="text-gray-600">مكونات طازجة يومياً</p>
+            <h3 class="text-xl font-bold mb-2">{{ $t('home.whyChooseUs.freshFood.title') }}</h3>
+            <p class="text-gray-600">{{ $t('home.whyChooseUs.freshFood.description') }}</p>
           </div>
           <div class="text-center">
             <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -96,8 +96,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
               </svg>
             </div>
-            <h3 class="text-xl font-bold mb-2">جودة عالية</h3>
-            <p class="text-gray-600">أعلى معايير الجودة</p>
+            <h3 class="text-xl font-bold mb-2">{{ $t('home.whyChooseUs.highQuality.title') }}</h3>
+            <p class="text-gray-600">{{ $t('home.whyChooseUs.highQuality.description') }}</p>
           </div>
         </div>
       </div>

@@ -8,6 +8,52 @@
       <div class="grid gap-8 lg:grid-cols-2">
         <!-- Left Column: Forms -->
         <div class="space-y-8">
+          <!-- Location Selection -->
+          <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-white/20">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+              <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              </svg>
+              تحديد موقع التوصيل
+            </h2>
+            <div class="space-y-4">
+              <div>
+                <label class="block mb-3 font-semibold text-gray-700">موقع التوصيل *</label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                  </div>
+                  <input 
+                    v-model="form.location"
+                    @focus="showMap = true"
+                    type="text" 
+                    placeholder="اختر موقع التوصيل"
+                    class="w-full pr-12 pl-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                    :class="{ 'border-red-500': errors.location }"
+                    required 
+                  />
+                </div>
+                <p v-if="errors.location" class="text-red-500 text-sm mt-2">{{ errors.location }}</p>
+              </div>
+              
+              <button 
+                @click="getCurrentLocation"
+                type="button"
+                class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-xl font-semibold hover:from-orange-600 hover:to-red-600 transition-all shadow-lg flex items-center justify-center gap-2"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                تحديد موقعي الحالي
+              </button>
+            </div>
+          </div>
+
           <!-- Customer Delivery Info Form -->
           <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-white/20">
             <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
@@ -270,12 +316,33 @@ const form = ref({
   address: '',
   apartment: '',
   floor: '',
+  location: '',
   deliveryMethod: 'delivery',
   paymentMethod: 'cash'
 })
 
 const errors = ref({})
 const isSubmitting = ref(false)
+const showMap = ref(false)
+
+// Location functions
+const getCurrentLocation = () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords
+        // Here you would typically reverse geocode the coordinates
+        form.value.location = `موقعي الحالي (${latitude.toFixed(4)}, ${longitude.toFixed(4)})`
+      },
+      (error) => {
+        console.error('Error getting location:', error)
+        alert('فشل في تحديد موقعك الحالي')
+      }
+    )
+  } else {
+    alert('متصفحك لا يدعم تحديد الموقع')
+  }
+}
 
 // Delivery fee based on method
 const deliveryFee = computed(() => {
@@ -310,6 +377,10 @@ function validateForm() {
   
   if (!form.value.address.trim()) {
     errors.value.address = 'العنوان مطلوب'
+  }
+  
+  if (!form.value.location.trim()) {
+    errors.value.location = 'موقع التوصيل مطلوب'
   }
   
   return Object.keys(errors.value).length === 0

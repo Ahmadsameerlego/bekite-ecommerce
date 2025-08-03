@@ -12,11 +12,11 @@
       </div>
       <div class="mt-3 font-bold text-primary text-lg flex flex-row-reverse gap-2 items-center">
         <template v-if="showDiscount && product.originalPrice && product.discountedPrice && product.discountedPrice < product.originalPrice">
-          <span class="text-red-600">{{ product.discountedPrice.toFixed(2) }} ر.س</span>
-          <span class="text-gray-400 line-through text-base">{{ product.originalPrice.toFixed(2) }} ر.س</span>
+          <span class="text-red-600">{{ product.discountedPrice.toFixed(2) }} {{ $t('product.currency') }}</span>
+          <span class="text-gray-400 line-through text-base">{{ product.originalPrice.toFixed(2) }} {{ $t('product.currency') }}</span>
         </template>
         <template v-else>
-          <span>{{ product.price.toFixed(2) }} ر.س</span>
+          <span>{{ product.price.toFixed(2) }} {{ $t('product.currency') }}</span>
         </template>
       </div>
       <div v-if="cartItem" class="mt-2 flex flex-row-reverse items-center gap-2">

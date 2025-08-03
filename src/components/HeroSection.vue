@@ -17,85 +17,50 @@
     <div class="relative z-20 h-full flex flex-col justify-center items-center px-4">
      
 
-      <!-- Search and Location Container -->
-      <div class="w-full max-w-4xl mx-auto px-4">
-        <div class="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl border border-white/20 p-4 sm:p-6 md:p-8">
-          <!-- Search Bar -->
-          <div class="mb-6">
-            <div class="relative">
-              <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
-              </div>
-              <input 
-                v-model="searchQuery"
-                type="text" 
-                placeholder="ابحث عن طعامك المفضل..."
-                class="w-full pr-12 pl-4 py-3 sm:py-4 md:py-5 text-base sm:text-lg border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-white/80"
-              />
-            </div>
-          </div>
-
-          <!-- Location Section -->
-          <div class="flex flex-col md:flex-row gap-4">
-            <!-- Location Input -->
-            <div class="flex-1">
-              <div class="relative">
-                <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                  <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                  </svg>
+                <!-- Search Container -->
+          <div class="w-full max-w-4xl mx-auto px-4">
+            <div class="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl border border-white/20 p-4 sm:p-6 md:p-8">
+              <!-- Search Bar -->
+              <div class="mb-6">
+                <div class="relative">
+                  <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                    <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                  </div>
+                  <input 
+                    v-model="searchQuery"
+                    type="text" 
+                    :placeholder="$t('hero.searchPlaceholder')"
+                    class="w-full pr-12 pl-4 py-3 sm:py-4 md:py-5 text-base sm:text-lg border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-white/80"
+                  />
                 </div>
-                <input 
-                  v-model="locationQuery"
-                  @focus="showMap = true"
-                  type="text" 
-                  placeholder="أدخل عنوان التوصيل..."
-                  class="w-full pr-12 pl-4 py-3 sm:py-4 md:py-5 text-base sm:text-lg border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-white/80"
-                />
+              </div>
+
+              <!-- Search Button -->
+              <div class="mt-6">
+                <button 
+                  @click="performSearch"
+                  class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-3 sm:py-4 md:py-5 rounded-2xl font-bold text-base sm:text-lg hover:from-orange-600 hover:to-red-600 transition-all shadow-lg flex items-center justify-center gap-3"
+                >
+                  <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+                  {{ $t('hero.searchButton') }}
+                </button>
               </div>
             </div>
-
-            <!-- Current Location Button -->
-            <button 
-              @click="getCurrentLocation"
-              class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 sm:px-6 py-3 sm:py-4 md:py-5 rounded-2xl font-semibold hover:from-orange-600 hover:to-red-600 transition-all shadow-lg flex items-center justify-center gap-2 min-w-fit text-sm sm:text-base"
-            >
-              <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-              </svg>
-              <span class="hidden sm:inline">موقعي الحالي</span>
-              <span class="sm:hidden">موقعي</span>
-            </button>
           </div>
-
-          <!-- Search Button -->
-          <div class="mt-6">
-            <button 
-              @click="performSearch"
-              class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-3 sm:py-4 md:py-5 rounded-2xl font-bold text-base sm:text-lg hover:from-orange-600 hover:to-red-600 transition-all shadow-lg flex items-center justify-center gap-3"
-            >
-              <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-              </svg>
-              ابحث عن الطعام
-            </button>
-          </div>
-        </div>
-      </div>
 
       <!-- Quick Categories -->
       <div class="mt-8 md:mt-12 flex flex-wrap justify-center gap-3">
         <button 
           v-for="category in quickCategories" 
           :key="category.id"
-          @click="searchByCategory(category.name)"
+          @click="searchByCategory(category.key)"
           class="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full font-medium hover:bg-white/30 transition-all border border-white/30"
         >
-          {{ category.name }}
+          {{ $t(`hero.categories.${category.key}`) }}
         </button>
       </div>
     </div>
@@ -106,7 +71,7 @@
         <div class="bg-white rounded-3xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
           <div class="flex justify-between items-center mb-6">
             <h3 class="text-xl font-bold text-gray-800">اختر موقع التوصيل</h3>
-            <button @click="showMap = false" class="text-gray-400 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100">
+            <button @click="showMap = false" class="text-gray-400 hover:text-gray-700 bg-white rounded-full p-2 shadow-md hover:shadow-lg transition-all">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
               </svg>
@@ -177,11 +142,11 @@ const selectedLocation = ref(null)
 
 // Quick categories for search
 const quickCategories = ref([
-  { id: 1, name: '🍔 البرجر' },
-  { id: 2, name: '🍕 البيتزا' },
-  { id: 3, name: '🥗 السلطات' },
-  { id: 4, name: '🍰 الحلويات' },
-  { id: 5, name: '☕ المشروبات' }
+  { id: 1, name: '🍔 البرجر', key: 'burger' },
+  { id: 2, name: '🍕 البيتزا', key: 'pizza' },
+  { id: 3, name: '🥗 السلطات', key: 'salads' },
+  { id: 4, name: '🍰 الحلويات', key: 'desserts' },
+  { id: 5, name: '☕ المشروبات', key: 'drinks' }
 ])
 
 // Mock location suggestions

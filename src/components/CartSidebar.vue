@@ -1,9 +1,16 @@
 <template>
   <Transition name="slide-rtl">
     <aside v-if="open" class="fixed top-0 right-0 h-full w-80 max-w-full bg-white shadow-lg z-50 flex flex-col text-right" dir="rtl">
+      <!-- Edit Add-ons Modal -->
+      <EditAddOnsModal 
+        :open="showEditModal" 
+        :item="selectedItem" 
+        @close="showEditModal = false"
+        @update="updateItemAddOns"
+      />
       <div class="flex items-center justify-between p-4 border-b">
         <h2 class="text-xl font-bold">سلة المشتريات</h2>
-        <button @click="$emit('close')" class="text-gray-400 hover:text-gray-700">
+        <button @click="$emit('close')" class="text-gray-400 hover:text-gray-700 bg-white rounded-full p-1 shadow-md hover:shadow-lg transition-all">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -21,7 +28,18 @@
               </div>
             </div>
             <div v-if="item.addOns.length" class="text-xs text-gray-500 mb-1">إضافات: {{ item.addOns.map(a => a.name).join('، ') }}</div>
-            <div class="text-sm font-bold text-primary">{{ (item.total * item.quantity).toFixed(2) }} ر.س</div>
+            <div class="flex items-center justify-between">
+              <div class="text-sm font-bold text-primary">{{ (item.total * item.quantity).toFixed(2) }} ر.س</div>
+              <button 
+                @click="editAddOns(item)" 
+                class="text-primary hover:text-primary-dark text-xs flex items-center gap-1"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                </svg>
+                تعديل الإضافات
+              </button>
+            </div>
           </div>
         </template>
         <template v-else>
@@ -42,7 +60,9 @@
 </template>
 
 <script setup>
-import { inject } from 'vue'
+import { inject, ref } from 'vue'
+import EditAddOnsModal from './EditAddOnsModal.vue'
+
 const props = defineProps({
   open: { type: Boolean, default: false }
 })
@@ -50,6 +70,23 @@ const emit = defineEmits(['close'])
 const cart = inject('cart')
 const increase = inject('increaseCartItem')
 const decrease = inject('decreaseCartItem')
+
+const showEditModal = ref(false)
+const selectedItem = ref(null)
+
+const editAddOns = (item) => {
+  selectedItem.value = item
+  showEditModal.value = true
+}
+
+const updateItemAddOns = (updateData) => {
+  // Find the item in cart and update its add-ons
+  const itemIndex = cart.value.findIndex(item => item._key === updateData.itemKey)
+  if (itemIndex !== -1) {
+    cart.value[itemIndex].addOns = updateData.addOns
+    cart.value[itemIndex].total = updateData.total
+  }
+}
 </script>
 
 <style scoped>

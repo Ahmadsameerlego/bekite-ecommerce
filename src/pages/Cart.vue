@@ -1,5 +1,12 @@
 <template>
   <div dir="rtl" class="bg-gray-50 text-right min-h-screen">
+    <!-- Edit Add-ons Modal -->
+    <EditAddOnsModal 
+      :open="showEditModal" 
+      :item="selectedItem" 
+      @close="showEditModal = false"
+      @update="updateItemAddOns"
+    />
     <div class="container mx-auto px-4 py-8">
       <h1 class="text-3xl font-bold mb-8">سلة المشتريات</h1>
       
@@ -20,11 +27,22 @@
                 <span class="mx-2 font-semibold">{{ item.quantity }}</span>
                 <button @click="increase(item._key)" class="bg-gray-200 rounded px-3 py-1">+</button>
               </div>
-              <button @click="remove(item._key)" class="text-red-500 hover:text-red-700">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                </svg>
-              </button>
+              <div class="flex items-center gap-2">
+                <button 
+                  @click="editAddOns(item)" 
+                  class="text-primary hover:text-primary-dark text-sm flex items-center gap-1 px-3 py-1 rounded border border-primary hover:bg-primary hover:text-white transition-colors"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                  </svg>
+                  تعديل الإضافات
+                </button>
+                <button @click="remove(item._key)" class="text-red-500 hover:text-red-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -57,11 +75,30 @@
 </template>
 
 <script setup>
-import { inject, computed } from 'vue'
+import { inject, computed, ref } from 'vue'
+import EditAddOnsModal from '../components/EditAddOnsModal.vue'
+
 const cart = inject('cart')
 const increase = inject('increaseCartItem')
 const decrease = inject('decreaseCartItem')
 const remove = inject('removeCartItem')
+
+const showEditModal = ref(false)
+const selectedItem = ref(null)
+
+const editAddOns = (item) => {
+  selectedItem.value = item
+  showEditModal.value = true
+}
+
+const updateItemAddOns = (updateData) => {
+  // Find the item in cart and update its add-ons
+  const itemIndex = cart.value.findIndex(item => item._key === updateData.itemKey)
+  if (itemIndex !== -1) {
+    cart.value[itemIndex].addOns = updateData.addOns
+    cart.value[itemIndex].total = updateData.total
+  }
+}
 
 const totalPrice = computed(() => {
   return cart.value.reduce((sum, item) => sum + (item.total * item.quantity), 0)
