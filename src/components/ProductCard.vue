@@ -1,11 +1,11 @@
 <template>
   <div
-    class="bg-white rounded-xl shadow hover:shadow-lg transition cursor-pointer overflow-hidden flex flex-col"
+    class="bg-white rounded-xl shadow hover:shadow-lg transition cursor-pointer overflow-hidden flex flex-col min-w-[280px] sm:min-w-[300px] md:min-w-[320px]"
     @click="$emit('click')"
     :dir="rtl ? 'rtl' : 'ltr'"
   >
-    <img :src="product.image" :alt="product.name" class="h-40 w-full object-cover" />
-    <div class="p-4 flex-1 flex flex-col justify-between text-right">
+    <img :src="product.image" :alt="product.name" class="h-32 sm:h-36 md:h-40 w-full object-cover" />
+    <div class="p-3 sm:p-4 flex-1 flex flex-col justify-between text-right">
       <div>
         <h3 class="font-semibold text-lg mb-1">{{ product.name }}</h3>
         <p class="text-gray-500 text-sm line-clamp-2">{{ product.description }}</p>

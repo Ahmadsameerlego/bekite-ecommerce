@@ -71,7 +71,7 @@
           <h2 class="text-4xl font-bold mb-4 text-gray-800">لماذا تختارنا؟</h2>
           <p class="text-gray-600 text-lg">نقدم لك أفضل تجربة طعام</p>
         </div>
-        <div class="grid md:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           <div class="text-center">
             <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -154,7 +154,8 @@ function handleAddToCart(payload) {
 }
 const router = useRouter()
 // Responsive slider classes
-const sliderClass = computed(() =>
-  'min-w-full sm:min-w-[600px] md:min-w-[900px] lg:min-w-[1200px]'
-)
+const sliderClass = computed(() => {
+  // Mobile: 1 card, Tablet: 2 cards, Desktop: 3-4 cards
+  return 'flex gap-4 md:gap-6 overflow-x-auto pb-4 scrollbar-hide'
+})
 </script>
