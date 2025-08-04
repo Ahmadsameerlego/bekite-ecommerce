@@ -33,7 +33,7 @@
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-600">إجمالي الطلب:</span>
-                <span class="font-semibold text-primary">{{ totalAmount }} ر.س</span>
+                <span class="font-semibold text-primary">{{ totalAmount }} د.أ</span>
               </div>
             </div>
           </div>

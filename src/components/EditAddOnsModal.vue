@@ -42,7 +42,7 @@
                   <div class="text-sm text-gray-500">{{ addOn.description }}</div>
                 </div>
               </div>
-              <div class="text-primary font-bold">+{{ addOn.price.toFixed(2) }} ر.س</div>
+              <div class="text-primary font-bold">+{{ addOn.price.toFixed(2) }} د.أ</div>
             </label>
           </div>
         </div>
@@ -51,7 +51,7 @@
         <div class="border-t pt-4 mb-6">
           <div class="flex justify-between items-center">
             <span class="text-lg font-semibold">السعر الإجمالي:</span>
-            <span class="text-2xl font-bold text-primary">{{ totalPrice.toFixed(2) }} ر.س</span>
+            <span class="text-2xl font-bold text-primary">{{ totalPrice.toFixed(2) }} د.أ</span>
           </div>
         </div>
         

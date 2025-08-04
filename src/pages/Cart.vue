@@ -18,7 +18,7 @@
               <div>
                 <h3 class="font-semibold text-lg">{{ item.product.name }}</h3>
                 <div v-if="item.addOns.length" class="text-sm text-gray-500">إضافات: {{ item.addOns.map(a => a.name).join('، ') }}</div>
-                <div class="text-primary font-bold">{{ item.total.toFixed(2) }} ر.س</div>
+                <div class="text-primary font-bold">{{ item.total.toFixed(2) }} د.أ</div>
               </div>
             </div>
             <div class="flex items-center gap-4">
@@ -50,7 +50,7 @@
         <div class="bg-white rounded-xl shadow-lg p-6">
           <div class="flex justify-between items-center mb-4">
             <span class="text-xl font-bold">الإجمالي:</span>
-            <span class="text-2xl font-bold text-primary">{{ totalPrice.toFixed(2) }} ر.س</span>
+            <span class="text-2xl font-bold text-primary">{{ totalPrice.toFixed(2) }} د.أ</span>
           </div>
           <button class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary-dark transition text-lg">
             <router-link to="/checkout" class="block w-full h-full flex items-center justify-center">

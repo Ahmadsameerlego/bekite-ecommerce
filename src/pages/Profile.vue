@@ -16,6 +16,13 @@
             البيانات الشخصية
           </button>
           <button 
+            @click="activeTab = 'addresses'"
+            class="px-6 py-3 rounded-xl font-semibold transition-all"
+            :class="activeTab === 'addresses' ? 'bg-primary text-white shadow-lg' : 'text-gray-600 hover:text-primary'"
+          >
+            عناويني
+          </button>
+          <button 
             @click="activeTab = 'orders'"
             class="px-6 py-3 rounded-xl font-semibold transition-all"
             :class="activeTab === 'orders' ? 'bg-primary text-white shadow-lg' : 'text-gray-600 hover:text-primary'"
@@ -62,7 +69,7 @@
                 class="w-full border-2 border-gray-200 rounded-xl px-4 py-4 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
               />
             </div>
-            
+         
             <div>
               <label class="block mb-3 font-semibold text-gray-700">العنوان</label>
               <textarea 
@@ -77,6 +84,51 @@
               class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 rounded-xl font-bold text-lg hover:from-orange-600 hover:to-red-600 transition-all shadow-lg"
             >
               حفظ التغييرات
+            </button>
+          </form>
+        </div>
+      </div>
+      <!-- Profile Tab -->
+      <div v-if="activeTab === 'addresses'" class="max-w-2xl mx-auto">
+        <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-white/20">
+          <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
+            عناويني
+          </h2>
+          
+          <form @submit.prevent="updateProfile" class="space-y-6">
+            
+            <div>
+              <label class="block mb-3 font-semibold text-gray-700">الموقع علي الخريطه</label>
+
+              <div class="space-y-4">
+            <input 
+              v-model="locationQuery"
+              type="text" 
+              placeholder="ابحث عن عنوان..."
+              class="w-full border-2 border-gray-200 rounded-2xl px-4 py-4 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-lg"
+            />
+            
+            <div class="space-y-3 max-h-48">
+              <div v-for="suggestion in locationSuggestions" :key="suggestion.id" 
+                   @click="selectLocation(suggestion)"
+                   class="p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 transition-all hover:border-primary">
+                <div class="font-semibold text-gray-800">{{ suggestion.name }}</div>
+                <div class="text-sm text-gray-500">{{ suggestion.address }}</div>
+              </div>
+            </div>
+          </div>
+
+            </div> 
+            
+            
+            <button 
+              type="submit"
+              class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 rounded-xl font-bold text-lg hover:from-orange-600 hover:to-red-600 transition-all shadow-lg"
+            >
+              اضافه عنوان
             </button>
           </form>
         </div>
@@ -109,13 +161,13 @@
               <div class="space-y-2 mb-4">
                 <div v-for="item in order.items" :key="item.id" class="flex justify-between">
                   <span>{{ item.name }} × {{ item.quantity }}</span>
-                  <span>{{ item.price }} ر.س</span>
+                  <span>{{ item.price }} د.أ</span>
                 </div>
               </div>
               
               <div class="border-t border-gray-200 pt-4 flex justify-between items-center">
                 <div>
-                  <span class="font-semibold">الإجمالي: {{ order.total }} ر.س</span>
+                  <span class="font-semibold">الإجمالي: {{ order.total }} د.أ</span>
                 </div>
                 <button 
                   @click="trackOrder(order.id)"
@@ -141,13 +193,89 @@
       </div>
     </div>
   </div>
+
+    <!-- Map Modal -->
+    <Transition name="fade-slide">
+      <div v-if="showMap" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+        <div class="bg-white rounded-3xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold text-gray-800">اختر موقع التوصيل</h3>
+            <button @click="showMap = false" class="text-gray-400 hover:text-gray-700 bg-white rounded-full p-2 shadow-md hover:shadow-lg transition-all">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+          </div>
+          
+          <!-- Google Maps Placeholder -->
+          <div class="bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl h-64 mb-6 flex items-center justify-center border-2 border-dashed border-gray-300">
+            <div class="text-center">
+              <div class="text-6xl mb-4">🗺️</div>
+              <p class="text-gray-600 font-semibold text-lg">خريطة Google Maps</p>
+              <p class="text-sm text-gray-500 mt-2">سيتم إضافة مفتاح Google Maps API</p>
+            </div>
+          </div>
+          
+          <div class="space-y-4">
+            <input 
+              v-model="locationQuery"
+              type="text" 
+              placeholder="ابحث عن عنوان..."
+              class="w-full border-2 border-gray-200 rounded-2xl px-4 py-4 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-lg"
+            />
+            
+            <div class="space-y-3 max-h-48">
+              <div v-for="suggestion in locationSuggestions" :key="suggestion.id" 
+                   @click="selectLocation(suggestion)"
+                   class="p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 transition-all hover:border-primary">
+                <div class="font-semibold text-gray-800">{{ suggestion.name }}</div>
+                <div class="text-sm text-gray-500">{{ suggestion.address }}</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="flex gap-4 mt-6">
+            <button 
+              @click="confirmLocation"
+              class="flex-1 bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 rounded-2xl font-semibold hover:from-orange-600 hover:to-red-600 transition-all"
+            >
+              تأكيد الموقع
+            </button>
+            <button 
+              @click="showMap = false"
+              class="flex-1 bg-gray-200 text-gray-700 py-4 rounded-2xl font-semibold hover:bg-gray-300 transition-all"
+            >
+              إلغاء
+            </button>
+          </div>
+        </div>
+      </div>
+    </Transition>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+const showMap = ref(false)
 
 const activeTab = ref('profile')
-
+// Location functions
+const getCurrentLocation = () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords
+        // Here you would typically reverse geocode the coordinates
+        form.value.location = `موقعي الحالي (${latitude.toFixed(4)}, ${longitude.toFixed(4)})`
+      },
+      (error) => {
+        console.error('Error getting location:', error)
+        alert('فشل في تحديد موقعك الحالي')
+      }
+    )
+  } else {
+    alert('متصفحك لا يدعم تحديد الموقع')
+  }
+}
 // Profile data
 const profile = ref({
   name: 'أحمد محمد',

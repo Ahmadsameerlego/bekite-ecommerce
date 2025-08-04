@@ -53,7 +53,7 @@
 
         <!-- Email -->
         <div>
-          <label class="block text-sm font-semibold text-gray-700 mb-2">{{ $t('register.email') }}</label>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">{{ $t('register.email') }} <span class="text-red-500 text-sm"> ({{ $t('register.optional') }})</span> </label>
           <div class="relative">
             <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
               <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

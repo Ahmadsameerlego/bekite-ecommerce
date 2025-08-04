@@ -11,20 +11,20 @@
         <h2 class="text-2xl font-bold mb-1">{{ product.name }}</h2>
         <p class="text-gray-500 mb-2">{{ product.description }}</p>
         <div class="mb-4">
-          <span class="font-semibold">{{ $t('product.basePrice') }}:</span>
-          <span class="ml-2">{{ product.price.toFixed(2) }} {{ $t('product.currency') }}</span>
+          <span class="font-semibold text-[#f97316]">{{ $t('product.basePrice') }}:</span>
+          <span class="ml-2 font-bold text-lg">  {{ product.price.toFixed(2) }} {{ $t('product.currency') }}</span>
         </div>
         <div v-if="product.addOns && product.addOns.length" class="mb-4">
-          <div class="font-semibold mb-1">{{ $t('product.addOns') }}:</div>
+          <div class="font-semibold mb-1 text-[#f97316]">{{ $t('product.addOns') }}:</div>
           <div class="flex flex-col gap-2">
             <label v-for="addOn in product.addOns" :key="addOn.id" class="flex items-center gap-2">
               <input type="checkbox" v-model="selectedAddOns" :value="addOn" />
-              <span>{{ addOn.name }} (+{{ addOn.price.toFixed(2) }} {{ $t('product.currency') }})</span>
+              <span class="font-semibold text-md ">{{ addOn.name }} (+{{ addOn.price.toFixed(2) }} {{ $t('product.currency') }})</span>
             </label>
           </div>
         </div>
         <div class="flex items-center justify-between mt-6">
-          <div class="font-bold text-lg">{{ $t('product.total') }}: {{ totalPrice.toFixed(2) }} {{ $t('product.currency') }}</div>
+          <div class="font-bold text-lg text-[#f97316]">{{ $t('product.total') }}: {{ totalPrice.toFixed(2) }} {{ $t('product.currency') }}</div>
           <button class="bg-primary text-white px-5 py-2 rounded-full font-semibold hover:bg-primary-dark transition" @click="addToCart">{{ $t('product.addToCart') }}</button>
         </div>
       </div>

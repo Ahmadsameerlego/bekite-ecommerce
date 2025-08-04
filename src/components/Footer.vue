@@ -3,24 +3,7 @@
     <div class="container mx-auto px-4">
       <!-- Main Footer Content -->
       <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
-        <div class="text-gray-500 text-sm">
-          © 2025 Be-Kite. All rights reserved. Created by Be-Kite
-        </div>
-        <div class="flex gap-4 text-sm">
-          <router-link to="/about" class="hover:text-primary">من نحن</router-link>
-          <router-link to="/privacy" class="hover:text-primary">{{ $t('nav.privacy') }}</router-link>
-          <router-link to="/terms" class="hover:text-primary">{{ $t('nav.terms') }}</router-link>
-          <router-link to="/contact" class="hover:text-primary">{{ $t('nav.contact') }}</router-link>
-        </div>
-      </div>
-      
-      <!-- Social Media Links -->
-      <div class="border-t pt-6">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-          <div class="text-gray-600 text-sm">
-            تابعنا على وسائل التواصل الاجتماعي
-          </div>
-          <div class="flex gap-4">
+        <div class="flex gap-4">
             <!-- Facebook -->
             <a href="#" class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors">
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -56,6 +39,22 @@
               </svg>
             </a>
           </div>
+       
+        <div class="flex gap-4 text-sm">
+          <router-link to="/about" class="hover:text-primary">من نحن</router-link>
+          <router-link to="/privacy" class="hover:text-primary">{{ $t('nav.privacy') }}</router-link>
+          <router-link to="/terms" class="hover:text-primary">{{ $t('nav.terms') }}</router-link>
+          <router-link to="/contact" class="hover:text-primary">{{ $t('nav.contact') }}</router-link>
+        </div>
+      </div>
+      
+      <!-- Social Media Links -->
+      <div class="border-t pt-6">
+        <div class="flex flex-col md:flex-row items-center justify-center gap-4">
+         
+          <div class="text-gray-500 text-sm">
+          © 2025 Be-Kite. All rights reserved. Created by Be-Kite
+        </div>
         </div>
       </div>
     </div>

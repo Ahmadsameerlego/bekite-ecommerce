@@ -29,7 +29,7 @@
             </div>
             <div v-if="item.addOns.length" class="text-xs text-gray-500 mb-1">إضافات: {{ item.addOns.map(a => a.name).join('، ') }}</div>
             <div class="flex items-center justify-between">
-              <div class="text-sm font-bold text-primary">{{ (item.total * item.quantity).toFixed(2) }} ر.س</div>
+              <div class="text-sm font-bold text-primary">{{ (item.total * item.quantity).toFixed(2) }} د.أ</div>
               <button 
                 @click="editAddOns(item)" 
                 class="text-primary hover:text-primary-dark text-xs flex items-center gap-1"

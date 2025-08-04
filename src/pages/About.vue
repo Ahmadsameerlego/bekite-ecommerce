@@ -142,43 +142,7 @@
       </div>
 
       <!-- Team Section -->
-      <div class="max-w-6xl mx-auto mb-16">
-        <div class="bg-white rounded-2xl shadow-lg p-8">
-          <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">فريق العمل</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Team Member 1 -->
-            <div class="text-center">
-              <div class="w-24 h-24 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
-                أ.م
-              </div>
-              <h3 class="text-xl font-bold text-gray-900 mb-2">أحمد محمد</h3>
-              <p class="text-gray-600 mb-3">المدير التنفيذي</p>
-              <p class="text-sm text-gray-500">خبرة 10 سنوات في مجال التكنولوجيا والطعام</p>
-            </div>
-
-            <!-- Team Member 2 -->
-            <div class="text-center">
-              <div class="w-24 h-24 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
-                س.ع
-              </div>
-              <h3 class="text-xl font-bold text-gray-900 mb-2">سارة أحمد</h3>
-              <p class="text-gray-600 mb-3">مدير العمليات</p>
-              <p class="text-sm text-gray-500">متخصصة في إدارة العمليات وتحسين الخدمات</p>
-            </div>
-
-            <!-- Team Member 3 -->
-            <div class="text-center">
-              <div class="w-24 h-24 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
-                م.خ
-              </div>
-              <h3 class="text-xl font-bold text-gray-900 mb-2">محمد خالد</h3>
-              <p class="text-gray-600 mb-3">مدير التطوير</p>
-              <p class="text-sm text-gray-500">مطور برمجيات محترف مع خبرة في تطبيقات الموبايل</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    
       <!-- Contact CTA -->
       <div class="max-w-4xl mx-auto">
         <div class="bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl shadow-lg p-8 text-center text-white">
