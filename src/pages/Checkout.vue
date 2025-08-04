@@ -84,6 +84,16 @@
 
 
               <section class="grid grid-cols-2 gap-4">
+                <div class="h-full">
+
+<div class="">
+  <label class="block mb-3 font-semibold text-gray-700">العنوان *</label>
+  <textarea v-model="form.address" rows="5"
+    class="w-full border-2 border-gray-200 rounded-xl px-4 py-4 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none"
+    :class="{ 'border-red-500': errors.address }" required></textarea>
+  <p v-if="errors.address" class="text-red-500 text-sm mt-2">{{ errors.address }}</p>
+</div>
+</div>
                 <div class="">
                   <div class="mb-3">
                     <label class="block mb-3 font-semibold text-gray-700">رقم الشقة (اختياري)</label>
@@ -100,16 +110,7 @@
 
                 </div>
 
-                <div class="h-full">
-
-                  <div class="">
-                    <label class="block mb-3 font-semibold text-gray-700">العنوان *</label>
-                    <textarea v-model="form.address" rows="5"
-                      class="w-full border-2 border-gray-200 rounded-xl px-4 py-4 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none"
-                      :class="{ 'border-red-500': errors.address }" required></textarea>
-                    <p v-if="errors.address" class="text-red-500 text-sm mt-2">{{ errors.address }}</p>
-                  </div>
-                </div>
+               
               </section>
             </form>
           </div>
