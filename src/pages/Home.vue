@@ -156,6 +156,6 @@ const router = useRouter()
 // Responsive slider classes
 const sliderClass = computed(() => {
   // Mobile: 1 card, Tablet: 2 cards, Desktop: 3-4 cards
-  return 'flex gap-4 md:gap-6 overflow-x-auto pb-4 scrollbar-hide'
+  return 'flex gap-4 md:gap-6  pb-4 '
 })
 </script>
