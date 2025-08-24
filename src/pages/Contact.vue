@@ -10,7 +10,7 @@
 
     <!-- Main Content -->
     <div class="container mx-auto px-4 py-12">
-      <div class="max-w-4xl mx-auto">
+      <div class=" mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <!-- Contact Form -->
           <div class="bg-white rounded-lg shadow-lg p-8">
@@ -53,6 +53,7 @@
                   v-model="form.phone"
                   type="tel"
                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  style="direction: rtl;"
                 />
               </div>
               
@@ -88,7 +89,13 @@
                 type="submit"
                 class="w-full bg-primary text-white py-3 px-6 rounded-lg font-semibold hover:bg-primary-dark transition duration-300"
               >
-                إرسال الرسالة
+               <span v-if="isLoading" class="flex items-center justify-center">
+            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </span>
+               <div v-else>إرسال الرسالة</div>
               </button>
             </form>
           </div>
@@ -107,7 +114,7 @@
                     </div>
                     <div>
                       <h3 class="font-semibold text-gray-900">الهاتف</h3>
-                      <p class="text-gray-600">+966 50 123 4567</p>
+                      <p class="text-gray-600"> {{  setting?.phone  }} </p>
                     </div>
                   </div>
                   
@@ -119,7 +126,7 @@
                     </div>
                     <div>
                       <h3 class="font-semibold text-gray-900">البريد الإلكتروني</h3>
-                      <p class="text-gray-600">info@be-kite.com</p>
+                      <p class="text-gray-600">{{ setting?.email }}</p>
                     </div>
                   </div>
                   
@@ -132,7 +139,7 @@
                     </div>
                     <div>
                       <h3 class="font-semibold text-gray-900">العنوان</h3>
-                      <p class="text-gray-600">شارع الملك فهد، الرياض، المملكة العربية السعودية</p>
+                      <p class="text-gray-600">{{ setting?.address }}</p>
                     </div>
                   </div>
                 </div>
@@ -225,19 +232,8 @@
             <!-- Business Hours -->
             <div class="bg-white rounded-lg shadow-lg p-8">
               <h2 class="text-2xl font-bold text-gray-900 mb-6">ساعات العمل</h2>
-              <div class="space-y-3">
-                <div class="flex justify-between">
-                  <span class="text-gray-600">الأحد - الخميس</span>
-                  <span class="font-semibold">8:00 ص - 10:00 م</span>
-                </div>
-                <div class="flex justify-between">
-                  <span class="text-gray-600">الجمعة</span>
-                  <span class="font-semibold">2:00 م - 11:00 م</span>
-                </div>
-                <div class="flex justify-between">
-                  <span class="text-gray-600">السبت</span>
-                  <span class="font-semibold">9:00 ص - 11:00 م</span>
-                </div>
+              <div v-html="setting?.desc" class="space-y-3">
+               
               </div>
             </div>
           </div>
@@ -245,41 +241,125 @@
       </div>
     </div>
   </div>
+   <!-- Toast -->
+    <Toast 
+      v-if="toast.visible"
+      :message="toast.message"
+      :type="toast.type"
+      :visible="toast.visible"
+    />
 </template>
 
-<script>
-export default {
-  name: 'Contact',
-  data() {
-    return {
-      form: {
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        subject: '',
-        message: ''
-      }
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import api from '@/api/http'
+import Toast from '@/components/Toast.vue'
+
+// Toast state
+const toast = ref({
+  visible: false,
+  message: '',
+  type: 'success'
+})
+
+const showToast = (msg, type = 'success') => {
+  toast.value = { visible: true, message: msg, type }
+  setTimeout(() => (toast.value.visible = false), 3000)
+}
+
+
+// نموذج البيانات
+const form = ref({
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  subject: "",
+  message: "",
+})
+
+const isLoading = ref(false)
+
+const submitForm = async () => {
+  if (isLoading.value) return
+  isLoading.value = true
+
+  try {
+    const response = await api.post("/api/contact-us", {
+      lang: "ar",
+      name: form.value.firstName + " " + form.value.lastName,
+      email: form.value.email,
+      phone: form.value.phone,
+      title: subjectMapper(form.value.subject), // تحويل subject لقيمة نصية مناسبة
+      message: form.value.message,
+    })
+
+    if (response.data.key === 1) {
+      showToast(response.data.msg || "تم الإرسال بنجاح")
+      resetForm()
+    } else {
+      showToast(response.data.msg || "حدث خطأ أثناء الإرسال", "error")
     }
-  },
-  methods: {
-    submitForm() {
-      // Handle form submission
-      console.log('Form submitted:', this.form)
-      // Here you would typically send the data to your backend
-      alert('تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.')
-      this.resetForm()
-    },
-    resetForm() {
-      this.form = {
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        subject: '',
-        message: ''
-      }
-    }
+  } catch (err) {
+    console.error(err)
+    showToast("تعذر الاتصال بالسيرفر", "error")
+  } finally {
+    isLoading.value = false
   }
 }
-</script> 
+
+
+// تحويل قيمة الـ select لعربية (لو API عاوز نص عربي)
+const subjectMapper = (val) => {
+  switch (val) {
+    case "general": return "استفسار عام"
+    case "order": return "مشكلة في الطلب"
+    case "delivery": return "مشكلة في التوصيل"
+    case "payment": return "مشكلة في الدفع"
+    case "suggestion": return "اقتراح"
+    case "complaint": return "شكوى"
+    default: return val
+  }
+}
+
+// تفريغ الفورم بعد النجاح
+const resetForm = () => {
+  form.value = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
+  }
+}
+
+
+const user = JSON.parse(localStorage.getItem("user") || "{}");
+const setting = ref(null);
+// ✅ جلب بيانات المستخدم
+const getData = async () => {
+  
+  try {
+    const response = await api.post("/api/page", {
+      lang: "ar",
+      user_id: user.id,
+      title:'condition'
+    });
+
+    if (response.data.key === 1) {
+      const data = response.data;
+      setting.value = data;
+      console.log("page data:", setting.value);
+    } else {
+    }
+  } catch (error) {
+    console.error("show-user error:", error);
+  } 
+};
+
+onMounted(() => {
+  getData();
+});
+ </script> 

@@ -1,11 +1,12 @@
 <template>
   <section class="relative w-full h-80 md:h-96 lg:h-[500px] overflow-hidden">
     <!-- Background Image Slider -->
-    <div class="absolute inset-0 w-full h-full">
+    <div class="absolute inset-0 w-full h-full" v-if="sliderData.length">
       <Transition name="fade-slide" mode="out-in">
+        
         <img
-          :key="images[current]"
-          :src="images[current]"
+          :key="sliderData[current]?.id"
+          :src="sliderData[current]?.image"
           class="object-cover w-full h-full transition-all duration-700"
           alt="Hero image"
         />
@@ -55,12 +56,12 @@
       <!-- Quick Categories -->
       <div class="mt-8 md:mt-12 flex flex-wrap justify-center gap-3">
         <button 
-          v-for="category in quickCategories" 
+          v-for="category in sections" 
           :key="category.id"
-          @click="searchByCategory(category.key)"
+          @click="searchByCategory(category.title)"
           class="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full font-medium hover:bg-white/30 transition-all border border-white/30"
         >
-          {{ $t(`hero.categories.${category.key}`) }}
+          {{ category.title }}
         </button>
       </div>
     </div>
@@ -127,6 +128,16 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+const props = defineProps({
+  sliderData: {
+    type: Array,
+    default: () => []
+  },
+  sections: {
+    type: Array,
+    default: () => []
+  }
+})
 
 const images = [
   'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80',
@@ -160,10 +171,17 @@ const locationSuggestions = ref([
 let interval = null
 
 onMounted(() => {
-  interval = setInterval(() => {
-    current.value = (current.value + 1) % images.length
-  }, 5000)
+  setTimeout(() => {
+    if (props.sliderData&&props.sliderData.length) {
+    current.value = (current.value + 1) % props.sliderData.length
+
+    interval = setInterval(() => {
+      current.value = (current.value + 1) % props.sliderData.length
+    }, 5000)
+  }
+  }, 1000);
 })
+
 
 onUnmounted(() => {
   clearInterval(interval)

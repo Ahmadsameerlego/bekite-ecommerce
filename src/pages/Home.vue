@@ -1,6 +1,6 @@
 <template>
   <div class="bg-gradient-to-br from-orange-50 via-red-50 to-yellow-50">
-    <HeroSection />
+    <HeroSection :sliderData="homeData?.data?.sliders" :sections="homeData?.data?.sections" />
 
     <!-- Menu Section -->
     <div class="container mx-auto px-4 py-12">
@@ -11,7 +11,7 @@
       <div class="overflow-x-auto pb-4">
         <div class="flex gap-6" :class="sliderClass">
           <ProductCard
-            v-for="product in filteredProducts"
+            v-for="product in homeData?.data?.services"
             :key="product.id"
             :product="product"
             @click="openProduct(product)"
@@ -22,7 +22,7 @@
     </div>
 
     <!-- Offers Section -->
-    <div v-if="offers.length" class="bg-gradient-to-r from-red-50 to-orange-50 py-12">
+    <div v-if="homeData?.data?.offers.length" class="bg-gradient-to-r from-red-50 to-orange-50 py-12">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
           <h2 class="text-4xl font-bold mb-4 text-red-600">{{ $t('home.offers.title') }}</h2>
@@ -31,7 +31,7 @@
         <div class="overflow-x-auto pb-4">
           <div class="flex gap-6" :class="sliderClass">
             <ProductCard
-              v-for="product in offers"
+              v-for="product in homeData?.data?.offers"
               :key="product.id"
               :product="product"
               :show-discount="true"
@@ -45,9 +45,9 @@
 
     <!-- Category Sections -->
     <div class="container mx-auto px-4 py-12">
-      <div v-for="cat in categories" :key="cat" class="mb-16">
+      <div v-for="cat in homeData?.data?.sections" :key="cat.id" class="mb-16">
         <div class="text-center mb-8">
-          <h2 class="text-3xl font-bold mb-2 text-gray-800">{{ cat }}</h2>
+          <h2 class="text-3xl font-bold mb-2 text-gray-800">{{ cat.title }}</h2>
           <div class="w-24 h-1 bg-gradient-to-r from-orange-500 to-red-500 mx-auto rounded-full"></div>
         </div>
         <div class="overflow-x-auto pb-4">
@@ -111,18 +111,20 @@
       @add-to-cart="handleAddToCart"
       rtl
     />
-    <CartSidebar :open="cartSidebarOpen" @close="cartSidebarOpen = false" />
+    <CartSidebar :open="cartSidebarOpen" @close="cartSidebarOpen = false"  />
   </div>
 </template>
 
 <script setup>
-import { ref, computed, inject } from 'vue'
+import { ref, computed, inject, onMounted } from 'vue'
 import { products } from '../mock/products.js'
 import HeroSection from '../components/HeroSection.vue'
 import ProductCard from '../components/ProductCard.vue'
 import ProductModal from '../components/ProductModal.vue'
 import CartSidebar from '../components/CartSidebar.vue'
 import { useRouter } from 'vue-router'
+import api from '@/api/http' // ← استدعاء ملف الـ axios
+const homeData = ref(null)
 
 const filteredProducts = computed(() => {
   return products
@@ -134,7 +136,7 @@ const categories = computed(() =>
   [...new Set(products.map(p => p.category))]
 )
 function productsByCategory(cat) {
-  return products.filter(p => p.category === cat)
+  return homeData.value?.data?.services.filter(p => p.section_id === cat.id)
 }
 const selectedProduct = ref(null)
 const modalOpen = ref(false)
@@ -147,8 +149,10 @@ function closeModal() {
   modalOpen.value = false
   selectedProduct.value = null
 }
+const cartData = ref(null)
 const addToCart = inject('addToCart')
 function handleAddToCart(payload) {
+  console.log(payload)
   addToCart(payload)
   cartSidebarOpen.value = true
 }
@@ -158,4 +162,24 @@ const sliderClass = computed(() => {
   // Mobile: 1 card, Tablet: 2 cards, Desktop: 3-4 cards
   return 'flex gap-4 md:gap-6  pb-4 '
 })
+
+
+
+const getData = async () => {
+    const user = JSON.parse(localStorage.getItem('user') || '{}')
+
+  try {
+    const response = await api.post('/api/home' ,{
+            user_id: user.id,
+
+    })
+    homeData.value = response.data ;
+    console.log('Home data fetched successfully:', homeData.value.data)
+  } catch (error) {
+    console.error('Error fetching data:', error)
+  }
+} 
+onMounted(() => {
+   getData()
+});
 </script>

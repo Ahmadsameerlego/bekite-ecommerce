@@ -19,21 +19,22 @@ import Footer from './components/Footer.vue'
 const cart = ref([])
 const cartCount = computed(() => cart.value.reduce((sum, item) => sum + item.quantity, 0))
 
-function addToCart({ product, addOns, total }) {
+function addToCart(data) {
   // Check if same product+addOns exists
-  const key = JSON.stringify({ id: product.id, addOns: addOns.map(a => a.id).sort() })
-  const found = cart.value.find(item => item._key === key)
-  if (found) {
-    found.quantity++
-  } else {
-    cart.value.push({
-      _key: key,
-      product,
-      addOns,
-      total,
-      quantity: 1
-    })
-  }
+  // const key = JSON.stringify({ id: product.id, addOns: addOns.map(a => a.id).sort() })
+  // const found = cart.value.find(item => item._key === key)
+  cart.value = data
+  // if (found) {
+  //   found.quantity++
+  // } else {
+  //   cart.value.push({
+  //     _key: key,
+  //     product,
+  //     addOns,
+  //     total,
+  //     quantity: 1
+  //   })
+  // }
 }
 function increaseCartItem(key) {
   const item = cart.value.find(i => i._key === key)

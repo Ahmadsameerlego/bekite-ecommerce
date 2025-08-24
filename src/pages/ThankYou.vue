@@ -25,15 +25,15 @@
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-600">تاريخ الطلب:</span>
-                <span class="font-semibold">{{ orderDate }}</span>
+                <span class="font-semibold">{{ order_data?.order_date_time }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-600">طريقة الدفع:</span>
-                <span class="font-semibold">الدفع عند الاستلام</span>
+                <span class="font-semibold">{{  order_data?.payment_method_f  }}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-600">إجمالي الطلب:</span>
-                <span class="font-semibold text-primary">{{ totalAmount }} د.أ</span>
+                <span class="font-semibold text-primary">{{ order_data?.total_before_promo }} د.أ</span>
               </div>
             </div>
           </div>
@@ -88,7 +88,7 @@ const router = useRouter()
 const orderNumber = ref('')
 const orderDate = ref('')
 const totalAmount = ref('0.00')
-
+const order_data = ref(JSON.parse(localStorage.getItem('order_data') || '{}') )
 onMounted(() => {
   // Generate random order number
   orderNumber.value = Math.random().toString(36).substr(2, 8).toUpperCase()

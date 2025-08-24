@@ -20,16 +20,16 @@
         <template v-if="cart.length">
           <div v-for="item in cart" :key="item._key" class="mb-4 border-b pb-2">
             <div class="flex items-center justify-between mb-1">
-              <div class="font-semibold">{{ item.product.name }}</div>
+              <div class="font-semibold">{{ item.service_title }}</div>
               <div class="flex items-center gap-2">
                 <button @click="increase(item._key)" class="bg-gray-200 rounded px-2">+</button>
-                <span class="mx-1">{{ item.quantity }}</span>
+                <span class="mx-1">{{ item.count }}</span>
                 <button @click="decrease(item._key)" class="bg-gray-200 rounded px-2">-</button>
               </div>
             </div>
-            <div v-if="item.addOns.length" class="text-xs text-gray-500 mb-1">إضافات: {{ item.addOns.map(a => a.name).join('، ') }}</div>
+            <div v-if="item.options.length" class="text-xs text-gray-500 mb-1">إضافات: {{ item.options.map(a => a.title).join('، ') }}</div>
             <div class="flex items-center justify-between">
-              <div class="text-sm font-bold text-primary">{{ (item.total * item.quantity).toFixed(2) }} د.أ</div>
+              <div class="text-sm font-bold text-primary">{{ item.total }} د.أ</div>
               <button 
                 @click="editAddOns(item)" 
                 class="text-primary hover:text-primary-dark text-xs flex items-center gap-1"
@@ -64,10 +64,11 @@ import { inject, ref } from 'vue'
 import EditAddOnsModal from './EditAddOnsModal.vue'
 
 const props = defineProps({
-  open: { type: Boolean, default: false }
+  open: { type: Boolean, default: false },
 })
 const emit = defineEmits(['close'])
 const cart = inject('cart')
+console.log(props.payload, 'dsdsds ')
 const increase = inject('increaseCartItem')
 const decrease = inject('decreaseCartItem')
 

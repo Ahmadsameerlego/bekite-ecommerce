@@ -1,264 +1,266 @@
 {
-  "nav": {
-    "home": "Home",
-    "login": "Login",
-    "register": "Register",
-    "profile": "Profile",
-    "cart": "Cart",
-    "checkout": "Checkout",
-    "contact": "Contact",
-    "privacy": "Privacy Policy",
-    "terms": "Terms & Conditions"
-  },
-  "header": {
-    "storeName": "🍔 FoodStore",
-    "profile": "Profile"
-  },
-  "hero": {
-    "searchPlaceholder": "Search for your favorite food...",
-    "locationPlaceholder": "Enter delivery address...",
-    "currentLocation": "My Current Location",
-    "currentLocationShort": "My Location",
-    "searchButton": "Search for Food",
-    "locationModal": {
-      "title": "Choose Delivery Location",
-      "mapPlaceholder": "Google Maps",
-      "mapDescription": "Google Maps API key will be added",
-      "searchPlaceholder": "Search for address...",
-      "confirmLocation": "Confirm Location",
-      "cancel": "Cancel"
+    "nav": {
+        "home": "Home",
+        "login": "Login",
+        "register": "Register",
+        "profile": "Profile",
+        "cart": "Cart",
+        "checkout": "Checkout",
+        "contact": "Contact",
+        "privacy": "Privacy Policy",
+        "terms": "Terms & Conditions"
     },
-    "categories": {
-      "burger": "🍔 Burgers",
-      "pizza": "🍕 Pizza",
-      "salads": "🥗 Salads",
-      "desserts": "🍰 Desserts",
-      "drinks": "☕ Drinks"
+    "header": {
+        "storeName": "🍔 FoodStore",
+        "profile": "Profile"
+    },
+    "hero": {
+        "searchPlaceholder": "Search for your favorite food...",
+        "locationPlaceholder": "Enter delivery address...",
+        "currentLocation": "My Current Location",
+        "currentLocationShort": "My Location",
+        "searchButton": "Search for Food",
+        "locationModal": {
+            "title": "Choose Delivery Location",
+            "mapPlaceholder": "Google Maps",
+            "mapDescription": "Google Maps API key will be added",
+            "searchPlaceholder": "Search for address...",
+            "confirmLocation": "Confirm Location",
+            "cancel": "Cancel"
+        },
+        "categories": {
+            "burger": "🍔 Burgers",
+            "pizza": "🍕 Pizza",
+            "salads": "🥗 Salads",
+            "desserts": "🍰 Desserts",
+            "drinks": "☕ Drinks"
+        }
+    },
+    "home": {
+        "menu": {
+            "title": "Menu",
+            "subtitle": "Discover a variety of delicious dishes"
+        },
+        "offers": {
+            "title": "Offers & Discounts",
+            "subtitle": "Get the best prices"
+        },
+        "whyChooseUs": {
+            "title": "Why Choose Us?",
+            "subtitle": "We provide you with the best food experience",
+            "fastDelivery": {
+                "title": "Fast Delivery",
+                "description": "Within 30 minutes or less"
+            },
+            "freshFood": {
+                "title": "Fresh Food",
+                "description": "Fresh ingredients daily"
+            },
+            "highQuality": {
+                "title": "High Quality",
+                "description": "Highest quality standards"
+            }
+        }
+    },
+    "product": {
+        "addToCart": "Add to Cart",
+        "basePrice": "Base Price",
+        "addOns": "Add-ons",
+        "total": "Total",
+        "currency": "SAR"
+    },
+    "cart": {
+        "empty": "Your cart is empty",
+        "goToHome": "Go to Home",
+        "checkout": "Checkout",
+        "total": "Total",
+        "remove": "Remove",
+        "quantity": "Quantity"
+    },
+    "login": {
+        "title": "Login",
+        "subtitle": "Welcome back",
+        "phone": "Phone Number",
+        "phonePlaceholder": "e.g. 0501234567",
+        "password": "Password",
+        "passwordPlaceholder": "Enter your password",
+        "rememberMe": "Remember me",
+        "forgotPassword": "Forgot password?",
+        "login": "Login",
+        "loggingIn": "Logging in...",
+        "or": "or",
+        "facebook": "Login with Facebook",
+        "google": "Login with Google",
+        "noAccount": "Don't have an account?",
+        "register": "Register"
+    },
+    "register": {
+        "title": "Register",
+        "subtitle": "Join us today",
+        "fullName": "Full Name",
+        "fullNamePlaceholder": "Enter your full name",
+        "phone": "Phone Number",
+        "phonePlaceholder": "e.g. 0501234567",
+        "email": "Email",
+        "emailPlaceholder": "Enter your email",
+        "password": "Password",
+        "passwordPlaceholder": "Enter your password",
+        "confirmPassword": "Confirm Password",
+        "confirmPasswordPlaceholder": "Re-enter your password",
+        "acceptTerms": "I agree to the",
+        "terms": "Terms & Conditions",
+        "and": "and",
+        "privacy": "Privacy Policy",
+        "register": "Register",
+        "creating": "Creating account...",
+        "or": "or",
+        "facebook": "Register with Facebook",
+        "google": "Register with Google",
+        "haveAccount": "Already have an account?",
+        "login": "Login",
+        "address": "Address",
+        "addressPlaceholder": "Enter your address (Optional)"
+    },
+    "checkout": {
+        "title": "Checkout",
+        "deliveryInfo": {
+            "title": "Delivery Information",
+            "name": "Full Name",
+            "phone": "Phone Number",
+            "address": "Address",
+            "apartment": "Apartment Number (Optional)",
+            "floor": "Floor Number (Optional)"
+        },
+        "deliveryMethod": {
+            "title": "Delivery Method",
+            "branch": "Pickup from Branch",
+            "delivery": "Delivery Driver",
+            "shipping": "Shipping Company"
+        },
+        "paymentMethod": {
+            "title": "Payment Method",
+            "cash": "Cash on Delivery",
+            "online": "Online Payment",
+            "click": "Click"
+        },
+        "orderSummary": {
+            "title": "Order Summary",
+            "deliveryFee": "Delivery Fee",
+            "subtotal": "Subtotal",
+            "total": "Total"
+        },
+        "actions": {
+            "confirmOrder": "Confirm Order",
+            "backToCart": "Back to Cart"
+        }
+    },
+    "thankYou": {
+        "title": "Thank You!",
+        "subtitle": "Your order has been received successfully",
+        "orderDetails": "Order Details",
+        "orderNumber": "Order Number",
+        "orderDate": "Order Date",
+        "paymentMethod": "Payment Method",
+        "totalAmount": "Total Amount",
+        "actions": {
+            "backToHome": "Back to Home",
+            "trackOrder": "Track Your Order"
+        }
+    },
+    "profile": {
+        "title": "Profile",
+        "tabs": {
+            "personalData": "Personal Data",
+            "orders": "My Orders"
+        },
+        "personalData": {
+            "title": "Personal Data",
+            "name": "Full Name",
+            "phone": "Phone Number",
+            "email": "Email Address",
+            "address": "Address",
+            "saveChanges": "Save Changes"
+        },
+        "orders": {
+            "title": "My Orders",
+            "orderNumber": "Order Number",
+            "orderDate": "Order Date",
+            "total": "Total Amount",
+            "status": "Status",
+            "trackOrder": "Track Order",
+            "statuses": {
+                "pending": "Pending",
+                "confirmed": "Confirmed",
+                "inProgress": "In Progress",
+                "inTransit": "In Transit",
+                "delivered": "Delivered",
+                "cancelled": "Cancelled"
+            }
+        }
+    },
+    "contact": {
+        "title": "Contact Us",
+        "subtitle": "We are here to help you with any inquiry",
+        "form": {
+            "title": "Send us a Message",
+            "firstName": "First Name",
+            "lastName": "Last Name",
+            "email": "Email Address",
+            "phone": "Phone Number",
+            "subject": "Subject",
+            "subjectPlaceholder": "Choose Subject",
+            "subjects": {
+                "general": "General Inquiry",
+                "order": "Order Issue",
+                "delivery": "Delivery Issue",
+                "payment": "Payment Issue",
+                "suggestion": "Suggestion",
+                "complaint": "Complaint"
+            },
+            "message": "Message",
+            "messagePlaceholder": "Write your message here...",
+            "sendMessage": "Send Message"
+        },
+        "info": {
+            "title": "Contact Information",
+            "phone": "Phone",
+            "email": "Email",
+            "address": "Address",
+            "addressValue": "King Fahd Street, Riyadh, Saudi Arabia"
+        },
+        "hours": {
+            "title": "Business Hours",
+            "weekdays": "Sunday - Thursday",
+            "friday": "Friday",
+            "saturday": "Saturday",
+            "weekdaysHours": "8:00 AM - 10:00 PM",
+            "fridayHours": "2:00 PM - 11:00 PM",
+            "saturdayHours": "9:00 AM - 11:00 PM"
+        }
+    },
+    "footer": {
+        "copyright": "© 2025 Be-Kite. All rights reserved. Created by Be-Kite"
+    },
+    "common": {
+        "loading": "Loading...",
+        "error": "An error occurred",
+        "success": "Success",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "save": "Save",
+        "edit": "Edit",
+        "delete": "Delete",
+        "close": "Close",
+        "back": "Back",
+        "next": "Next",
+        "previous": "Previous",
+        "search": "Search",
+        "filter": "Filter",
+        "sort": "Sort",
+        "view": "View",
+        "add": "Add",
+        "remove": "Remove",
+        "update": "Update",
+        "submit": "Submit"
     }
-  },
-  "home": {
-    "menu": {
-      "title": "Menu",
-      "subtitle": "Discover a variety of delicious dishes"
-    },
-    "offers": {
-      "title": "Offers & Discounts",
-      "subtitle": "Get the best prices"
-    },
-    "whyChooseUs": {
-      "title": "Why Choose Us?",
-      "subtitle": "We provide you with the best food experience",
-      "fastDelivery": {
-        "title": "Fast Delivery",
-        "description": "Within 30 minutes or less"
-      },
-      "freshFood": {
-        "title": "Fresh Food",
-        "description": "Fresh ingredients daily"
-      },
-      "highQuality": {
-        "title": "High Quality",
-        "description": "Highest quality standards"
-      }
-    }
-  },
-  "product": {
-    "addToCart": "Add to Cart",
-    "basePrice": "Base Price",
-    "addOns": "Add-ons",
-    "total": "Total",
-    "currency": "SAR"
-  },
-  "cart": {
-    "empty": "Your cart is empty",
-    "goToHome": "Go to Home",
-    "checkout": "Checkout",
-    "total": "Total",
-    "remove": "Remove",
-    "quantity": "Quantity"
-  },
-  "login": {
-    "title": "Login",
-    "subtitle": "Welcome back",
-    "phone": "Phone Number",
-    "phonePlaceholder": "e.g. 0501234567",
-    "password": "Password",
-    "passwordPlaceholder": "Enter your password",
-    "rememberMe": "Remember me",
-    "forgotPassword": "Forgot password?",
-    "login": "Login",
-    "loggingIn": "Logging in...",
-    "or": "or",
-    "facebook": "Login with Facebook",
-    "google": "Login with Google",
-    "noAccount": "Don't have an account?",
-    "register": "Register"
-  },
-  "register": {
-    "title": "Register",
-    "subtitle": "Join us today",
-    "fullName": "Full Name",
-    "fullNamePlaceholder": "Enter your full name",
-    "phone": "Phone Number",
-    "phonePlaceholder": "e.g. 0501234567",
-    "email": "Email",
-    "emailPlaceholder": "Enter your email",
-    "password": "Password",
-    "passwordPlaceholder": "Enter your password",
-    "confirmPassword": "Confirm Password",
-    "confirmPasswordPlaceholder": "Re-enter your password",
-    "acceptTerms": "I agree to the",
-    "terms": "Terms & Conditions",
-    "and": "and",
-    "privacy": "Privacy Policy",
-    "register": "Register",
-    "creating": "Creating account...",
-    "or": "or",
-    "facebook": "Register with Facebook",
-    "google": "Register with Google",
-    "haveAccount": "Already have an account?",
-    "login": "Login"
-  },
-  "checkout": {
-    "title": "Checkout",
-    "deliveryInfo": {
-      "title": "Delivery Information",
-      "name": "Full Name",
-      "phone": "Phone Number",
-      "address": "Address",
-      "apartment": "Apartment Number (Optional)",
-      "floor": "Floor Number (Optional)"
-    },
-    "deliveryMethod": {
-      "title": "Delivery Method",
-      "branch": "Pickup from Branch",
-      "delivery": "Delivery Driver",
-      "shipping": "Shipping Company"
-    },
-    "paymentMethod": {
-      "title": "Payment Method",
-      "cash": "Cash on Delivery",
-      "online": "Online Payment",
-      "click": "Click"
-    },
-    "orderSummary": {
-      "title": "Order Summary",
-      "deliveryFee": "Delivery Fee",
-      "subtotal": "Subtotal",
-      "total": "Total"
-    },
-    "actions": {
-      "confirmOrder": "Confirm Order",
-      "backToCart": "Back to Cart"
-    }
-  },
-  "thankYou": {
-    "title": "Thank You!",
-    "subtitle": "Your order has been received successfully",
-    "orderDetails": "Order Details",
-    "orderNumber": "Order Number",
-    "orderDate": "Order Date",
-    "paymentMethod": "Payment Method",
-    "totalAmount": "Total Amount",
-    "actions": {
-      "backToHome": "Back to Home",
-      "trackOrder": "Track Your Order"
-    }
-  },
-  "profile": {
-    "title": "Profile",
-    "tabs": {
-      "personalData": "Personal Data",
-      "orders": "My Orders"
-    },
-    "personalData": {
-      "title": "Personal Data",
-      "name": "Full Name",
-      "phone": "Phone Number",
-      "email": "Email Address",
-      "address": "Address",
-      "saveChanges": "Save Changes"
-    },
-    "orders": {
-      "title": "My Orders",
-      "orderNumber": "Order Number",
-      "orderDate": "Order Date",
-      "total": "Total Amount",
-      "status": "Status",
-      "trackOrder": "Track Order",
-      "statuses": {
-        "pending": "Pending",
-        "confirmed": "Confirmed",
-        "inProgress": "In Progress",
-        "inTransit": "In Transit",
-        "delivered": "Delivered",
-        "cancelled": "Cancelled"
-      }
-    }
-  },
-  "contact": {
-    "title": "Contact Us",
-    "subtitle": "We are here to help you with any inquiry",
-    "form": {
-      "title": "Send us a Message",
-      "firstName": "First Name",
-      "lastName": "Last Name",
-      "email": "Email Address",
-      "phone": "Phone Number",
-      "subject": "Subject",
-      "subjectPlaceholder": "Choose Subject",
-      "subjects": {
-        "general": "General Inquiry",
-        "order": "Order Issue",
-        "delivery": "Delivery Issue",
-        "payment": "Payment Issue",
-        "suggestion": "Suggestion",
-        "complaint": "Complaint"
-      },
-      "message": "Message",
-      "messagePlaceholder": "Write your message here...",
-      "sendMessage": "Send Message"
-    },
-    "info": {
-      "title": "Contact Information",
-      "phone": "Phone",
-      "email": "Email",
-      "address": "Address",
-      "addressValue": "King Fahd Street, Riyadh, Saudi Arabia"
-    },
-    "hours": {
-      "title": "Business Hours",
-      "weekdays": "Sunday - Thursday",
-      "friday": "Friday",
-      "saturday": "Saturday",
-      "weekdaysHours": "8:00 AM - 10:00 PM",
-      "fridayHours": "2:00 PM - 11:00 PM",
-      "saturdayHours": "9:00 AM - 11:00 PM"
-    }
-  },
-  "footer": {
-    "copyright": "© 2025 Be-Kite. All rights reserved. Created by Be-Kite"
-  },
-  "common": {
-    "loading": "Loading...",
-    "error": "An error occurred",
-    "success": "Success",
-    "cancel": "Cancel",
-    "confirm": "Confirm",
-    "save": "Save",
-    "edit": "Edit",
-    "delete": "Delete",
-    "close": "Close",
-    "back": "Back",
-    "next": "Next",
-    "previous": "Previous",
-    "search": "Search",
-    "filter": "Filter",
-    "sort": "Sort",
-    "view": "View",
-    "add": "Add",
-    "remove": "Remove",
-    "update": "Update",
-    "submit": "Submit"
-  }
-} 
+}

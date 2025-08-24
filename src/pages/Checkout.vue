@@ -131,22 +131,22 @@
               ملخص الطلب
             </h2>
 
-            <div v-if="cart.length" class="space-y-4">
-              <div v-for="item in cart" :key="item._key" class="border-b border-gray-200 pb-4 last:border-b-0">
+            <div v-if="cart_data.length" class="space-y-4">
+              <div v-for="item in cart_data" :key="item._key" class="border-b border-gray-200 pb-4 last:border-b-0">
                 <div class="flex justify-between items-start mb-2">
                   <div>
-                    <h3 class="font-semibold text-lg">{{ item.product.name }}</h3>
-                    <div v-if="item.addOns.length" class="text-sm text-gray-500">
-                      إضافات: {{item.addOns.map(a => a.name).join('، ')}}
+                    <h3 class="font-semibold text-lg">{{ item.service_title }}</h3>
+                    <div v-if="item.options.length" class="text-sm text-gray-500">
+                      إضافات: {{item.options.map(a => a.title).join('، ')}}
                     </div>
                   </div>
                   <div class="text-left">
-                    <span class="font-bold text-lg">{{ (item.total * item.quantity).toFixed(2) }} د.أ</span>
+                    <span class="font-bold text-lg">{{ (item.total ).toFixed(2) }} د.أ</span>
                   </div>
                 </div>
-                <div class="flex justify-between text-sm text-gray-500">
-                  <span>{{ item.quantity }} × {{ item.total.toFixed(2) }} د.أ</span>
-                </div>
+                <!-- <div class="flex justify-between text-sm text-gray-500">
+                  <span>{{ item.count }} × {{ item.total.toFixed(2) }} د.أ</span>
+                </div> -->
               </div>
 
               <div class="border-t border-gray-200 pt-6 space-y-3">
@@ -187,7 +187,7 @@
 
           <!-- Actions -->
           <div class="space-y-4">
-            <button @click="submitOrder" :disabled="!cart.length || isSubmitting"
+            <button @click="submitOrder" :disabled="!cart_data.length || isSubmitting"
               class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 rounded-xl font-bold text-lg hover:from-orange-600 hover:to-red-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg">
               <span v-if="isSubmitting" class="flex items-center justify-center gap-2">
                 <svg class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
@@ -350,15 +350,168 @@
       </div>
     </div>
   </Transition>
+
+  <Toast 
+      v-if="toast.visible"
+      :message="toast.message"
+      :type="toast.type"
+      :visible="toast.visible"
+    />
 </template>
 
+
+
 <script setup>
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import Toast from '@/components/Toast.vue'
+import api from '@/api/http'
+
+const toast = ref({ visible: false, message: '', type: 'success' })
+
+const showToast = (msg, type = 'success') => {
+  toast.value = { visible: true, message: msg, type }
+  setTimeout(() => (toast.value.visible = false), 3000)
+}
+
+const router = useRouter()
+
+const cart_data = ref(JSON.parse(localStorage.getItem('cart_data') || '[]'))
+
+// Form data
+const form = ref({
+  name: '',
+  phone: '',
+  address: '',
+  apartment: '',
+  floor: '',
+  location: '',
+  deliveryMethod: 'delivery', // delivery | branch
+  paymentMethod: 'cash', // cash | transfer | online
+  coupon: ''
+})
+
+const errors = ref({})
+const isSubmitting = ref(false)
+const showMap = ref(false)
+
+const lat = ref(null)
+const lng = ref(null)
+
+const getCurrentLocation = () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        lat.value = position.coords.latitude
+        lng.value = position.coords.longitude
+        form.value.location = `موقعي الحالي (${lat.value.toFixed(4)}, ${lng.value.toFixed(4)})`
+      },
+      (error) => {
+        console.error('Error getting location:', error)
+        toast.error('فشل في تحديد موقعك الحالي')
+      }
+    )
+  } else {
+    toast.error('متصفحك لا يدعم تحديد الموقع')
+  }
+}
+
+// Delivery fee
+const deliveryFee = computed(() => {
+  switch (form.value.deliveryMethod) {
+    case 'branch': return 0
+    case 'delivery': return 2.0
+    default: return 2.0
+  }
+})
+
+const subtotal = computed(() => {
+  return cart_data.value.reduce((sum, item) => sum + item.total, 0)
+})
+
+const totalPrice = computed(() => {
+  return subtotal.value + deliveryFee.value
+})
+
+// Validation
+function validateForm() {
+  errors.value = {}
+
+  if (!form.value.name.trim()) {
+    errors.value.name = 'الاسم مطلوب'
+  }
+  if (!form.value.phone.trim()) {
+    errors.value.phone = 'رقم الهاتف مطلوب'
+  }
+  if (!form.value.address.trim()) {
+    errors.value.address = 'العنوان مطلوب'
+  }
+  if (!form.value.location.trim()) {
+    errors.value.location = 'موقع التوصيل مطلوب'
+  }
+
+  return Object.keys(errors.value).length === 0
+}
+
+// Submit order
+async function submitOrder() {
+  if (!validateForm()) {
+    return
+  }
+
+  if (!cart_data.value.length) {
+    toast.error('السلة فارغة')
+    return
+  }
+
+  const user = JSON.parse(localStorage.getItem('user') || '{}')
+
+  const body = {
+    lang: 'ar',
+    user_id: user.id,
+    type: form.value.deliveryMethod === 'branch' ? 'pickup' : 'delivery',
+    lat: lat.value,
+    lng: lng.value,
+    name: form.value.name,
+    phone: form.value.phone,
+    address: form.value.address,
+    apartment_number: form.value.apartment,
+    floor_number: form.value.floor,
+    sub_total: subtotal.value,
+    delivery: deliveryFee.value,
+    total_before_promo: subtotal.value + deliveryFee.value,
+    total_after_promo: subtotal.value + deliveryFee.value, // هتعدلها لو فيه خصم
+    payment_method: form.value.paymentMethod,
+    promo_code: form.value.coupon || ''
+  }
+
+  try {
+    isSubmitting.value = true
+    const response = await api.post('/api/store-order', body)
+
+    showToast(response.data?.msg || 'تم تأكيد الطلب بنجاح' , 'success')
+    localStorage.removeItem('cart_data');
+    localStorage.setItem('order_data', JSON.stringify(response.data?.data || {}));
+    setTimeout(() => {
+      router.push('/thank-you')
+    }, 1000);
+  } catch (error) {
+    console.error('Checkout error:', error)
+    showToast(error.response?.data?.msg || 'فشل في تأكيد الطلب', 'error')
+  } finally {
+    isSubmitting.value = false
+  }
+}
+</script>
+
+
+<!-- <script setup>
 import { ref, computed, inject } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const cart = inject('cart')
-
+// const cart = inject('cart')
+const cart_data = ref(JSON.parse(localStorage.getItem('cart_data') || '[]'))
 // Form data
 const form = ref({
   name: '',
@@ -406,7 +559,7 @@ const deliveryFee = computed(() => {
 
 // Computed values
 const subtotal = computed(() => {
-  return cart.value.reduce((sum, item) => sum + (item.total * item.quantity), 0)
+  return cart_data.value.reduce((sum, item) => sum + (item.total ), 0)
 })
 
 const totalPrice = computed(() => {
@@ -455,4 +608,4 @@ function submitOrder() {
     router.push('/thank-you')
   }, 2000)
 }
-</script>
+</script> -->

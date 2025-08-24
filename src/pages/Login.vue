@@ -24,7 +24,10 @@
               :placeholder="$t('login.phonePlaceholder')"
               class="w-full pr-10 pl-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
               :class="{ 'border-red-500': errors.phone }"
-              required 
+                @input="form.phone = form.phone.replace(/\D/g, '')"
+              style="direction: rtl;"
+
+               
             />
           </div>
           <p v-if="errors.phone" class="text-red-500 text-sm mt-1">{{ errors.phone }}</p>
@@ -45,7 +48,7 @@
               :placeholder="$t('login.passwordPlaceholder')"
               class="w-full pr-10 pl-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
               :class="{ 'border-red-500': errors.password }"
-              required 
+               
             />
             <button 
               type="button"
@@ -65,7 +68,7 @@
         </div>
 
         <!-- Remember Me & Forgot Password -->
-        <div class="flex items-center justify-between">
+        <!-- <div class="flex items-center justify-between">
           <label class="flex items-center">
             <input type="checkbox" v-model="form.rememberMe" class="w-4 h-4 text-primary focus:ring-primary border-gray-300 rounded">
             <span class="mr-2 text-sm text-gray-600">{{ $t('login.rememberMe') }}</span>
@@ -73,7 +76,7 @@
           <router-link to="/forgot-password" class="text-sm text-primary hover:text-primary-dark">
             {{ $t('login.forgotPassword') }}
           </router-link>
-        </div>
+        </div> -->
 
         <!-- Submit Button -->
         <button 
@@ -92,17 +95,17 @@
         </button>
 
         <!-- Divider -->
-        <div class="relative">
+        <!-- <div class="relative">
           <div class="absolute inset-0 flex items-center">
             <div class="w-full border-t border-gray-300"></div>
           </div>
           <div class="relative flex justify-center text-sm">
             <span class="px-2 bg-white text-gray-500">{{ $t('login.or') }}</span>
           </div>
-        </div>
+        </div> -->
 
         <!-- Social Login -->
-        <div class="space-y-3">
+        <!-- <div class="space-y-3">
           <button type="button" class="w-full flex items-center justify-center gap-3 bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition-all">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
               <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
@@ -116,7 +119,7 @@
             </svg>
             {{ $t('login.google') }}
           </button>
-        </div>
+        </div> -->
 
         <!-- Register Link -->
         <div class="text-center">
@@ -130,48 +133,77 @@
       </form>
     </div>
   </div>
+   <!-- Toast -->
+    <Toast 
+      v-if="toast.visible"
+      :message="toast.message"
+      :type="toast.type"
+      :visible="toast.visible"
+    />
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import Toast from '@/components/Toast.vue'
+import api from '@/api/http' // ← استدعاء ملف الـ axios
 
 const router = useRouter()
 
 const form = ref({
   phone: '',
-  password: '',
-  rememberMe: false
+  password: ''
 })
 
 const errors = ref({})
 const isLoading = ref(false)
 const showPassword = ref(false)
 
+// Toast state
+const toast = ref({
+  visible: false,
+  message: '',
+  type: 'success'
+})
+
+const showToast = (msg, type = 'success') => {
+  toast.value = { visible: true, message: msg, type }
+  setTimeout(() => (toast.value.visible = false), 3000)
+}
+
 const handleLogin = async () => {
   errors.value = {}
-  
-  // Validation
-  if (!form.value.phone.trim()) {
-    errors.value.phone = 'رقم الهاتف مطلوب'
-    return
-  }
-  
-  if (!form.value.password.trim()) {
-    errors.value.password = 'كلمة المرور مطلوبة'
-    return
-  }
-  
+
+  // Validation بسيطة
+  if (!form.value.phone.trim()) return errors.value.phone = 'رقم الهاتف مطلوب'
+  if (!form.value.password.trim()) return errors.value.password = 'كلمة المرور مطلوبة'
+
   isLoading.value = true
-  
+
   try {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    // Success - redirect to home
-    router.push('/')
+    const { data } = await api.post('/api/login', {
+      phone: form.value.phone,
+      password: form.value.password,
+      lang: 'ar',// لو الـ API محتاج لغة
+      user_type : 'client'
+    })
+
+    if (data.key === 1) {
+      // Success
+      localStorage.setItem('user', JSON.stringify(data.data))
+      localStorage.setItem('token', data.data.api_token)
+
+      showToast(data.msg, 'success')
+      setTimeout(() => {
+         router.push('/')
+      }, 1500)
+    } else {
+      // Fail
+      showToast(data.msg || 'حدث خطأ ما', 'error')
+    }
   } catch (error) {
     console.error('Login error:', error)
+    showToast('فشل الاتصال بالخادم', 'error')
   } finally {
     isLoading.value = false
   }

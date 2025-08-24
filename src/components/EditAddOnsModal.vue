@@ -12,12 +12,12 @@
         <!-- Header -->
         <div class="text-center mb-6">
           <h2 class="text-2xl font-bold text-gray-900 mb-2">تعديل الإضافات</h2>
-          <p class="text-gray-600">{{ item?.product?.name }}</p>
+          <p class="text-gray-600">{{ item?.service_title }}</p>
         </div>
         
         <!-- Product Image -->
         <div class="mb-6">
-          <img :src="item?.product?.image" :alt="item?.product?.name" class="w-full h-32 object-cover rounded-lg" />
+          <img :src="item?.service_image" :alt="item?.service_title" class="w-full h-32 object-cover rounded-lg" />
         </div>
         
         <!-- Add-ons Selection -->
@@ -38,11 +38,11 @@
                   class="w-4 h-4 text-primary focus:ring-primary border-gray-300 rounded"
                 />
                 <div>
-                  <div class="font-semibold text-gray-900">{{ addOn.name }}</div>
-                  <div class="text-sm text-gray-500">{{ addOn.description }}</div>
+                  <div class="font-semibold text-gray-900">{{ addOn.title }}</div>
+                  <!-- <div class="text-sm text-gray-500">{{ addOn.description }}</div> -->
                 </div>
               </div>
-              <div class="text-primary font-bold">+{{ addOn.price.toFixed(2) }} د.أ</div>
+              <div class="text-primary font-bold">+{{ addOn.price_with_value }} د.أ</div>
             </label>
           </div>
         </div>
@@ -51,7 +51,7 @@
         <div class="border-t pt-4 mb-6">
           <div class="flex justify-between items-center">
             <span class="text-lg font-semibold">السعر الإجمالي:</span>
-            <span class="text-2xl font-bold text-primary">{{ totalPrice.toFixed(2) }} د.أ</span>
+            <span class="text-2xl font-bold text-primary">{{ totalPrice }} د.أ</span>
           </div>
         </div>
         
@@ -89,14 +89,14 @@ const selectedAddOns = ref([])
 
 // Available add-ons (this would come from the product data)
 const availableAddOns = computed(() => {
-  return props.item?.product?.addOns || []
+  return props.item?.options || []
 })
 
 // Calculate total price
 const totalPrice = computed(() => {
-  let total = props.item?.product?.price || 0
+  let total = Number(props.item?.product?.price_with_value) || 0
   for (const addOn of selectedAddOns.value) {
-    total += addOn.price
+    total += Number(addOn.price_with_value) || 0
   }
   return total
 })

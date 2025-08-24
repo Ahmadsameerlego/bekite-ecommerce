@@ -24,7 +24,7 @@
               :placeholder="$t('register.fullNamePlaceholder')"
               class="w-full pr-10 pl-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
               :class="{ 'border-red-500': errors.fullName }"
-              required 
+               
             />
           </div>
           <p v-if="errors.fullName" class="text-red-500 text-sm mt-1">{{ errors.fullName }}</p>
@@ -45,7 +45,10 @@
               :placeholder="$t('register.phonePlaceholder')"
               class="w-full pr-10 pl-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
               :class="{ 'border-red-500': errors.phone }"
-              required 
+              style="direction: rtl;"
+                              @input="form.phone = form.phone.replace(/\D/g, '')"
+
+               
             />
           </div>
           <p v-if="errors.phone" class="text-red-500 text-sm mt-1">{{ errors.phone }}</p>
@@ -66,10 +69,26 @@
               :placeholder="$t('register.emailPlaceholder')"
               class="w-full pr-10 pl-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
               :class="{ 'border-red-500': errors.email }"
-              required 
+               
             />
           </div>
-          <p v-if="errors.email" class="text-red-500 text-sm mt-1">{{ errors.email }}</p>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">{{ $t('register.address') }} <span class="text-red-500 text-sm"> ({{ $t('register.optional') }})</span> </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+              <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <input 
+              v-model="form.address"
+              type="text" 
+              :placeholder="$t('register.addressPlaceholder')"
+              class="w-full pr-10 pl-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+               
+            />
+          </div>
         </div>
 
         <!-- Password -->
@@ -87,7 +106,7 @@
               :placeholder="$t('register.passwordPlaceholder')"
               class="w-full pr-10 pl-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
               :class="{ 'border-red-500': errors.password }"
-              required 
+               
             />
             <button 
               type="button"
@@ -121,7 +140,7 @@
               :placeholder="$t('register.confirmPasswordPlaceholder')"
               class="w-full pr-10 pl-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
               :class="{ 'border-red-500': errors.confirmPassword }"
-              required 
+               
             />
             <button 
               type="button"
@@ -178,17 +197,17 @@
         </button>
 
         <!-- Divider -->
-        <div class="relative">
+        <!-- <div class="relative">
           <div class="absolute inset-0 flex items-center">
             <div class="w-full border-t border-gray-300"></div>
           </div>
           <div class="relative flex justify-center text-sm">
             <span class="px-2 bg-white text-gray-500">{{ $t('register.or') }}</span>
           </div>
-        </div>
+        </div> -->
 
         <!-- Social Register -->
-        <div class="space-y-3">
+        <!-- <div class="space-y-3">
           <button type="button" class="w-full flex items-center justify-center gap-3 bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition-all">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
               <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
@@ -202,7 +221,7 @@
             </svg>
             {{ $t('register.google') }}
           </button>
-        </div>
+        </div> -->
 
         <!-- Login Link -->
         <div class="text-center">
@@ -216,11 +235,21 @@
       </form>
     </div>
   </div>
+
+  <!-- Toast -->
+    <Toast 
+      v-if="toast.visible"
+      :message="toast.message"
+      :type="toast.type"
+      :visible="toast.visible"
+    />
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import Toast from '@/components/Toast.vue'
+import api from '@/api/http' // ← استدعاء ملف الـ axios
 
 const router = useRouter()
 
@@ -229,8 +258,10 @@ const form = ref({
   phone: '',
   email: '',
   password: '',
+  address: '',
   confirmPassword: '',
-  acceptTerms: false
+  acceptTerms: false,
+  address: '' // عشان الـ API بتطلبها
 })
 
 const errors = ref({})
@@ -238,55 +269,58 @@ const isLoading = ref(false)
 const showPassword = ref(false)
 const showConfirmPassword = ref(false)
 
+// Toast state
+const toast = ref({
+  visible: false,
+  message: '',
+  type: 'success'
+})
+
+const showToast = (msg, type = 'success') => {
+  toast.value = { visible: true, message: msg, type }
+  setTimeout(() => (toast.value.visible = false), 3000)
+}
+
 const handleRegister = async () => {
   errors.value = {}
-  
-  // Validation
-  if (!form.value.fullName.trim()) {
-    errors.value.fullName = 'الاسم الكامل مطلوب'
-    return
-  }
-  
-  if (!form.value.phone.trim()) {
-    errors.value.phone = 'رقم الهاتف مطلوب'
-    return
-  }
-  
-  if (!form.value.email.trim()) {
-    errors.value.email = 'البريد الإلكتروني مطلوب'
-    return
-  }
-  
-  if (!form.value.password.trim()) {
-    errors.value.password = 'كلمة المرور مطلوبة'
-    return
-  }
-  
-  if (form.value.password.length < 6) {
-    errors.value.password = 'كلمة المرور يجب أن تكون 6 أحرف على الأقل'
-    return
-  }
-  
-  if (form.value.password !== form.value.confirmPassword) {
-    errors.value.confirmPassword = 'كلمة المرور غير متطابقة'
-    return
-  }
-  
-  if (!form.value.acceptTerms) {
-    errors.value.acceptTerms = 'يجب الموافقة على الشروط والأحكام'
-    return
-  }
-  
+
+  // Validation بسيطة
+  if (!form.value.fullName.trim()) return errors.value.fullName = 'الاسم الكامل مطلوب'
+  if (!form.value.phone.trim()) return errors.value.phone = 'رقم الهاتف مطلوب'
+  if (!form.value.password.trim()) return errors.value.password = 'كلمة المرور مطلوبة'
+  if (form.value.password.length < 6) return errors.value.password = 'كلمة المرور يجب أن تكون 6 أحرف على الأقل'
+  if (form.value.password !== form.value.confirmPassword) return errors.value.confirmPassword = 'كلمة المرور غير متطابقة'
+  if (!form.value.acceptTerms) return errors.value.acceptTerms = 'يجب الموافقة على الشروط والأحكام'
+
   isLoading.value = true
-  
+
   try {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    // Success - redirect to home
-    router.push('/')
+    const { data } = await api.post('/api/register', {
+      lang: 'ar',
+      user_type: 'client',
+      first_name: form.value.fullName,
+      phone: form.value.phone,
+      email: form.value.email || '',
+      address: form.value.address || '',
+      password: form.value.password
+    })
+
+    if (data.key === 1) {
+      // Success
+      localStorage.setItem('user', JSON.stringify(data.data))
+      localStorage.setItem('token', data.data.api_token)
+
+      showToast(data.msg, 'success')
+      setTimeout(() => {
+         router.push('/')
+      }, 1500);
+    } else {
+      // Fail
+      showToast(data.msg || 'حدث خطأ ما', 'error')
+    }
   } catch (error) {
     console.error('Register error:', error)
+    showToast('فشل الاتصال بالخادم', 'error')
   } finally {
     isLoading.value = false
   }

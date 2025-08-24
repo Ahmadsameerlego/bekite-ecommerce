@@ -20,10 +20,10 @@
               class="w-full h-full object-cover"
             />
             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-            <div class="absolute bottom-6 left-6 text-white">
+            <!-- <div class="absolute bottom-6 left-6 text-white">
               <h2 class="text-2xl md:text-3xl font-bold mb-2">Be-Kite</h2>
               <p class="text-lg opacity-90">نحلم بطعام أفضل للجميع</p>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -31,17 +31,13 @@
       <!-- Our Story -->
       <div class="max-w-4xl mx-auto mb-16">
         <div class="bg-white rounded-2xl shadow-lg p-8">
-          <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">قصتنا</h2>
+          <!-- <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">قصتنا</h2> -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div>
-              <p class="text-gray-700 text-lg leading-relaxed mb-6">
-                بدأت رحلتنا في عام 2020 عندما أدركنا أن هناك حاجة ملحة لتوصيل الطعام بطريقة أسرع وأكثر كفاءة. 
-                من خلال خبرتنا في مجال التكنولوجيا والطعام، قررنا إنشاء منصة تجمع بين أفضل المطاعم والعملاء.
+              <p class="text-gray-700 text-lg leading-relaxed mb-6" v-html="setting?.data?.desc">
+
               </p>
-              <p class="text-gray-700 text-lg leading-relaxed">
-                اليوم، أصبحنا أحد أهم منصات توصيل الطعام في المملكة العربية السعودية، 
-                حيث نخدم آلاف العملاء يومياً ونعمل مع مئات المطاعم المميزة.
-              </p>
+              
             </div>
             <div class="bg-gradient-to-br from-orange-100 to-red-100 rounded-xl p-6">
               <div class="text-center">
@@ -76,9 +72,8 @@
               </div>
               <h3 class="text-2xl font-bold text-gray-900 mb-4">مهمتنا</h3>
             </div>
-            <p class="text-gray-700 text-lg leading-relaxed text-center">
-              نسعى لتقديم أفضل تجربة طعام للمستخدمين من خلال ربطهم بأفضل المطاعم 
-              وتقديم خدمة توصيل سريعة وآمنة مع الحفاظ على جودة الطعام.
+            <p class="text-gray-700 text-lg leading-relaxed text-center" v-html="setting?.mission?.desc">
+             
             </p>
           </div>
 
@@ -92,9 +87,8 @@
               </div>
               <h3 class="text-2xl font-bold text-gray-900 mb-4">رؤيتنا</h3>
             </div>
-            <p class="text-gray-700 text-lg leading-relaxed text-center">
-              أن نكون المنصة الأولى في الشرق الأوسط لتوصيل الطعام، 
-              وأن نكون شريكاً موثوقاً للمطاعم والعملاء على حد سواء.
+            <p class="text-gray-700 text-lg leading-relaxed text-center" v-html="setting?.vision?.desc">
+            
             </p>
           </div>
         </div>
@@ -160,8 +154,33 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'About'
-}
-</script> 
+<script setup>
+import api from "@/api/http";
+import { onMounted, ref } from "vue";
+const user = JSON.parse(localStorage.getItem("user") || "{}");
+const setting = ref(null);
+// ✅ جلب بيانات المستخدم
+const getData = async () => {
+  
+  try {
+    const response = await api.post("/api/page", {
+      lang: "ar",
+      user_id: user.id,
+      title:'about'
+    });
+
+    if (response.data.key === 1) {
+      const data = response.data;
+      setting.value = data;
+      console.log("page data:", setting.value);
+    } else {
+    }
+  } catch (error) {
+    console.error("show-user error:", error);
+  } 
+};
+
+onMounted(() => {
+  getData();
+});
+</script>
