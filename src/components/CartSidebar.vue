@@ -49,7 +49,7 @@
       <div class="p-4 border-t">
         <router-link 
           to="/checkout" 
-          @click="$emit('close')"
+          @click="storeCart"
           class="block w-full bg-primary text-white py-2 rounded font-semibold hover:bg-primary-dark transition text-center"
         >
           إتمام الطلب
@@ -87,6 +87,9 @@ const updateItemAddOns = (updateData) => {
     cart.value[itemIndex].addOns = updateData.addOns
     cart.value[itemIndex].total = updateData.total
   }
+}
+const storeCart = ()=>{
+  localStorage.setItem('cart_data', JSON.stringify(cart.value));
 }
 </script>
 

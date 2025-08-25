@@ -67,67 +67,15 @@
     </div>
 
     <!-- Map Modal -->
-    <Transition name="fade-slide">
-      <div v-if="showMap" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-        <div class="bg-white rounded-3xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-          <div class="flex justify-between items-center mb-6">
-            <h3 class="text-xl font-bold text-gray-800">اختر موقع التوصيل</h3>
-            <button @click="showMap = false" class="text-gray-400 hover:text-gray-700 bg-white rounded-full p-2 shadow-md hover:shadow-lg transition-all">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
-            </button>
-          </div>
-          
-          <!-- Google Maps Placeholder -->
-          <div class="bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl h-64 mb-6 flex items-center justify-center border-2 border-dashed border-gray-300">
-            <div class="text-center">
-              <div class="text-6xl mb-4">🗺️</div>
-              <p class="text-gray-600 font-semibold text-lg">خريطة Google Maps</p>
-              <p class="text-sm text-gray-500 mt-2">سيتم إضافة مفتاح Google Maps API</p>
-            </div>
-          </div>
-          
-          <div class="space-y-4">
-            <input 
-              v-model="locationQuery"
-              type="text" 
-              placeholder="ابحث عن عنوان..."
-              class="w-full border-2 border-gray-200 rounded-2xl px-4 py-4 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-lg"
-            />
-            
-            <div class="space-y-3 max-h-48 overflow-y-auto">
-              <div v-for="suggestion in locationSuggestions" :key="suggestion.id" 
-                   @click="selectLocation(suggestion)"
-                   class="p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 transition-all hover:border-primary">
-                <div class="font-semibold text-gray-800">{{ suggestion.name }}</div>
-                <div class="text-sm text-gray-500">{{ suggestion.address }}</div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="flex gap-4 mt-6">
-            <button 
-              @click="confirmLocation"
-              class="flex-1 bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 rounded-2xl font-semibold hover:from-orange-600 hover:to-red-600 transition-all"
-            >
-              تأكيد الموقع
-            </button>
-            <button 
-              @click="showMap = false"
-              class="flex-1 bg-gray-200 text-gray-700 py-4 rounded-2xl font-semibold hover:bg-gray-300 transition-all"
-            >
-              إلغاء
-            </button>
-          </div>
-        </div>
-      </div>
-    </Transition>
+   
   </section>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+
+const emit = defineEmits(['search'])
+
 const props = defineProps({
   sliderData: {
     type: Array,
@@ -139,90 +87,25 @@ const props = defineProps({
   }
 })
 
-const images = [
-  'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80',
-  'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1200&q=80',
-  'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1200&q=80',
-]
-
 const current = ref(0)
 const searchQuery = ref('')
-const locationQuery = ref('')
-const showMap = ref(false)
-const selectedLocation = ref(null)
-
-// Quick categories for search
-const quickCategories = ref([
-  { id: 1, name: '🍔 البرجر', key: 'burger' },
-  { id: 2, name: '🍕 البيتزا', key: 'pizza' },
-  { id: 3, name: '🥗 السلطات', key: 'salads' },
-  { id: 4, name: '🍰 الحلويات', key: 'desserts' },
-  { id: 5, name: '☕ المشروبات', key: 'drinks' }
-])
-
-// Mock location suggestions
-const locationSuggestions = ref([
-  { id: 1, name: 'وسط البلد', address: 'عمان، وسط البلد، الأردن' },
-  { id: 2, name: 'الصويفية', address: 'عمان، الصويفية، الأردن' },
-  { id: 3, name: 'الزرقاء', address: 'الزرقاء، الأردن' },
-  { id: 4, name: 'إربد', address: 'إربد، الأردن' }
-])
 
 let interval = null
 
 onMounted(() => {
-  setTimeout(() => {
-    if (props.sliderData&&props.sliderData.length) {
-    current.value = (current.value + 1) % props.sliderData.length
-
+  if (props.sliderData && props.sliderData.length) {
     interval = setInterval(() => {
       current.value = (current.value + 1) % props.sliderData.length
     }, 5000)
   }
-  }, 1000);
 })
-
 
 onUnmounted(() => {
   clearInterval(interval)
 })
 
-function getCurrentLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords
-        // Here you would reverse geocode the coordinates
-        locationQuery.value = `خط العرض: ${latitude}, خط الطول: ${longitude}`
-        showMap.value = true
-      },
-      (error) => {
-        console.error('Error getting location:', error)
-        alert('تعذر تحديد موقعك الحالي')
-      }
-    )
-  } else {
-    alert('متصفحك لا يدعم تحديد الموقع')
-  }
-}
-
-function selectLocation(location) {
-  selectedLocation.value = location
-  locationQuery.value = location.name
-}
-
-function confirmLocation() {
-  if (selectedLocation.value) {
-    // Emit the selected location
-    // You can add emit here if needed
-    showMap.value = false
-  }
-}
-
 function performSearch() {
-  // Emit search event with query and location
-  console.log('Searching for:', searchQuery.value, 'at location:', locationQuery.value)
-  // You can add emit here if needed
+  emit('search', searchQuery.value)
 }
 
 function searchByCategory(categoryName) {
@@ -230,6 +113,7 @@ function searchByCategory(categoryName) {
   performSearch()
 }
 </script>
+
 
 <style scoped>
 .fade-slide-enter-active, .fade-slide-leave-active {

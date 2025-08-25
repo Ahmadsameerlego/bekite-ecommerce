@@ -1,6 +1,35 @@
 <template>
   <div class="bg-gradient-to-br from-orange-50 via-red-50 to-yellow-50">
-    <HeroSection :sliderData="homeData?.data?.sliders" :sections="homeData?.data?.sections" />
+    <HeroSection :sliderData="homeData?.data?.sliders" :sections="homeData?.data?.sections"    @search="handleSearch"  />
+<div v-if="searchResults" class="container mx-auto px-4 py-8">
+  <h2 class="text-center text-4xl font-bold mb-4 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">نتائج البحث</h2>
+
+  <div v-if="searchResults.sections.length">
+    <h3 class="text-xl font-semibold mb-2">الأقسام</h3>
+    <ul class="mb-6">
+      <li v-for="sec in searchResults.sections" :key="sec.id" class="mb-2">
+        {{ sec.title }}
+      </li>
+    </ul>
+  </div>
+
+  <div v-if="searchResults.services.length">
+    <h3 class="text-xl font-semibold mb-2">الخدمات</h3>
+    <div class="flex gap-6 overflow-x-auto">
+      <ProductCard
+        v-for="product in searchResults.services"
+        :key="product.id"
+        :product="product"
+        @click="openProduct(product)"
+        rtl
+      />
+    </div>
+  </div>
+
+  <div v-if="!searchResults.sections.length && !searchResults.services.length">
+    <p class="text-red-600 text-lg">لا توجد نتائج مطابقة !</p>
+  </div>
+</div>
 
     <!-- Menu Section -->
     <div class="container mx-auto px-4 py-12">
@@ -51,7 +80,7 @@
           <div class="w-24 h-1 bg-gradient-to-r from-orange-500 to-red-500 mx-auto rounded-full"></div>
         </div>
         <div class="overflow-x-auto pb-4">
-          <div class="flex gap-6" :class="sliderClass">
+          <div v-if="productsByCategory(cat).length" class="flex gap-6" :class="sliderClass">
             <ProductCard
               v-for="product in productsByCategory(cat)"
               :key="product.id"
@@ -59,6 +88,9 @@
               @click="openProduct(product)"
               rtl
             />
+          </div>
+          <div v-else>
+            <p class="text-red-600 text-center text-2xl">لا توجد منتجات في هذا القسم !</p>
           </div>
         </div>
       </div>
@@ -179,6 +211,27 @@ const getData = async () => {
     console.error('Error fetching data:', error)
   }
 } 
+
+const searchResults = ref(null)
+
+function handleSearch(query) {
+  if (!query) {
+    searchResults.value = null
+    return
+  }
+
+  const services = homeData.value?.data?.services.filter(s =>
+    s.title?.toLowerCase().includes(query.toLowerCase())
+  )
+
+  const sections = homeData.value?.data?.sections.filter(sec =>
+    sec.title?.toLowerCase().includes(query.toLowerCase())
+  )
+
+  searchResults.value = { services, sections }
+}
+
+
 onMounted(() => {
    getData()
 });

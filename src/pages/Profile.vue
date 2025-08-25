@@ -187,32 +187,30 @@
                 >الموقع علي الخريطه</label
               >
 
-              
-<div class="space-y-3 max-h-64 overflow-y-auto">
-        <div
-          v-for="item in addresses"
-          :key="item.id"
-          @click="openMap(item)"
-          class="p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 transition-all hover:border-primary"
-        >
-          <div class="font-semibold text-gray-800">
-            {{ item.title }}
-          </div>
-          <div class="text-sm text-gray-500">
-            {{ item.address || (item.lat + ', ' + item.lng) }}
-          </div>
-        </div>
-      </div>
-    </div>
+              <div class="space-y-3 max-h-64 overflow-y-auto">
+                <div
+                  v-for="item in addresses"
+                  :key="item.id"
+                  @click="openMap(item)"
+                  class="p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 transition-all hover:border-primary bg-white"
+                >
+                  <div class="font-semibold text-gray-800">
+                    {{ item.title }}
+                  </div>
+                  <div class="text-sm text-gray-500">
+                    {{ item.address || item.lat + ", " + item.lng }}
+                  </div>
+                </div>
+              </div>
+            </div>
 
-    <!-- زرار اضافة عنوان -->
-    <button
-      @click="openMap()"
-      class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 rounded-xl font-bold text-lg hover:from-orange-600 hover:to-red-600 transition-all shadow-lg"
-    >
-      إضافة عنوان
-    </button>
-          
+            <!-- زرار اضافة عنوان -->
+            <button
+              @click="openMap()"
+              class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 rounded-xl font-bold text-lg hover:from-orange-600 hover:to-red-600 transition-all shadow-lg"
+            >
+              إضافة عنوان
+            </button>
           </form>
         </div>
       </div>
@@ -407,42 +405,42 @@ const center = ref({ lat: 31.963158, lng: 35.930359 }); // عمان by default
 const marker = ref(null);
 const selectedAddress = ref("");
 const activeTab = ref("profile");
-const editingAddress = ref(null)
-const isEditing = ref(false)
+const editingAddress = ref(null);
+const isEditing = ref(false);
 // فتح الماب (لإضافة أو تعديل)
 const openMap = (address = null) => {
-  editingAddress.value = address
+  editingAddress.value = address;
   if (address) {
-    center.value = { lat: address.lat, lng: address.lng }
-    marker.value = { ...center.value }
-    selectedAddress.value = address.address ;
-    isEditing.value = true
+    center.value = { lat: address.lat, lng: address.lng };
+    marker.value = { ...center.value };
+    selectedAddress.value = address.address;
+    isEditing.value = true;
   } else {
     // لو إضافة جديدة -> حاول تجيب اللوكيشن الحالي
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        pos => {
+        (pos) => {
           center.value = {
             lat: pos.coords.latitude,
             lng: pos.coords.longitude,
-          }
-          marker.value = { ...center.value }
+          };
+          marker.value = { ...center.value };
         },
         () => {
-          center.value = { lat: 31.963158, lng: 35.930359 } // fallback
+          center.value = { lat: 31.963158, lng: 35.930359 }; // fallback
         }
-      )
+      );
     }
-    marker.value = null
-    selectedAddress.value = ''
-    isEditing.value = false
+    marker.value = null;
+    selectedAddress.value = "";
+    isEditing.value = false;
   }
-  
-  showMap.value = true
+
+  showMap.value = true;
 
   // لازم نستنى لما الماب تتعمل render قبل ما نحط searchBox
-  nextTick(() => initSearchBox())
-}
+  nextTick(() => initSearchBox());
+};
 
 // Location functions
 const getCurrentLocation = () => {
@@ -536,7 +534,7 @@ const getOrders = async () => {
   }
 };
 
-const addresses = ref([]);  
+const addresses = ref([]);
 // ✅ جلب بيانات المستخدم
 const getAddresses = async () => {
   if (!user?.id) {
@@ -564,7 +562,6 @@ const getAddresses = async () => {
     isLoading.value = false;
   }
 };
-
 
 // ✅ تحديث بيانات المستخدم
 const updateProfile = async () => {
@@ -708,51 +705,48 @@ onMounted(() => {
   });
 });
 
-
 // تأكيد وحفظ العنوان
 const confirmLocation = async () => {
   if (!marker.value) {
-    showToast('اختر موقعك أولاً', 'error')
-    return
+    showToast("اختر موقعك أولاً", "error");
+    return;
   }
 
   try {
-    const response = await api.post('/api/store-address', {
-      lang: 'ar',
+    const response = await api.post("/api/store-address", {
+      lang: "ar",
       user_id: user.id,
       title: searchBox.value,
       address: selectedAddress.value,
       lat: marker.value.lat,
       lng: marker.value.lng,
-    })
+    });
 
     if (response.data.key === 1) {
-      showToast('تم حفظ العنوان بنجاح', 'success')
-      showMap.value = false ;
-      getAddresses()
+      showToast("تم حفظ العنوان بنجاح", "success");
+      showMap.value = false;
+      getAddresses();
     } else {
-      showToast(response.data.msg || 'خطأ في الحفظ', 'error')
+      showToast(response.data.msg || "خطأ في الحفظ", "error");
     }
   } catch (err) {
-    console.error(err)
-    showToast('فشل الاتصال بالخادم', 'error')
+    console.error(err);
+    showToast("فشل الاتصال بالخادم", "error");
   }
-}
-
+};
 </script>
 
 
 
 
 <style>
-.pac-target-input{
-      position: absolute;
-    top: 16%;
-    z-index: 9999;
-    right: 32%;
-    border: 1px solid #ccc;
-    width: 36% !important;
-    height: 31px !important;
-
+.pac-target-input {
+  position: absolute;
+  top: 16%;
+  z-index: 9999;
+  right: 32%;
+  border: 1px solid #ccc;
+  width: 36% !important;
+  height: 31px !important;
 }
 </style>

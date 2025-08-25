@@ -10,47 +10,37 @@
         <!-- Left Column: Forms -->
         <div class="space-y-8">
           <!-- Location Selection -->
-          <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-white/20">
-            <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
-              <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-              </svg>
-              تحديد موقع التوصيل
-            </h2>
-            <div class="space-y-4">
-              <div>
-                <label class="block mb-3 font-semibold text-gray-700">موقع التوصيل *</label>
-                <div class="relative">
-                  <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    </svg>
-                  </div>
-                  <input v-model="form.location" @focus="showMap = true" type="text" placeholder="اختر موقع التوصيل"
-                    class="w-full pr-12 pl-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                    :class="{ 'border-red-500': errors.location }" required />
-                </div>
-                <p v-if="errors.location" class="text-red-500 text-sm mt-2">{{ errors.location }}</p>
-              </div>
+          <form @submit.prevent="" class="space-y-6">
+            <div>
+              <label class="block mb-3 font-semibold text-gray-700"
+                >الموقع علي الخريطه</label
+              >
 
-              <button @click="getCurrentLocation" type="button"
-                class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-xl font-semibold hover:from-orange-600 hover:to-red-600 transition-all shadow-lg flex items-center justify-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                </svg>
-                تحديد موقعي الحالي
-              </button>
+              <div class="space-y-3 max-h-64 overflow-y-auto">
+                <div
+                  v-for="item in addresses"
+                  :key="item.id"
+                  @click="openMap(item)"
+                  class="p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 transition-all hover:border-primary bg-white"
+                >
+                  <div class="font-semibold text-gray-800">
+                    {{ item.title }}
+                  </div>
+                  <div class="text-sm text-gray-500">
+                    {{ item.address || item.lat + ", " + item.lng }}
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+
+            <!-- زرار اضافة عنوان -->
+            <button
+              @click="openMap()"
+              class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 rounded-xl font-bold text-lg hover:from-orange-600 hover:to-red-600 transition-all shadow-lg"
+            >
+              إضافة عنوان
+            </button>
+          </form>
 
           <!-- Customer Delivery Info Form -->
           <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-white/20">
@@ -106,11 +96,7 @@
                     <input v-model="form.floor" type="text"
                       class="w-full border-2 border-gray-200 rounded-xl px-4 py-4 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" />
                   </div>
-
-
                 </div>
-
-
               </section>
             </form>
           </div>
@@ -166,10 +152,14 @@
                     <input v-model="form.coupon" type="text" placeholder="ادخل كوبون الخصم ان وجد"
                       class="w-full pr-12 pl-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                       required />
-                      <button class="bg-primary text-white px-4 py-2 rounded-xl mx-2">
+                     
+                      <button @click="applyCoupon" class="bg-primary text-white px-4 py-2 rounded-xl mx-2">
                         تطبيق
                       </button>
                   </div>
+                   <div v-if="errors.coupon" class=" text-red-500 text-xs">
+                        {{ errors.coupon }}
+                      </div>
                 </div>
 
                 <div class="flex justify-between text-xl font-bold text-primary border-t border-gray-200 pt-3">
@@ -300,50 +290,66 @@
 
 
 
-  <!-- Map Modal -->
   <Transition name="fade-slide">
-    <div v-if="showMap" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div class="bg-white rounded-3xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+    <div
+      v-if="showMap"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+    >
+      <div
+        class="relative bg-white rounded-3xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+      >
         <div class="flex justify-between items-center mb-6">
           <h3 class="text-xl font-bold text-gray-800">اختر موقع التوصيل</h3>
-          <button @click="showMap = false"
-            class="text-gray-400 hover:text-gray-700 bg-white rounded-full p-2 shadow-md hover:shadow-lg transition-all">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
+          <button
+            @click="showMap = false"
+            class="text-gray-400 hover:text-gray-700 bg-white rounded-full p-2 shadow-md"
+          >
+            ✕
           </button>
         </div>
+        <GMapAutocomplete
+          placeholder="This is a placeholder"
+          @place_changed="setPlace"
+          :options="{
+            bounds: { north: 1.4, south: 1.2, east: 104, west: 102 },
+            strictBounds: true,
+          }"
+        >
+        </GMapAutocomplete>
+        <!-- خريطة جوجل -->
+        <GMapMap
+          :center="center"
+          :zoom="13"
+          style="width: 100%; height: 300px"
+          @click="setMarker"
+        >
+          <GMapMarker
+            v-if="marker"
+            :position="marker"
+            :draggable="true"
+            @dragend="updateMarker"
+          />
+        </GMapMap>
 
-        <!-- Google Maps Placeholder -->
-        <div
-          class="bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl h-64 mb-6 flex items-center justify-center border-2 border-dashed border-gray-300">
-          <div class="text-center">
-            <div class="text-6xl mb-4">🗺️</div>
-            <p class="text-gray-600 font-semibold text-lg">خريطة Google Maps</p>
-            <p class="text-sm text-gray-500 mt-2">سيتم إضافة مفتاح Google Maps API</p>
-          </div>
+        <div class="mt-4" v-if="!isEditing">
+          <input
+            v-model="searchBox"
+            placeholder="أدخل اسم العنوان (مثلاً: المنزل، المكتب)"
+            class="w-full border-2 border-gray-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary"
+          />
         </div>
 
-        <div class="space-y-4">
-          <input v-model="locationQuery" type="text" placeholder="ابحث عن عنوان..."
-            class="w-full border-2 border-gray-200 rounded-2xl px-4 py-4 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-lg" />
-
-          <div class="space-y-3 max-h-48 overflow-y-auto">
-            <div v-for="suggestion in locationSuggestions" :key="suggestion.id" @click="selectLocation(suggestion)"
-              class="p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 transition-all hover:border-primary">
-              <div class="font-semibold text-gray-800">{{ suggestion.name }}</div>
-              <div class="text-sm text-gray-500">{{ suggestion.address }}</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex gap-4 mt-6">
-          <button @click="confirmLocation"
-            class="flex-1 bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 rounded-2xl font-semibold hover:from-orange-600 hover:to-red-600 transition-all">
+        <div class="flex gap-4 mt-6" v-if="!isEditing">
+          <button
+            @click="confirmLocation"
+            class="flex-1 bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 rounded-2xl font-semibold"
+          >
             تأكيد الموقع
           </button>
-          <button @click="showMap = false"
-            class="flex-1 bg-gray-200 text-gray-700 py-4 rounded-2xl font-semibold hover:bg-gray-300 transition-all">
+          <button
+            @click="showMap = false"
+            class="flex-1 bg-gray-200 text-gray-700 py-4 rounded-2xl font-semibold hover:bg-gray-300"
+          >
             إلغاء
           </button>
         </div>
@@ -362,10 +368,11 @@
 
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed , onMounted, nextTick} from 'vue'
 import { useRouter } from 'vue-router'
 import Toast from '@/components/Toast.vue'
 import api from '@/api/http'
+const user = JSON.parse(localStorage.getItem("user") || "{}");
 
 const toast = ref({ visible: false, message: '', type: 'success' })
 
@@ -392,8 +399,45 @@ const form = ref({
 })
 
 const errors = ref({})
+const coupon_value = ref('')
+const applyCoupon = async ()=>{
+  if (!form.value.coupon.trim()) {
+    errors.value.coupon = 'يرجى إدخال رمز القسيمة'
+    return
+  }
+    const user = JSON.parse(localStorage.getItem('user') || '{}')
+
+  const body = {
+    lang: 'ar',
+    user_id: user.id,
+    code: form.value.coupon,
+  }
+
+  try {
+    const response = await api.post('/api/check-promo', body)
+    if(response.data?.key === 1){
+      showToast(response.data?.msg || 'رمز القسيمة صالح' , 'success') ;
+      coupon_value.value = response.data?.data ;
+      const discount = (subtotal.value * response.data.data) / 100
+      subtotal.value -= discount
+      console.log('coupon_value',  discount);
+      console.log('coupon_value',  subtotal.value);
+      console.log('coupon_value',  totalPrice.value);
+
+    }else{
+      showToast(response.data?.msg || 'رمز القسيمة غير صالح' , 'error')
+    }
+    // setTimeout(() => {
+    //   router.push('/thank-you')
+    // }, 1000);
+  } catch (error) {
+    console.error('Checkout error:', error)
+    showToast(error.response?.data?.msg || 'فشل في التحقق من رمز القسيمة', 'error')
+  } finally {
+  }
+
+}
 const isSubmitting = ref(false)
-const showMap = ref(false)
 
 const lat = ref(null)
 const lng = ref(null)
@@ -502,9 +546,210 @@ async function submitOrder() {
     isSubmitting.value = false
   }
 }
+const isLoading = ref(false);
+
+const showMap = ref(false);
+const locationQuery = ref("");
+const searchBox = ref("");
+const locationSuggestions = ref([]);
+const selectedLocation = ref({
+  lat: null,
+  lng: null,
+  address: "",
+  title: "home",
+});
+
+const center = ref({ lat: 31.963158, lng: 35.930359 }); // عمان by default
+
+const marker = ref(null);
+const selectedAddress = ref("");
+const activeTab = ref("profile");
+const editingAddress = ref(null);
+const isEditing = ref(false);
+// فتح الماب (لإضافة أو تعديل)
+const openMap = (address = null) => {
+  editingAddress.value = address;
+  if (address) {
+    center.value = { lat: address.lat, lng: address.lng };
+    marker.value = { ...center.value };
+    selectedAddress.value = address.address;
+    isEditing.value = true;
+  } else {
+    // لو إضافة جديدة -> حاول تجيب اللوكيشن الحالي
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          center.value = {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude,
+          };
+          marker.value = { ...center.value };
+        },
+        () => {
+          center.value = { lat: 31.963158, lng: 35.930359 }; // fallback
+        }
+      );
+    }
+    marker.value = null;
+    selectedAddress.value = "";
+    isEditing.value = false;
+  }
+
+  showMap.value = true;
+
+  // لازم نستنى لما الماب تتعمل render قبل ما نحط searchBox
+  nextTick(() => initSearchBox());
+};
+
+
+const addresses = ref([]);
+
+// ✅ جلب بيانات المستخدم
+const getAddresses = async () => {
+  if (!user?.id) {
+    showToast("لم يتم العثور على مستخدم", "error");
+    return;
+  }
+
+  try {
+    isLoading.value = true;
+    const response = await api.post("/api/all-addresses", {
+      lang: "ar",
+      user_id: user.id,
+    });
+
+    if (response.data.key === 1) {
+      const data = response.data.data;
+      addresses.value = data;
+    } else {
+      showToast(response.data.msg || "فشل في جلب البيانات", "error");
+    }
+  } catch (error) {
+    console.error("show-user error:", error);
+    showToast("فشل الاتصال بالخادم", "error");
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const updateMarker = (e) => {
+  marker.value = {
+    lat: e.latLng.lat(),
+    lng: e.latLng.lng(),
+  };
+  reverseGeocode();
+};
+
+// لما يضغط على الماب
+const setMarker = (e) => {
+  marker.value = {
+    lat: e.latLng.lat(),
+    lng: e.latLng.lng(),
+  };
+  reverseGeocode();
+};
+
+// دالة تحول الإحداثيات لعنوان نصي
+const reverseGeocode = async () => {
+  if (!marker.value) return;
+
+  const geocoder = new google.maps.Geocoder();
+  geocoder.geocode({ location: marker.value }, (results, status) => {
+    if (status === "OK") {
+      if (results[0]) {
+        selectedAddress.value = results[0].formatted_address;
+        console.log("Selected address:", results[0].formatted_address);
+      } else {
+        console.warn("No results found");
+      }
+    } else {
+      console.error("Geocoder failed due to: " + status);
+    }
+  });
+};
+
+// تفعيل Google Places SearchBox
+
+onMounted(() => {
+  getAddresses();
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        center.value = {
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+        };
+        marker.value = { ...center.value };
+        console.log(marker, "fdfdfdfdfdfdfd");
+      },
+      (err) => {
+        console.warn("Geolocation error:", err);
+      }
+    );
+  }
+
+  const input = document.getElementById("searchBox");
+  if (!input) return;
+
+  const searchBox = new google.maps.places.SearchBox(input);
+  searchBox.addListener("places_changed", () => {
+    const places = searchBox.getPlaces();
+    if (!places || !places.length) return;
+    const place = places[0];
+    if (!place.geometry) return;
+
+    center.value = {
+      lat: place.geometry.location.lat(),
+      lng: place.geometry.location.lng(),
+    };
+    marker.value = { ...center.value };
+    selectedAddress.value = place.formatted_address;
+  });
+});
+// تأكيد وحفظ العنوان
+const confirmLocation = async () => {
+  if (!marker.value) {
+    showToast("اختر موقعك أولاً", "error");
+    return;
+  }
+
+  try {
+    const response = await api.post("/api/store-address", {
+      lang: "ar",
+      user_id: user.id,
+      title: searchBox.value,
+      address: selectedAddress.value,
+      lat: marker.value.lat,
+      lng: marker.value.lng,
+    });
+
+    if (response.data.key === 1) {
+      showToast("تم حفظ العنوان بنجاح", "success");
+      showMap.value = false;
+      getAddresses();
+    } else {
+      showToast(response.data.msg || "خطأ في الحفظ", "error");
+    }
+  } catch (err) {
+    console.error(err);
+    showToast("فشل الاتصال بالخادم", "error");
+  }
+};
+
+
 </script>
 
-
+<style>
+.pac-target-input {
+  position: absolute;
+  top: 16%;
+  z-index: 9999;
+  right: 32%;
+  border: 1px solid #ccc;
+  width: 36% !important;
+  height: 31px !important;
+}
+</style>
 <!-- <script setup>
 import { ref, computed, inject } from 'vue'
 import { useRouter } from 'vue-router'

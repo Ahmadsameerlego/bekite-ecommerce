@@ -313,6 +313,7 @@ const handleRegister = async () => {
       showToast(data.msg, 'success')
       setTimeout(() => {
          router.push('/')
+         location.reload()
       }, 1500);
     } else {
       // Fail

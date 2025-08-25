@@ -2,25 +2,38 @@
   <header class="bg-white shadow sticky top-0 z-30">
     <div class="container mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center gap-2">
+        <router-link to="/">
         <span class="text-xl font-bold text-primary">{{ $t('header.storeName') }}</span>
+        </router-link>
       </div>
       <nav class="hidden md:flex gap-6 items-center">
         <RouterLink to="/" class="hover:text-primary">{{ $t('nav.home') }}</RouterLink>
         <RouterLink to="/about" class="hover:text-primary">من نحن</RouterLink>
         <RouterLink to="/contact" class="hover:text-primary">تواصل معنا</RouterLink>
-  <RouterLink v-if="!isAuthed" to="/login" class="hover:text-primary">{{ $t('nav.login') }}</RouterLink>
-  <RouterLink v-if="!isAuthed" to="/register" class="hover:text-primary">{{ $t('nav.register') }}</RouterLink>
+        <RouterLink v-if="isAuthed" to="/favorites" class="hover:text-primary">المفضلة</RouterLink>
+      <RouterLink v-if="!isAuthed" to="/login" class="hover:text-primary">{{ $t('nav.login') }}</RouterLink>
+      <RouterLink v-if="!isAuthed" to="/register" class="hover:text-primary">{{ $t('nav.register') }}</RouterLink>
+      <RouterLink 
+      v-if="isAuthed" 
+      to="#" 
+      class="hover:text-primary" 
+      @click.prevent="logout"
+    >
+      تسجيل الخروج
+    </RouterLink>
+
 
         <!-- notification  -->
-        <RouterLink  v-if="isAuthed" to="/notifications" class="hover:text-primary">
+        <RouterLink v-if="isAuthed" to="/notifications" class="hover:text-primary relative">
          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
             viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
             aria-hidden="true">
           <path d="M15 17h5l-1.4-2.1A7 7 0 0 1 18 11V9a6 6 0 1 0-12 0v2a7 7 0 0 1-.6 3.9L4 17h5"/>
           <path d="M9 17a3 3 0 0 0 6 0"/>
+          
         </svg>
-
+                    <span v-if="notification_count > 0" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5">{{ notification_count }}</span>
         </RouterLink>
         <!-- profile  -->
         <RouterLink  v-if="isAuthed" to="/profile" class="hover:text-primary">
@@ -65,8 +78,18 @@
         <RouterLink to="/" class="hover:text-primary" @click="open = false">{{ $t('nav.home') }}</RouterLink>
         <RouterLink to="/about" class="hover:text-primary" @click="open = false">من نحن</RouterLink>
         <RouterLink to="/contact" class="hover:text-primary" @click="open = false">تواصل معنا</RouterLink>
+                <RouterLink v-if="isAuthed" to="/favorites" class="hover:text-primary">المفضلة</RouterLink>
         <RouterLink to="/login" class="hover:text-primary" @click="open = false">{{ $t('nav.login') }}</RouterLink>
         <RouterLink to="/register" class="hover:text-primary" @click="open = false">{{ $t('nav.register') }}</RouterLink>
+        <RouterLink 
+      v-if="isAuthed" 
+      to="#" 
+      class="hover:text-primary" 
+      @click.prevent="logout"
+    >
+      تسجيل الخروج
+    </RouterLink>
+
         <RouterLink to="/profile" class="hover:text-primary flex items-center gap-2" @click="open = false">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -126,7 +149,8 @@ function toggleLanguage() {
   setLanguage(newLocale)
   open.value = false
 }
-const cart_count = ref(null)
+const cart_count = ref(null) ;
+const notification_count = ref(null) ;
 const getData = async () => {
     const user = JSON.parse(localStorage.getItem('user') || '{}')
 
@@ -137,6 +161,7 @@ const getData = async () => {
     })
     
     cart_count.value = response.data.cart_count ;
+    notification_count.value = response.data.notification_count;
     console.log('Cart count fetched successfully:', response)
   } catch (error) {
     console.error('Error fetching data:', error)
@@ -145,6 +170,31 @@ const getData = async () => {
 onMounted(() => {
    getData()
 })
+
+async function logout() {
+  const user = JSON.parse(localStorage.getItem('user') || '{}')
+
+  try {
+    await api.post('/api/logout', {
+      lang: currentLanguage.value, // ar أو en
+      device_id: localStorage.getItem('device_id') || 'unknown',
+      user_id: user.id
+    })
+
+    // تنظيف البيانات
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+
+    // رجوع لصفحة تسجيل الدخول
+    router.push('/login')
+    setTimeout(() => {
+      location.reload()
+    }, 500)
+  } catch (error) {
+    console.error('Logout failed:', error)
+  }
+}
+
 </script>
 
 
