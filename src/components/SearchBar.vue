@@ -7,7 +7,7 @@
       v-model="query"
       @input="$emit('update:modelValue', query)"
       type="text"
-      placeholder="Search for food..."
+      placeholder="Search for products..."
       class="flex-1 bg-transparent outline-none text-gray-700 placeholder-gray-400"
     />
   </form>

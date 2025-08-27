@@ -404,7 +404,7 @@ const center = ref({ lat: 31.963158, lng: 35.930359 }); // عمان by default
 
 const marker = ref(null);
 const selectedAddress = ref("");
-const activeTab = ref("profile");
+const activeTab = ref("orders");
 const editingAddress = ref(null);
 const isEditing = ref(false);
 // فتح الماب (لإضافة أو تعديل)

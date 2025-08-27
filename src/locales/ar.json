@@ -8,18 +8,21 @@
         "checkout": "إتمام الطلب",
         "contact": "تواصل معنا",
         "privacy": "سياسة الخصوصية",
-        "terms": "الشروط والأحكام"
+        "terms": "الشروط والأحكام",
+        "favorites": "المفضلة",
+        "about": "من نحن",
+        "logout": "تسجيل الخروج"
     },
     "header": {
         "storeName": "🍔 فودستور",
         "profile": "الملف الشخصي"
     },
     "hero": {
-        "searchPlaceholder": "ابحث عن طعامك المفضل...",
+        "searchPlaceholder": "ابحث عن منتجاتك المفضله...",
         "locationPlaceholder": "أدخل عنوان التوصيل...",
         "currentLocation": "موقعي الحالي",
         "currentLocationShort": "موقعي",
-        "searchButton": "ابحث عن الطعام",
+        "searchButton": "ابحث ",
         "locationModal": {
             "title": "اختر موقع التوصيل",
             "mapPlaceholder": "خريطة Google Maps",
@@ -38,7 +41,7 @@
     },
     "home": {
         "menu": {
-            "title": "المنيو",
+            "title": "اكتشف المنتجات",
             "subtitle": "اكتشف تشكيلة متنوعة من أشهى الأطباق"
         },
         "offers": {
@@ -240,7 +243,7 @@
         }
     },
     "footer": {
-        "copyright": "© 2025 Be-Kite. All rights reserved. Created by Be-Kite"
+        "copyright": "© 2025 Pelino. All rights reserved. Created by Be-Kite"
     },
     "common": {
         "loading": "جاري التحميل...",
@@ -264,4 +267,5 @@
         "update": "تحديث",
         "submit": "إرسال"
     }
+
 }

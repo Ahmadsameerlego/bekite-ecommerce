@@ -41,7 +41,7 @@
           </div>
        
         <div class="flex gap-4 text-sm">
-          <router-link to="/about" class="hover:text-primary">من نحن</router-link>
+          <router-link to="/about" class="hover:text-primary">{{ $t('nav.about') }}</router-link>
           <router-link to="/privacy" class="hover:text-primary">{{ $t('nav.privacy') }}</router-link>
           <router-link to="/terms" class="hover:text-primary">{{ $t('nav.terms') }}</router-link>
           <router-link to="/contact" class="hover:text-primary">{{ $t('nav.contact') }}</router-link>
@@ -53,7 +53,7 @@
         <div class="flex flex-col md:flex-row items-center justify-center gap-4">
          
           <div class="text-gray-500 text-sm">
-          © 2025 Be-Kite. All rights reserved. Created by Be-Kite
+         {{ $t('footer.copyright') }}
         </div>
         </div>
       </div>

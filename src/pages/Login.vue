@@ -196,7 +196,7 @@ const handleLogin = async () => {
       showToast(data.msg, 'success')
       setTimeout(() => {
          router.push('/')
-         location.reload()
+         //location.reload()
       }, 1500)
     } else {
       // Fail

@@ -26,10 +26,15 @@
                 <span class="mx-1">{{ item.count }}</span>
                 <button @click="decrease(item._key)" class="bg-gray-200 rounded px-2">-</button>
               </div>
+               <button @click="removeCartItem(item.id)" class="text-red-500 hover:text-red-700">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </button>
             </div>
-            <div v-if="item.options.length" class="text-xs text-gray-500 mb-1">إضافات: {{ item.options.map(a => a.title).join('، ') }}</div>
+            <div v-if="item.options?.length" class="text-xs text-gray-500 mb-1">إضافات: {{ item.options.map(a => a.title).join('، ') }}</div>
             <div class="flex items-center justify-between">
-              <div class="text-sm font-bold text-primary">{{ item.total }} د.أ</div>
+              <div class="text-sm font-bold text-primary">{{ item.total_with_option }} د.أ</div>
               <button 
                 @click="editAddOns(item)" 
                 class="text-primary hover:text-primary-dark text-xs flex items-center gap-1"
@@ -57,15 +62,31 @@
       </div>
     </aside>
   </Transition>
+
+  <Toast 
+      v-if="toast.visible"
+      :message="toast.message"
+      :type="toast.type"
+      :visible="toast.visible"
+    />
 </template>
 
 <script setup>
-import { inject, ref } from 'vue'
+import { inject, onMounted, ref } from 'vue'
 import EditAddOnsModal from './EditAddOnsModal.vue'
+import Toast from '@/components/Toast.vue'
+import api from '@/api/http'
 
 const props = defineProps({
   open: { type: Boolean, default: false },
 })
+const toast = ref({ visible: false, message: '', type: 'success' })
+
+const showToast = (msg, type = 'success') => {
+  toast.value = { visible: true, message: msg, type }
+  setTimeout(() => (toast.value.visible = false), 3000)
+}
+
 const emit = defineEmits(['close'])
 const cart = inject('cart')
 console.log(props.payload, 'dsdsds ')
@@ -81,15 +102,51 @@ const editAddOns = (item) => {
 }
 
 const updateItemAddOns = (updateData) => {
-  // Find the item in cart and update its add-ons
-  const itemIndex = cart.value.findIndex(item => item._key === updateData.itemKey)
-  if (itemIndex !== -1) {
-    cart.value[itemIndex].addOns = updateData.addOns
-    cart.value[itemIndex].total = updateData.total
-  }
+cart.value = updateData ;
+console.log(updateData, 'updateData ');
 }
+const providers = ref([])
+const getData = async () => {
+    const user = JSON.parse(localStorage.getItem('user') || '{}')
+
+  try {
+    const response = await api.post('/api/show-cart' ,{
+            user_id: user.id,
+
+    })
+    providers.value = response.data?.providers;
+  } catch (error) {
+    console.error('Error fetching data:', error)
+  }
+} 
+
+onMounted(() => {
+   getData()
+} )
 const storeCart = ()=>{
   localStorage.setItem('cart_data', JSON.stringify(cart.value));
+  localStorage.setItem('providers', JSON.stringify(providers.value));
+}
+
+// remove cart 
+const removeCartItem = async (itemKey) => {
+  const user = JSON.parse(localStorage.getItem('user') || '{}')
+
+  try {
+    const response = await api.post('/api/update-to-cart' ,{
+            user_id: user.id,
+        cart_id : itemKey,
+        count: 0,
+        option_ids : []
+    })
+    showToast(response.data.msg, 'success')
+    setTimeout(() => {
+      cart.value = response.data.data;
+    }, 800);
+  } catch (error) {
+    console.error('Error fetching data:', error)
+    showToast('فشل الاتصال بالخادم', 'error')
+  }
 }
 </script>
 

@@ -59,7 +59,7 @@
         <h2 class="text-2xl font-bold mb-1">{{ product.title }}</h2>
         <p class="text-gray-500 mb-2">{{ product.desc }}</p>
         <div class="mb-4">
-          <span class="font-semibold text-[#f97316]"
+          <span class="font-semibold text-[#111]"
             >{{ $t("product.basePrice") }}:</span
           >
           <span class="ml-2 font-bold text-lg">
@@ -67,7 +67,7 @@
           >
         </div>
         <div v-if="product.options && product.options.length" class="mb-4">
-          <div class="font-semibold mb-1 text-[#f97316]">
+          <div class="font-semibold mb-1 text-[#111]">
             {{ $t("product.addOns") }}:
           </div>
           <div class="flex flex-col gap-2">
@@ -85,7 +85,7 @@
           </div>
         </div>
         <div class="flex items-center justify-between mt-6">
-          <div class="font-bold text-lg text-[#f97316]">
+          <div class="font-bold text-lg text-[#111]">
             {{ $t("product.total") }}: {{ totalPrice }}
             {{ $t("product.currency") }}
           </div>

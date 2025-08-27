@@ -3,24 +3,25 @@
     <div class="container mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center gap-2">
         <router-link to="/">
-        <span class="text-xl font-bold text-primary">{{ $t('header.storeName') }}</span>
+        <!-- <span class="text-xl font-bold text-primary">{{ $t('header.storeName') }}</span> -->
+         <img src="@/assets/logo.png" class="w-[150px] h-[70px] object-cover" alt="">
         </router-link>
       </div>
       <nav class="hidden md:flex gap-6 items-center">
         <RouterLink to="/" class="hover:text-primary">{{ $t('nav.home') }}</RouterLink>
-        <RouterLink to="/about" class="hover:text-primary">من نحن</RouterLink>
-        <RouterLink to="/contact" class="hover:text-primary">تواصل معنا</RouterLink>
-        <RouterLink v-if="isAuthed" to="/favorites" class="hover:text-primary">المفضلة</RouterLink>
+        <RouterLink to="/about" class="hover:text-primary">{{ $t('nav.about') }}</RouterLink>
+        <RouterLink to="/contact" class="hover:text-primary">{{ $t('nav.contact') }}</RouterLink>
+        <RouterLink v-if="isAuthed" to="/favorites" class="hover:text-primary">{{ $t('nav.favorites') }}</RouterLink>
       <RouterLink v-if="!isAuthed" to="/login" class="hover:text-primary">{{ $t('nav.login') }}</RouterLink>
       <RouterLink v-if="!isAuthed" to="/register" class="hover:text-primary">{{ $t('nav.register') }}</RouterLink>
       <RouterLink 
-      v-if="isAuthed" 
-      to="#" 
-      class="hover:text-primary" 
-      @click.prevent="logout"
-    >
-      تسجيل الخروج
-    </RouterLink>
+        v-if="isAuthed" 
+        to="#" 
+        class="hover:text-primary btn"
+        @click.prevent="logout"
+      >
+        {{  $t('nav.logout') }}
+      </RouterLink>
 
 
         <!-- notification  -->
@@ -76,9 +77,9 @@
     <Transition name="fade-slide">
       <nav v-if="open" class="md:hidden bg-white border-t px-4 pb-4 flex flex-col gap-3">
         <RouterLink to="/" class="hover:text-primary" @click="open = false">{{ $t('nav.home') }}</RouterLink>
-        <RouterLink to="/about" class="hover:text-primary" @click="open = false">من نحن</RouterLink>
-        <RouterLink to="/contact" class="hover:text-primary" @click="open = false">تواصل معنا</RouterLink>
-                <RouterLink v-if="isAuthed" to="/favorites" class="hover:text-primary">المفضلة</RouterLink>
+        <RouterLink to="/about" class="hover:text-primary" @click="open = false">{{ $t('nav.about') }}</RouterLink>
+        <RouterLink to="/contact" class="hover:text-primary" @click="open = false">{{ $t('nav.contact') }}</RouterLink>
+        <RouterLink v-if="isAuthed" to="/favorites" class="hover:text-primary">{{ $t('nav.favorites') }}</RouterLink>
         <RouterLink to="/login" class="hover:text-primary" @click="open = false">{{ $t('nav.login') }}</RouterLink>
         <RouterLink to="/register" class="hover:text-primary" @click="open = false">{{ $t('nav.register') }}</RouterLink>
         <RouterLink 
@@ -87,7 +88,7 @@
       class="hover:text-primary" 
       @click.prevent="logout"
     >
-      تسجيل الخروج
+      {{ $t('nav.logout') }}
     </RouterLink>
 
         <RouterLink to="/profile" class="hover:text-primary flex items-center gap-2" @click="open = false">

@@ -17,7 +17,7 @@
               <img :src="item.service_image" :alt="item.service_title" class="w-16 h-16 object-cover rounded" />
               <div>
                 <h3 class="font-semibold text-lg">{{ item.service_title }}</h3>
-                <div v-if="item.options.length" class="text-sm text-gray-500">إضافات: {{ item.options.map(a => a.title).join('، ') }}</div>
+                <div v-if="item.service_options?.length" class="text-sm text-gray-500">إضافات: {{ item.service_options.map(a => a.title).join('، ') }}</div>
                 <div class="text-primary font-bold">{{ item.total.toFixed(2) }} د.أ</div>
               </div>
             </div>
@@ -106,16 +106,11 @@ const editAddOns = (item) => {
 }
 
 const updateItemAddOns = (updateData) => {
-  // Find the item in cart and update its add-ons
-  const itemIndex = cart.value.findIndex(item => item._key === updateData.itemKey)
-  if (itemIndex !== -1) {
-    cart.value[itemIndex].addOns = updateData.addOns
-    cart.value[itemIndex].total = updateData.total
-  }
+  getData();
 }
 
 const cart_data = ref([]);
-
+const providers = ref([])
 const totalPrice = computed(() => {
   return cart_data.value.reduce((sum, item) => sum + item.total , 0)
 })
@@ -129,6 +124,7 @@ const getData = async () => {
 
     })
     cart_data.value = response.data.data;
+    providers.value = response.data?.providers;
   } catch (error) {
     console.error('Error fetching data:', error)
   }
@@ -180,7 +176,7 @@ const updateCartItemCount = async (item, newCount) => {
         user_id: user.id,
         cart_id: item.id,
         count: newCount,
-        option_ids: JSON.stringify(item.options?.map(o => o.id)) || []  // إرسال نفس الإضافات
+        option_ids: JSON.stringify(item.service_options?.map(o => o.id)) || []  // إرسال نفس الإضافات
       })
       showToast('تم تحديث عدد العناصر', 'success')
     }
@@ -208,6 +204,7 @@ const decrease = (itemId) => {
 
 const storeCart = ()=>{
   localStorage.setItem('cart_data', JSON.stringify(cart_data.value));
+  localStorage.setItem('providers', JSON.stringify(providers.value));
 }
 onMounted(() => {
    getData()

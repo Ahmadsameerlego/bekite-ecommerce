@@ -22,6 +22,7 @@
               v-model="form.fullName"
               type="text" 
               :placeholder="$t('register.fullNamePlaceholder')"
+              required
               class="w-full pr-10 pl-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
               :class="{ 'border-red-500': errors.fullName }"
                
@@ -46,6 +47,7 @@
               class="w-full pr-10 pl-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
               :class="{ 'border-red-500': errors.phone }"
               style="direction: rtl;"
+              required
                               @input="form.phone = form.phone.replace(/\D/g, '')"
 
                
@@ -102,6 +104,7 @@
             </div>
             <input 
               v-model="form.password"
+              required
               :type="showPassword ? 'text' : 'password'"
               :placeholder="$t('register.passwordPlaceholder')"
               class="w-full pr-10 pl-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
@@ -126,7 +129,7 @@
         </div>
 
         <!-- Confirm Password -->
-        <div>
+        <!-- <div>
           <label class="block text-sm font-semibold text-gray-700 mb-2">{{ $t('register.confirmPassword') }}</label>
           <div class="relative">
             <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
@@ -157,7 +160,7 @@
             </button>
           </div>
           <p v-if="errors.confirmPassword" class="text-red-500 text-sm mt-1">{{ errors.confirmPassword }}</p>
-        </div>
+        </div> -->
 
         <!-- Terms and Conditions -->
         <div class="flex items-start">
@@ -289,7 +292,7 @@ const handleRegister = async () => {
   if (!form.value.phone.trim()) return errors.value.phone = 'رقم الهاتف مطلوب'
   if (!form.value.password.trim()) return errors.value.password = 'كلمة المرور مطلوبة'
   if (form.value.password.length < 6) return errors.value.password = 'كلمة المرور يجب أن تكون 6 أحرف على الأقل'
-  if (form.value.password !== form.value.confirmPassword) return errors.value.confirmPassword = 'كلمة المرور غير متطابقة'
+  // if (form.value.password !== form.value.confirmPassword) return errors.value.confirmPassword = 'كلمة المرور غير متطابقة'
   if (!form.value.acceptTerms) return errors.value.acceptTerms = 'يجب الموافقة على الشروط والأحكام'
 
   isLoading.value = true
@@ -313,7 +316,6 @@ const handleRegister = async () => {
       showToast(data.msg, 'success')
       setTimeout(() => {
          router.push('/')
-         location.reload()
       }, 1500);
     } else {
       // Fail

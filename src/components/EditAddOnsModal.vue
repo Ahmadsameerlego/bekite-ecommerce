@@ -14,7 +14,6 @@
           <h2 class="text-2xl font-bold text-gray-900 mb-2">تعديل الإضافات</h2>
           <p class="text-gray-600">{{ item?.service_title }}</p>
         </div>
-        
         <!-- Product Image -->
         <div class="mb-6">
           <img :src="item?.service_image" :alt="item?.service_title" class="w-full h-32 object-cover rounded-lg" />
@@ -33,7 +32,7 @@
               <div class="flex items-center gap-3">
                 <input 
                   type="checkbox" 
-                  :value="addOn" 
+                  :value="addOn.id" 
                   v-model="selectedAddOns"
                   class="w-4 h-4 text-primary focus:ring-primary border-gray-300 rounded"
                 />
@@ -58,7 +57,7 @@
         <!-- Action Buttons -->
         <div class="flex gap-3">
           <button 
-            @click="updateItem"
+            @click="updateCartItemCount"
             class="flex-1 bg-primary text-white py-3 rounded-xl font-semibold hover:bg-primary-dark transition-colors"
           >
             تحديث الإضافات
@@ -73,8 +72,14 @@
       </div>
     </div>
   </Transition>
-</template>
 
+   <Toast 
+      v-if="toast.visible"
+      :message="toast.message"
+      :type="toast.type"
+      :visible="toast.visible"
+    />
+</template>
 <script setup>
 import { ref, computed, watch } from 'vue'
 
@@ -82,45 +87,89 @@ const props = defineProps({
   open: { type: Boolean, default: false },
   item: { type: Object, default: null }
 })
+import Toast from '@/components/Toast.vue'
+
+import api from '@/api/http'
+// const increase = inject('increaseCartItem')
+// const decrease = inject('decreaseCartItem')
+// const remove = inject('removeCartItem')
+const toast = ref({ visible: false, message: '', type: 'success' })
+
+const showToast = (msg, type = 'success') => {
+  toast.value = { visible: true, message: msg, type }
+  setTimeout(() => (toast.value.visible = false), 3000)
+}
 
 const emit = defineEmits(['close', 'update'])
 
+const availableAddOns = computed(() => props.item?.service_options || [])
+
+// نخزن IDs فقط
 const selectedAddOns = ref([])
 
-// Available add-ons (this would come from the product data)
-const availableAddOns = computed(() => {
-  return props.item?.options || []
-})
-
-// Calculate total price
-const totalPrice = computed(() => {
-  let total = Number(props.item?.product?.price_with_value) || 0
-  for (const addOn of selectedAddOns.value) {
-    total += Number(addOn.price_with_value) || 0
-  }
-  return total
-})
-
-// Initialize selected add-ons when modal opens
+// عند فتح المودال: فعّل المختار مبدئيًا حسب selectd من الباك
 watch(() => props.open, (isOpen) => {
   if (isOpen && props.item) {
-    selectedAddOns.value = [...(props.item.addOns || [])]
+    selectedAddOns.value = availableAddOns.value
+      .filter(a => a.selectd === true)   // لاحظ اسم المفتاح selectd
+      .map(a => a.id)
   }
 })
 
-// Update item with new add-ons
+// اجمالي السعر = سعر الأساس + مجموع أسعار الإضافات المختارة
+const totalPrice = computed(() => {
+  const base = Number(props.item?.product?.price_with_value) || 0
+  const addonsSum = availableAddOns.value
+    .filter(a => selectedAddOns.value.includes(a.id))
+    .reduce((sum, a) => sum + Number(a.price_with_value || 0), 0)
+  return base + addonsSum
+})
+
+// تحديث السلة بالـ IDs + الكائنات (لو محتاجينها)
 const updateItem = () => {
-  if (props.item) {
-    emit('update', {
-      itemKey: props.item._key,
-      addOns: selectedAddOns.value,
-      total: totalPrice.value
-    })
-    emit('close')
+  if (!props.item) return
+  const selectedAddOnObjects = availableAddOns.value
+    .filter(a => selectedAddOns.value.includes(a.id))
+
+  emit('update', {
+    itemKey: props.item._key,
+    addOnIds: selectedAddOns.value,
+    addOns: selectedAddOnObjects,
+    total: totalPrice.value
+  })
+  emit('close')
+}
+
+
+const updateCartItemCount = async () => {
+  const user = JSON.parse(localStorage.getItem('user') || '{}')
+
+  if (!user?.id) {
+    showToast('يجب تسجيل الدخول أولاً', 'error')
+    return
+  }
+
+  try {
+    
+        const response = await api.post('/api/update-to-cart', {
+        user_id: user.id,
+        cart_id: props.item?.id,
+        count: props.item?.count || 0,
+        option_ids: JSON.stringify(selectedAddOns.value) || []  // إرسال نفس الإضافات
+      })
+      showToast('تم تحديث عدد العناصر', 'success')
+    
+
+    setTimeout(() => {
+      emit('close')
+      emit('update', response.data.data)
+    }, 500)
+  } catch (error) {
+    console.error('Error updating item count:', error)
+    showToast('فشل الاتصال بالخادم', 'error')
   }
 }
 </script>
-
 <style scoped>
 .fade-slide-enter-active, .fade-slide-leave-active {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);

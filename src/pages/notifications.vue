@@ -7,6 +7,7 @@
       <div
         v-for="item in notifications"
         :key="item.id"
+        @click="goToProfile"
         class="flex items-center justify-between p-4 hover:bg-gray-50 transition"
       >
         <div>
@@ -67,6 +68,10 @@ export default {
       } catch (error) {
         console.error("Error deleting notification:", error);
       }
+    },
+    goToProfile() {
+      this.$router.push('/profile');
+      sessionStorage.setItem('comesFrom', 'notifications');
     },
   },
   mounted() {

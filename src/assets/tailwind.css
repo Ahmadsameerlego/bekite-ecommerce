@@ -1,9 +1,88 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 @layer utilities {
-  .bg-primary { @apply bg-orange-500; }
-  .bg-primary-dark { @apply bg-orange-600; }
-  .text-primary { @apply text-orange-500; }
+    .bg-primary {
+        @apply bg-orange-500;
+    }
+    .bg-primary-dark {
+        @apply bg-orange-600;
+    }
+    .text-primary {
+        @apply text-orange-500;
+    }
 }
+
+html.ltr {
+    input[type="tel"] {
+        direction: ltr !important;
+    }
+}
+
+h2 {
+    color: #333 !important;
+}
+
+.to-red-500 {
+    --tw-gradient-to: #444 var(--tw-gradient-to-position);
+}
+
+.from-orange-500 {
+    --tw-gradient-from: #555 var(--tw-gradient-from-position);
+}
+
+.text-red-600 {
+    color: #666 !important;
+}
+
+.to-yellow-50 {
+    --tw-gradient-to: rgb(249 250 251 / var(--tw-bg-opacity, 1)) var(--tw-gradient-to-position);
+}
+
+.text-primary {
+    --tw-text-opacity: 1;
+    color: rgb(102 102 102);
+}
+
+.hover\:to-red-600:hover {
+    --tw-gradient-to: #212121 var(--tw-gradient-to-position) !important;
+}
+
+.hover\:from-orange-600:hover {
+    --tw-gradient-from: #020202 var(--tw-gradient-from-position) !important;
+    --tw-gradient-to: rgb(234 88 12 / 0) var(--tw-gradient-to-position) !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+
+.bg-primary {
+    --tw-bg-opacity: 1;
+    background-color: #333;
+}
+
+.text-orange-600 {
+    color: #333 !important;
+}
+
+.hover\:bg-primary-dark:hover {
+    --tw-bg-opacity: 1;
+    background-color: #333 !important;
+}
+
+.min-h-screen.bg-gradient-to-br.to-red-50 {
+    background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1)) !important;
+}
+
+.to-red-50 {
+    --tw-gradient-to: none !important;
+}
+
+.to-red-600 {
+    --tw-gradient-to: #333 var(--tw-gradient-to-position);
+}
+
+.from-orange-600 {
+    --tw-gradient-from: #444 var(--tw-gradient-from-position);
+}
+
+
+/*  */
