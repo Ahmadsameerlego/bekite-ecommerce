@@ -109,7 +109,7 @@
               :placeholder="$t('register.passwordPlaceholder')"
               class="w-full pr-10 pl-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
               :class="{ 'border-red-500': errors.password }"
-               
+              
             />
             <button 
               type="button"
@@ -313,10 +313,11 @@ const handleRegister = async () => {
       localStorage.setItem('user', JSON.stringify(data.data))
       localStorage.setItem('token', data.data.api_token)
 
-      showToast(data.msg, 'success')
-      setTimeout(() => {
-         router.push('/')
-      }, 1500);
+      showToast('تم انشاء الحساب بنجاح', 'success')
+      router.push('/')
+         setTimeout(() => {
+          location.reload()
+        }, 500)
     } else {
       // Fail
       showToast(data.msg || 'حدث خطأ ما', 'error')

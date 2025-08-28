@@ -5,7 +5,7 @@
 
   
      <!-- Offers Section -->
-    <div  class="bg-gradient-to-r from-red-50 to-orange-50 py-12">
+    <div  class=" py-12">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
           <h2 class="text-4xl font-bold mb-4 text-red-600">العناصر المفضلة</h2>

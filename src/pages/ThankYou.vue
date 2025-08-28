@@ -13,6 +13,7 @@
 
         <!-- Success Message -->
         <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+          <section id="invoiceSection">
           <h1 class="text-3xl font-bold text-green-600 mb-4">شكراً لك!</h1>
           <p class="text-xl text-gray-700 mb-6">تم تأكيد طلبك بنجاح</p>
           
@@ -37,7 +38,7 @@
               </div>
             </div>
           </div>
-
+        </section>
           <div class="bg-blue-50 border-r-4 border-blue-400 p-4 mb-6">
             <div class="flex items-start">
               <svg class="w-5 h-5 text-blue-600 mt-0.5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -49,7 +50,14 @@
               </div>
             </div>
           </div>
+           <div>
+          <button class="btn-primary px-3 py-3 bg-[#333] rounded text-white" @click="printInvoice">
+            تحميل الفاتوره
+          </button>
         </div>
+        </div>
+        
+       
 
         <!-- Action Buttons -->
         <div class="space-y-4">
@@ -112,6 +120,35 @@ function trackOrder() {
   // This would typically navigate to an order tracking page
   alert('سيتم إضافة صفحة تتبع الطلبات قريباً')
 }
+const printInvoice = () => {
+  const section = document.getElementById("invoiceSection");
+  if (!section) return;
+
+  const printWindow = window.open("", "_blank", "width=800,height=600");
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>فاتورة الطلب</title>
+        <!-- استعمل نفس CSS بتاع مشروعك -->
+        <link href="/dist/output.css" rel="stylesheet"> 
+        <!-- أو لو شغال بسرعة من غير build -->
+        <!-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> -->
+      </head>
+      <body class="p-8">
+        ${section.outerHTML}
+      </body>
+    </html>
+  `);
+  printWindow.document.close();
+
+  // استنى لحد ما الصفحة تتحمل الأول
+  printWindow.onload = function () {
+    printWindow.print();
+  };
+};
+
+
+
 </script>
 
 <style scoped>

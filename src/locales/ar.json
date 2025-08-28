@@ -42,26 +42,26 @@
     "home": {
         "menu": {
             "title": "اكتشف المنتجات",
-            "subtitle": "اكتشف تشكيلة متنوعة من أشهى الأطباق"
+            "subtitle": "اكتشف تشكيلة متنوعة من أفضل المنتجات التي تلبي احتياجاتك وتفوق توقعاتك."
         },
         "offers": {
             "title": "العروض والخصومات",
-            "subtitle": "احصل على أفضل الأسعار"
+            "subtitle": "كل ما تبحث عنه بأفضل سعر – لا تفوّت عروضنا الخاصة اليوم!"
         },
         "whyChooseUs": {
             "title": "لماذا تختارنا؟",
-            "subtitle": "نقدم لك أفضل تجربة طعام",
+            "subtitle": "نقدم لك أفضل منتجات العناية بالسيارات",
             "fastDelivery": {
                 "title": "توصيل سريع",
-                "description": "خلال 30 دقيقة أو أقل"
+                "description": "نوصل طلباتك في أسرع وقت"
             },
             "freshFood": {
-                "title": "طعام طازج",
-                "description": "مكونات طازجة يومياً"
+                "title": "منتجات أصلية",
+                "description": "ضمان منتجات أصلية وفعّالة"
             },
             "highQuality": {
                 "title": "جودة عالية",
-                "description": "أعلى معايير الجودة"
+                "description": "منظفات وملمعات بمعايير عالمية"
             }
         }
     },
@@ -243,7 +243,7 @@
         }
     },
     "footer": {
-        "copyright": "© 2025 Pelino. All rights reserved. Created by Be-Kite"
+        "copyright": "©️ 2025 Pelino by Bekite. All rights reserved"
     },
     "common": {
         "loading": "جاري التحميل...",

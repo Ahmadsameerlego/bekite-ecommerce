@@ -230,7 +230,7 @@
 
             <div v-if="form.deliveryMethod==='branch'">
               <div v-for="(provider, index) in providers" :key="index">
-                <label class="flex items-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-primary transition-all">
+                <label class="flex items-center p-4 mb-2 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-primary transition-all">
                   <input
                     v-model="form.branchProvider"
                     type="radio"
@@ -324,7 +324,7 @@
               </div>
             </label>
 
-            <!-- <label
+            <label
               class="flex items-center p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-primary transition-all"
               :class="{
                 'border-primary bg-orange-50': form.paymentMethod === 'click',
@@ -340,7 +340,30 @@
                 <div class="font-semibold">Click</div>
                 <div class="text-sm text-gray-500">ادفع عبر محفظة Click</div>
               </div>
-            </label> -->
+
+              <div class="mx-10">
+                <span>
+                   Click Number :
+                </span>
+                <span class="font-semibold">
+                  02434dsdsds
+                </span>
+              </div>
+            </label>
+
+
+            <div v-if="form.paymentMethod === 'click'">
+               <div class="mb-3">
+                    <label class="block mb-3 font-semibold text-gray-700"
+                      >ادخل رقم الحواله</label
+                    >
+                    <input
+                      v-model="form.clickNumber"
+                      type="text"
+                      class="w-full border-2 border-gray-200 rounded-xl px-4 py-4 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                    />
+                  </div>
+            </div>
           </div>
         </div>
         <!-- Right Column: Order Summary -->
@@ -394,7 +417,7 @@
                   </div>
                   <div class="text-left">
                     <span class="font-bold text-lg"
-                      >{{ item.total.toFixed(2) }} د.أ</span
+                      >{{ item.total_with_option.toFixed(2) }} د.أ</span
                     >
                   </div>
                 </div>
@@ -427,7 +450,7 @@
                       type="text"
                       placeholder="ادخل كوبون الخصم ان وجد"
                       class="w-full pr-12 pl-4 py-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                      required
+                      
                     />
 
                     <button
@@ -560,7 +583,7 @@
             @click="confirmLocation"
             class="flex-1 bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 rounded-2xl font-semibold"
           >
-            تأكيد الموقع
+            حفظ الموقع
           </button>
           <button
             @click="showMap = false"
@@ -618,7 +641,7 @@ const form = ref({
 const discount = ref(0);
 const providers = ref([]);  
 const subtotal = computed(() => {
-  return cart_data.value.reduce((sum, item) => sum + item.total, 0);
+  return cart_data.value.reduce((sum, item) => sum + item.total_with_option, 0);
 });
 
 const totalPrice = computed(() => {
@@ -713,9 +736,9 @@ function validateForm() {
   if (!form.value.phone.trim()) {
     errors.value.phone = "رقم الهاتف مطلوب";
   }
-  if (!form.value.address.trim()) {
-    errors.value.address = "العنوان مطلوب";
-  }
+  // if (!form.value.address.trim()) {
+  //   errors.value.address = "العنوان مطلوب";
+  // }
   // if (!form.value.location.trim()) {
   //   errors.value.location = "موقع التوصيل مطلوب";
   // }

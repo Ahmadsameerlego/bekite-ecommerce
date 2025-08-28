@@ -4,7 +4,7 @@
     @click="$emit('click')"
     :dir="rtl ? 'rtl' : 'ltr'"
   >
-    <img :src="product.image" :alt="product.title" class="h-32 sm:h-36 md:h-40 w-full object-cover" />
+    <img :src="product.image" :alt="product.title" class="h-32 sm:h-36 md:h-40 w-full object-contain" />
     <div class="p-3 sm:p-4 flex-1 flex flex-col justify-between text-right">
       <div>
         <h3 class="font-semibold text-lg mb-1">{{ product.title }}</h3>
@@ -21,7 +21,7 @@
       </div> -->
 
          <div class="mt-3 font-bold text-primary text-lg flex flex-row-reverse gap-2 items-center">
-        <template v-if=" product.old_price_with_value && product.price_with_value && product.price_with_value < product.old_price_with_value">
+        <template v-if="product.price_with_value!= 0.00 && product.old_price_with_value && product.price_with_value && product.price_with_value < product.old_price_with_value">
           <span class="text-red-600">{{ product.price_with_value }} {{ $t('product.currency') }}</span>
           <span class="text-gray-400 line-through text-base">{{ product.old_price_with_value }} {{ $t('product.currency') }}</span>
         </template>

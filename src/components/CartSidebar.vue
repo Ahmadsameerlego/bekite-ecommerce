@@ -17,14 +17,14 @@
         </button>
       </div>
       <div class="flex-1 p-4 overflow-y-auto">
-        <template v-if="cart.length">
-          <div v-for="item in cart" :key="item._key" class="mb-4 border-b pb-2">
+        <template v-if="cart_data.length">
+          <div v-for="item in cart_data" :key="item.id" class="mb-4 border-b pb-2">
             <div class="flex items-center justify-between mb-1">
               <div class="font-semibold">{{ item.service_title }}</div>
               <div class="flex items-center gap-2">
-                <button @click="increase(item._key)" class="bg-gray-200 rounded px-2">+</button>
+                <button @click="increase(item.id)" class="bg-gray-200 rounded px-2">+</button>
                 <span class="mx-1">{{ item.count }}</span>
-                <button @click="decrease(item._key)" class="bg-gray-200 rounded px-2">-</button>
+                <button @click="decrease(item.id)" class="bg-gray-200 rounded px-2">-</button>
               </div>
                <button @click="removeCartItem(item.id)" class="text-red-500 hover:text-red-700">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -72,7 +72,7 @@
 </template>
 
 <script setup>
-import { inject, onMounted, ref } from 'vue'
+import { inject, onMounted, ref, watch } from 'vue'
 import EditAddOnsModal from './EditAddOnsModal.vue'
 import Toast from '@/components/Toast.vue'
 import api from '@/api/http'
@@ -80,6 +80,12 @@ import api from '@/api/http'
 const props = defineProps({
   open: { type: Boolean, default: false },
 })
+
+watch(() => props.open, (newVal) => {
+  if (newVal) {
+    getData()
+  }
+} )
 const toast = ref({ visible: false, message: '', type: 'success' })
 
 const showToast = (msg, type = 'success') => {
@@ -90,8 +96,8 @@ const showToast = (msg, type = 'success') => {
 const emit = defineEmits(['close'])
 const cart = inject('cart')
 console.log(props.payload, 'dsdsds ')
-const increase = inject('increaseCartItem')
-const decrease = inject('decreaseCartItem')
+// const increase = inject('increaseCartItem')
+// const decrease = inject('decreaseCartItem')
 
 const showEditModal = ref(false)
 const selectedItem = ref(null)
@@ -102,9 +108,11 @@ const editAddOns = (item) => {
 }
 
 const updateItemAddOns = (updateData) => {
-cart.value = updateData ;
+getData()
 console.log(updateData, 'updateData ');
 }
+const cart_data = ref([])
+
 const providers = ref([])
 const getData = async () => {
     const user = JSON.parse(localStorage.getItem('user') || '{}')
@@ -114,6 +122,7 @@ const getData = async () => {
             user_id: user.id,
 
     })
+    cart_data.value = response.data.data;
     providers.value = response.data?.providers;
   } catch (error) {
     console.error('Error fetching data:', error)
@@ -124,7 +133,7 @@ onMounted(() => {
    getData()
 } )
 const storeCart = ()=>{
-  localStorage.setItem('cart_data', JSON.stringify(cart.value));
+  cart_data.value = localStorage.setItem('cart_data', JSON.stringify(cart.value));
   localStorage.setItem('providers', JSON.stringify(providers.value));
 }
 
@@ -141,10 +150,59 @@ const removeCartItem = async (itemKey) => {
     })
     showToast(response.data.msg, 'success')
     setTimeout(() => {
-      cart.value = response.data.data;
+       getData()
     }, 800);
   } catch (error) {
     console.error('Error fetching data:', error)
+    showToast('فشل الاتصال بالخادم', 'error')
+  }
+}
+
+const increase = (itemId) => {
+  const item = cart_data.value.find(i => i.id === itemId)
+  if (!item) return
+  updateCartItemCount(item, item.count + 1)
+}
+
+const decrease = (itemId) => {
+  const item = cart_data.value.find(i => i.id === itemId)
+  if (!item) return
+  updateCartItemCount(item, item.count - 1)
+}
+
+
+const updateCartItemCount = async (item, newCount) => {
+  const user = JSON.parse(localStorage.getItem('user') || '{}')
+
+  if (!user?.id) {
+    showToast('يجب تسجيل الدخول أولاً', 'error')
+    return
+  }
+
+  try {
+    if (newCount <= 0) {
+      // نفس removeCartItem
+      await api.post('/api/update-to-cart', {
+        user_id: user.id,
+        cart_id: item.id,
+        count: 0,
+        option_ids: []
+      })
+      showToast('تم إزالة العنصر من السلة', 'success')
+    } else {
+      const response = await api.post('/api/update-to-cart', {
+        user_id: user.id,
+        cart_id: item.id,
+        count: newCount,
+        option_ids: JSON.stringify(item.service_options?.map(o => o.id)) || []  // إرسال نفس الإضافات
+      })
+      showToast('تم تحديث عدد العناصر', 'success')
+    }
+
+     getData()
+
+  } catch (error) {
+    console.error('Error updating item count:', error)
     showToast('فشل الاتصال بالخادم', 'error')
   }
 }

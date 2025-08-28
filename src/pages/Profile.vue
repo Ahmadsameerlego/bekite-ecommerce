@@ -15,7 +15,7 @@
         <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-2 shadow-xl">
           <button
             @click="activeTab = 'profile'"
-            class="px-6 py-3 rounded-xl font-semibold transition-all"
+            class="md:px-6 px-3 py-3 rounded-xl font-semibold transition-all"
             :class="
               activeTab === 'profile'
                 ? 'bg-primary text-white shadow-lg'
@@ -26,7 +26,7 @@
           </button>
           <button
             @click="activeTab = 'addresses'"
-            class="px-6 py-3 rounded-xl font-semibold transition-all"
+            class="md:px-6 px-3 py-3 rounded-xl font-semibold transition-all"
             :class="
               activeTab === 'addresses'
                 ? 'bg-primary text-white shadow-lg'
@@ -37,7 +37,7 @@
           </button>
           <button
             @click="activeTab = 'orders'"
-            class="px-6 py-3 rounded-xl font-semibold transition-all"
+            class="md:px-6 px-3 py-3 rounded-xl font-semibold transition-all"
             :class="
               activeTab === 'orders'
                 ? 'bg-primary text-white shadow-lg'
@@ -106,7 +106,7 @@
               />
             </div>
 
-            <div>
+            <!-- <div>
               <label class="block mb-3 font-semibold text-gray-700"
                 >العنوان</label
               >
@@ -115,7 +115,7 @@
                 rows="3"
                 class="w-full border-2 border-gray-200 rounded-xl px-4 py-4 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none"
               ></textarea>
-            </div>
+            </div> -->
 
             <div>
               <label class="block mb-3 font-semibold text-gray-700"
@@ -241,7 +241,7 @@
             <div
               v-for="order in orders"
               :key="order.id"
-              class="border-2 border-gray-200 rounded-xl p-6 hover:border-primary transition-all"
+              class="border-2 border-gray-200 rounded-xl md:p-6 p-3 hover:border-primary transition-all"
             >
               <div class="flex justify-between items-start mb-4">
                 <div>
@@ -356,7 +356,7 @@
             @click="confirmLocation"
             class="flex-1 bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 rounded-2xl font-semibold"
           >
-            تأكيد الموقع
+            حفظ الموقع
           </button>
           <button
             @click="showMap = false"

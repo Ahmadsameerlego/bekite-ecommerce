@@ -1,17 +1,17 @@
 <template>
-  <div class="bg-gradient-to-br from-orange-50 via-red-50 to-yellow-50">
+  <div class="">
     <HeroSection :sliderData="homeData?.data?.sliders" :sections="homeData?.data?.sections"    @search="handleSearch"  />
 <div v-if="searchResults" class="container mx-auto px-4 py-8">
   <h2 class="text-center text-4xl font-bold mb-4 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">نتائج البحث</h2>
 
-  <div v-if="searchResults.sections.length">
+  <!-- <div v-if="searchResults.sections.length">
     <h3 class="text-xl font-semibold mb-2">الأقسام</h3>
     <ul class="mb-6">
       <li v-for="sec in searchResults.sections" :key="sec.id" class="mb-2">
         {{ sec.title }}
       </li>
     </ul>
-  </div>
+  </div> -->
 
   <div v-if="searchResults.services.length">
     <h3 class="text-xl font-semibold mb-2">الخدمات</h3>
@@ -51,7 +51,7 @@
     </div>
 
     <!-- Offers Section -->
-    <div v-if="homeData?.data?.offers.length" class="bg-gradient-to-r from-red-50 to-orange-50 py-12">
+    <div v-if="homeData?.data?.offers.length > 0" class=" py-12">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
           <h2 class="text-4xl font-bold mb-4 text-red-600">{{ $t('home.offers.title') }}</h2>

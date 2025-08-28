@@ -84,5 +84,66 @@ h2 {
     --tw-gradient-from: #444 var(--tw-gradient-from-position);
 }
 
+body {
+    background-color: #F1F3F4 !important;
+}
+
 
 /*  */
+
+
+/*  */
+
+
+/*  */
+
+
+/*  */
+
+
+/*  */
+
+
+/*  */
+
+
+/*  */
+
+
+/*  */
+
+
+/*  */
+
+
+/*  */
+
+
+/*  */
+
+
+/*  */
+
+@media print {
+  body * {
+    visibility: hidden; /* اخفي كل حاجة */
+  }
+  #invoiceSection, #invoiceSection * {
+    visibility: visible; /* خلي الفاتورة بس تظهر */
+  }
+  #invoiceSection {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%; /* تخليها تاخد عرض الصفحة */
+  }
+}
+
+
+@media (max-width: 640px) {
+  .responsive-text {
+    font-size: 14px; /* حجم الخط للأجهزة الصغيرة */
+  }
+  .object-contain.w-full.h-full.transition-all{object-fit: cover !important;}
+  .text-3xl{font-size: 20px !important;}
+}

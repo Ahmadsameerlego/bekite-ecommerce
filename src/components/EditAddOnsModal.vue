@@ -16,7 +16,7 @@
         </div>
         <!-- Product Image -->
         <div class="mb-6">
-          <img :src="item?.service_image" :alt="item?.service_title" class="w-full h-32 object-cover rounded-lg" />
+          <img :src="item?.service_image" :alt="item?.service_title" class="w-full h-32 object-contain rounded-lg" />
         </div>
         
         <!-- Add-ons Selection -->

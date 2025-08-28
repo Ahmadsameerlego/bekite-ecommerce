@@ -7,7 +7,7 @@
         <img
           :key="sliderData[current]?.id"
           :src="sliderData[current]?.image"
-          class="object-cover w-full h-full transition-all duration-700"
+          class="object-contain w-full h-full transition-all duration-700"
           alt="Hero image"
         />
       </Transition>
@@ -54,16 +54,18 @@
           </div>
 
       <!-- Quick Categories -->
-      <div class="mt-8 md:mt-12 flex flex-wrap justify-center gap-3">
-        <button 
-          v-for="category in sections" 
-          :key="category.id"
-          @click="searchByCategory(category.title)"
-          class="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full font-medium hover:bg-white/30 transition-all border border-white/30"
-        >
-          {{ category.title }}
-        </button>
-      </div>
+      <div 
+  class="mt-8 md:mt-12 flex gap-3 justify-start overflow-x-auto md:flex-wrap md:justify-center scrollbar-hide"
+>
+  <button 
+    v-for="category in sections" 
+    :key="category.id"
+    class="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full font-medium hover:bg-white/30 transition-all border border-white/30 shrink-0"
+  >
+    {{ category.title }}
+  </button>
+</div>
+
     </div>
 
     <!-- Map Modal -->

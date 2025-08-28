@@ -50,20 +50,21 @@
         },
         "whyChooseUs": {
             "title": "Why Choose Us?",
-            "subtitle": "We offer you the best dining experience",
+            "subtitle": "We provide you with the best car care products",
             "fastDelivery": {
                 "title": "Fast Delivery",
-                "description": "Within 30 minutes or less"
+                "description": "We deliver your orders in no time"
             },
             "freshFood": {
-                "title": "Fresh Food",
-                "description": "Fresh ingredients daily"
+                "title": "Genuine Products",
+                "description": "Guaranteed authentic and effective products"
             },
             "highQuality": {
                 "title": "High Quality",
-                "description": "Top quality standards"
+                "description": "Cleaners and polishes with global standards"
             }
         }
+
     },
     "product": {
         "addToCart": "Add to Cart",
@@ -243,7 +244,7 @@
         }
     },
     "footer": {
-        "copyright": "© 2025 Pelino. All rights reserved. Created by Be-Kite"
+        "copyright": "©️ 2025 Pelino by Bekite. All rights reserved"
     },
     "common": {
         "loading": "Loading...",

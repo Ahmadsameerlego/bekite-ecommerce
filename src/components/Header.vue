@@ -4,7 +4,7 @@
       <div class="flex items-center gap-2">
         <router-link to="/">
         <!-- <span class="text-xl font-bold text-primary">{{ $t('header.storeName') }}</span> -->
-         <img src="@/assets/logo.png" class="w-[150px] h-[70px] object-cover" alt="">
+         <img src="@/assets/logo.png" class="w-[150px] h-[70px] object-contain" alt="">
         </router-link>
       </div>
       <nav class="hidden md:flex gap-6 items-center">
@@ -57,7 +57,7 @@
           @click="toggleLanguage" 
           class="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors"
         >
-          <span class="text-sm font-medium">{{ currentLanguage === 'ar' ? 'عربي' : 'EN' }}</span>
+          <span class="text-sm font-medium">{{ currentLanguage === 'ar' ? 'En' : 'عربي' }}</span>
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
           </svg>
@@ -80,8 +80,8 @@
         <RouterLink to="/about" class="hover:text-primary" @click="open = false">{{ $t('nav.about') }}</RouterLink>
         <RouterLink to="/contact" class="hover:text-primary" @click="open = false">{{ $t('nav.contact') }}</RouterLink>
         <RouterLink v-if="isAuthed" to="/favorites" class="hover:text-primary">{{ $t('nav.favorites') }}</RouterLink>
-        <RouterLink to="/login" class="hover:text-primary" @click="open = false">{{ $t('nav.login') }}</RouterLink>
-        <RouterLink to="/register" class="hover:text-primary" @click="open = false">{{ $t('nav.register') }}</RouterLink>
+        <RouterLink  v-if="!isAuthed" to="/login" class="hover:text-primary" @click="open = false">{{ $t('nav.login') }}</RouterLink>
+        <RouterLink  v-if="!isAuthed" to="/register" class="hover:text-primary" @click="open = false">{{ $t('nav.register') }}</RouterLink>
         <RouterLink 
       v-if="isAuthed" 
       to="#" 
@@ -110,7 +110,7 @@
           @click="toggleLanguage" 
           class="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors"
         >
-          <span class="text-sm font-medium">{{ currentLanguage === 'ar' ? 'عربي' : 'EN' }}</span>
+          <span class="text-sm font-medium">{{ currentLanguage === 'ar' ? 'En' : 'عربي' }}</span>
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
           </svg>
@@ -121,7 +121,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted , watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { setLanguage } from '../i18n'
@@ -130,12 +130,26 @@ import api from '@/api/http' // ← استدعاء ملف الـ axios
 const props = defineProps({ cartCount: { type: Number, default: 0 } })
 const open = ref(false)
 const router = useRouter()
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+
+watch(
+  () => route.fullPath,
+  () => {
+    open.value = false ;
+    console.log('Route changed, menu closed.');
+  }
+)
+
 const { locale } = useI18n()
 
 const currentLanguage = computed(() => locale.value)
 
 // Check if user is authenticated
-const isAuthed = computed(() => !!localStorage.getItem('token'))
+const token = ref(localStorage.getItem('token'))
+
+const isAuthed = computed(() => !!token.value)
 
 function goToCart() {
   if (!isAuthed.value) {

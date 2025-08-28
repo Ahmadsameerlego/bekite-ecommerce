@@ -194,10 +194,10 @@ const handleLogin = async () => {
       localStorage.setItem('token', data.data.api_token)
 
       showToast(data.msg, 'success')
-      setTimeout(() => {
          router.push('/')
-         //location.reload()
-      }, 1500)
+         setTimeout(() => {
+          location.reload()
+        }, 500)
     } else {
       // Fail
       showToast(data.msg || 'حدث خطأ ما', 'error')

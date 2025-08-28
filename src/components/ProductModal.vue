@@ -54,7 +54,7 @@
         <img
           :src="product.image"
           :alt="product.title"
-          class="w-full h-48 object-cover rounded mb-4"
+          class="w-full h-48 object-contain rounded mb-4"
         />
         <h2 class="text-2xl font-bold mb-1">{{ product.title }}</h2>
         <p class="text-gray-500 mb-2">{{ product.desc }}</p>
