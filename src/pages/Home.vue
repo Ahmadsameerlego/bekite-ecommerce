@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <HeroSection :sliderData="homeData?.data?.sliders" :sections="homeData?.data?.sections"    @search="handleSearch"  />
+    <HeroSection @go-to-category="scrollToCategory" :sliderData="homeData?.data?.sliders" :sections="homeData?.data?.sections"    @search="handleSearch"  />
 <div v-if="searchResults" class="container mx-auto px-4 py-8">
   <h2 class="text-center text-4xl font-bold mb-4 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">نتائج البحث</h2>
 
@@ -74,7 +74,7 @@
 
     <!-- Category Sections -->
     <div class="container mx-auto px-4 py-12">
-      <div v-for="cat in homeData?.data?.sections" :key="cat.id" class="mb-16">
+      <div v-for="cat in homeData?.data?.sections" :key="cat.id" class="mb-16"     :id="'section-' + cat.id">
         <div class="text-center mb-8">
           <h2 class="text-3xl font-bold mb-2 text-gray-800">{{ cat.title }}</h2>
           <div class="w-24 h-1 bg-gradient-to-r from-orange-500 to-red-500 mx-auto rounded-full"></div>
@@ -229,6 +229,12 @@ function handleSearch(query) {
   )
 
   searchResults.value = { services, sections }
+}
+function scrollToCategory(categoryId) {
+  const el = document.getElementById(`section-${categoryId}`)
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 }
 
 

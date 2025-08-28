@@ -55,16 +55,17 @@
 
       <!-- Quick Categories -->
       <div 
-  class="mt-8 md:mt-12 flex gap-3 justify-start overflow-x-auto md:flex-wrap md:justify-center scrollbar-hide"
->
-  <button 
-    v-for="category in sections" 
-    :key="category.id"
-    class="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full font-medium hover:bg-white/30 transition-all border border-white/30 shrink-0"
-  >
-    {{ category.title }}
-  </button>
-</div>
+        class="mt-8 md:mt-12 flex gap-3 justify-start overflow-x-auto md:flex-wrap md:justify-center scrollbar-hide"
+      >
+        <button 
+          v-for="category in sections" 
+          :key="category.id"
+           @click="goToCategory(category.id)" 
+          class="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full font-medium hover:bg-white/30 transition-all border border-white/30 shrink-0"
+        >
+          {{ category.title }}
+        </button>
+      </div>
 
     </div>
 
@@ -76,7 +77,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 
-const emit = defineEmits(['search'])
+const emit = defineEmits(['search', 'to-category'])
 
 const props = defineProps({
   sliderData: {
@@ -88,7 +89,9 @@ const props = defineProps({
     default: () => []
   }
 })
-
+function goToCategory(categoryId) {
+  emit('go-to-category', categoryId)
+}
 const current = ref(0)
 const searchQuery = ref('')
 
