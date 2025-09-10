@@ -184,7 +184,6 @@ const handleLogin = async () => {
     const { data } = await api.post('/api/login', {
       phone: form.value.phone,
       password: form.value.password,
-      lang: 'ar',// لو الـ API محتاج لغة
       user_type : 'client'
     })
 

@@ -3,8 +3,8 @@
     <!-- Header -->
     <div class="bg-white shadow-sm border-b">
       <div class="container mx-auto px-4 py-6">
-        <h1 class="text-3xl font-bold text-gray-900 text-center">تواصل معنا</h1>
-        <p class="text-gray-600 text-center mt-2">نحن هنا لمساعدتك في أي استفسار</p>
+        <h1 class="text-3xl font-bold text-gray-900 text-center">{{ $t('contactUs') }}</h1>
+        <p class="text-gray-600 text-center mt-2">{{ $t('contactUsDescription') }}</p>
       </div>
     </div>
 
@@ -14,11 +14,11 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <!-- Contact Form -->
           <div class="bg-white rounded-lg shadow-lg p-8">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">أرسل لنا رسالة</h2>
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">{{ $t('contactUs') }}</h2>
             <form @submit.prevent="submitForm" class="space-y-6">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">الاسم الأول</label>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('firstName') }}</label>
                   <input
                     v-model="form.firstName"
                     type="text"
@@ -27,7 +27,7 @@
                   />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">الاسم الأخير</label>
+                  <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('lastName') }}</label>
                   <input
                     v-model="form.lastName"
                     type="text"
@@ -38,7 +38,7 @@
               </div>
               
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">البريد الإلكتروني</label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('email') }}</label>
                 <input
                   v-model="form.email"
                   type="email"
@@ -48,7 +48,7 @@
               </div>
               
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">رقم الهاتف</label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('phone') }}</label>
                 <input
                   v-model="form.phone"
                   type="tel"
@@ -60,29 +60,29 @@
               </div>
               
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">الموضوع</label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('subject') }}</label>
                 <select
                   v-model="form.subject"
                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                   required
                 >
-                  <option value="">اختر الموضوع</option>
-                  <option value="general">استفسار عام</option>
-                  <option value="order">مشكلة في الطلب</option>
-                  <option value="delivery">مشكلة في التوصيل</option>
-                  <option value="payment">مشكلة في الدفع</option>
-                  <option value="suggestion">اقتراح</option>
-                  <option value="complaint">شكوى</option>
+                  <option value="">{{ $t('selectSubject') }}</option>
+                  <option value="general">{{ $t('generalInquiry') }}</option>
+                  <option value="order">{{ $t('orderIssue') }}</option>
+                  <option value="delivery">{{ $t('deliveryIssue') }}</option>
+                  <option value="payment">{{ $t('paymentIssue') }}</option>
+                  <option value="suggestion">{{ $t('suggestion') }}</option>
+                  <option value="complaint">{{ $t('complaint') }}</option>
                 </select>
               </div>
               
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">الرسالة</label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">{{ $t('message') }}</label>
                 <textarea
                   v-model="form.message"
                   rows="5"
                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="اكتب رسالتك هنا..."
+                  :placeholder="$t('yourMessage')"
                   required
                 ></textarea>
               </div>
@@ -97,7 +97,7 @@
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
           </span>
-               <div v-else>إرسال الرسالة</div>
+               <div v-else>{{ $t('sendMessage') }}</div>
               </button>
             </form>
           </div>
@@ -106,7 +106,7 @@
             <div class="space-y-8">
               <!-- Contact Info -->
               <div class="bg-white rounded-lg shadow-lg p-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">معلومات التواصل</h2>
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">{{ $t('contactInfo') }}</h2>
                 <div class="space-y-4">
                   <div class="flex items-center space-x-4 space-x-reverse">
                     <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
@@ -115,7 +115,7 @@
                       </svg>
                     </div>
                     <div>
-                      <h3 class="font-semibold text-gray-900">الهاتف</h3>
+                      <h3 class="font-semibold text-gray-900">{{ $t('phone') }}</h3>
                       <p class="text-gray-600"> {{  setting?.phone  }} </p>
                     </div>
                   </div>
@@ -127,7 +127,7 @@
                       </svg>
                     </div>
                     <div>
-                      <h3 class="font-semibold text-gray-900">البريد الإلكتروني</h3>
+                      <h3 class="font-semibold text-gray-900">{{ $t('email') }}</h3>
                       <p class="text-gray-600">{{ setting?.email }}</p>
                     </div>
                   </div>
@@ -140,7 +140,7 @@
                       </svg>
                     </div>
                     <div>
-                      <h3 class="font-semibold text-gray-900">العنوان</h3>
+                      <h3 class="font-semibold text-gray-900">{{ $t('address') }}</h3>
                       <p class="text-gray-600">{{ setting?.address }}</p>
                     </div>
                   </div>
@@ -149,7 +149,7 @@
 
               <!-- Social Media -->
               <div class="bg-white rounded-lg shadow-lg p-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">وسائل التواصل الاجتماعي</h2>
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">{{ $t('socialMedia') }}</h2>
                   <div class="flex gap-4">
             <!-- Facebook -->
             <a :href="setting?.facebook" target="_blank" class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors">
@@ -190,7 +190,7 @@
 
             <!-- Business Hours -->
             <div class="bg-white rounded-lg shadow-lg p-8">
-              <h2 class="text-2xl font-bold text-gray-900 mb-6">ساعات العمل</h2>
+              <h2 class="text-2xl font-bold text-gray-900 mb-6">{{ $t('workingHours') }}</h2>
               <div v-html="setting?.desc" class="space-y-3">
                
               </div>
@@ -246,7 +246,6 @@ const submitForm = async () => {
 
   try {
     const response = await api.post("/api/contact-us", {
-      lang: "ar",
       name: form.value.firstName + " " + form.value.lastName,
       email: form.value.email,
       phone: form.value.phone,
@@ -302,7 +301,6 @@ const getData = async () => {
   
   try {
     const response = await api.post("/api/page", {
-      lang: "ar",
       user_id: user.id,
       title:'condition'
     });

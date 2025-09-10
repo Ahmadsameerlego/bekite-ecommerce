@@ -125,14 +125,17 @@ const printInvoice = () => {
   if (!section) return;
 
   const printWindow = window.open("", "_blank", "width=800,height=600");
+
+  // انسخ الـ styles من الصفحة الحالية
+  const styles = Array.from(document.querySelectorAll('link[rel="stylesheet"], style'))
+    .map(node => node.outerHTML)
+    .join("\n");
+
   printWindow.document.write(`
     <html>
       <head>
         <title>فاتورة الطلب</title>
-        <!-- استعمل نفس CSS بتاع مشروعك -->
-        <link href="/dist/output.css" rel="stylesheet"> 
-        <!-- أو لو شغال بسرعة من غير build -->
-        <!-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> -->
+        ${styles}
       </head>
       <body class="p-8">
         ${section.outerHTML}
@@ -141,7 +144,6 @@ const printInvoice = () => {
   `);
   printWindow.document.close();
 
-  // استنى لحد ما الصفحة تتحمل الأول
   printWindow.onload = function () {
     printWindow.print();
   };

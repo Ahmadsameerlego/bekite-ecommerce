@@ -32,7 +32,6 @@ const getData = async () => {
   
   try {
     const response = await api.post("/api/page", {
-      lang: "ar",
       user_id: user.id,
       title:'privacy'
     });

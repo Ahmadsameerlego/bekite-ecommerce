@@ -17,6 +17,10 @@ html.ltr {
     input[type="tel"] {
         direction: ltr !important;
     }
+    body , p , div , span , h1 , h2 , h3 , h4 , h5 , h6 , label , a , button , li , td , th {
+        direction: ltr !important;
+        text-align: left !important;
+    }
 }
 
 h2 {

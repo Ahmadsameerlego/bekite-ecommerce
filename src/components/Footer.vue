@@ -40,7 +40,7 @@
             </a>
           </div>
        
-        <div class="flex gap-4 text-sm">
+        <div class="flex gap-4 text-sm flex-wrap justify-center">
           <router-link to="/about" class="hover:text-primary">{{ $t('nav.about') }}</router-link>
           <router-link to="/privacy" class="hover:text-primary">{{ $t('nav.privacy') }}</router-link>
           <router-link to="/terms" class="hover:text-primary">{{ $t('nav.terms') }}</router-link>
@@ -75,7 +75,6 @@ const getData = async () => {
   
   try {
     const response = await api.post("/api/page", {
-      lang: "ar",
       user_id: user.id,
       title:'condition'
     });

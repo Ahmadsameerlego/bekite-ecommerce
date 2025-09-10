@@ -1,4 +1,49 @@
 {
+    "story": "تعرف على قصة نجاحنا ورحلتنا في عالم الطعام",
+    "years": "سنوات من الخبرة",
+    "partnerRestaurants" : "مطعم شريك",
+    "happyCustomers" : "عميل سعيد",
+    "welcomeMessage": "مرحباً بك في فودستور - وجهتك المفضلة لتجربة طعام لا تُنسى!",
+    "mission": "مهمتنا",
+    "vision": "رؤيتنا",
+    "values": "قيمنا",
+    "ourTeam": "فريقنا",
+    "careers": "الوظائف",
+    "quality": "الجودة",
+    "qualityDescription": "نحرص على تقديم أفضل جودة في الطعام والخدمة",
+    "speed": "السرعة",
+    "speedDescription": "نسعى لتوصيل طلباتك بأسرع وقت ممكن",
+    "trust": "الثقة",
+    "trustDescription": "نبني علاقات طويلة الأمد مع عملائنا وشركائنا",
+    "aboutUs": "من نحن",
+    "contactUs": "هل تريد معرفة المزيد؟",
+    "contactUsDescription": "تواصل معنا لمعرفة المزيد عن خدماتنا",
+    "contactUsButton": "تواصل معنا",
+    "NotFoundProducts": "لا توجد منتجات مطابقة",
+    "firstName": "الاسم الأول",
+    "lastName": "الاسم الأخير",
+    "email": "البريد الإلكتروني",
+    "phone": "رقم الهاتف",
+    "subject": "الموضوع",
+    "message": "الرسالة",
+    "sendMessage": "إرسال الرسالة",
+    "selectSubject": "اختر الموضوع",
+    "generalInquiry": "استفسار عام",
+    "orderIssue": "مشكلة في الطلب",
+    "deliveryIssue": "مشكلة في التوصيل",
+    "paymentIssue": "مشكلة في الدفع",
+    "suggestion": "اقتراح",
+    "complaint": "شكوى",
+    "yourMessage": "اكتب رسالتك هنا...",
+    "address": "العنوان",
+    "contactInfo": "معلومات التواصل",
+    "workingHours": "ساعات العمل",
+    "SocialMedia": "وسائل التواصل الاجتماعي",
+    "followUs": "تابعنا على وسائل التواصل الاجتماعي",
+    "favorites" : "المفضلة",
+    "favoriteItems" : "استعرض العناصر المفضلة لديك",
+    "noFavoriteItems" : "لا توجد عناصر مفضلة لديك !",
+    "currency": "د.أ",
     "nav": {
         "home": "الرئيسية",
         "login": "تسجيل الدخول",
@@ -173,9 +218,14 @@
     },
     "profile": {
         "title": "الملف الشخصي",
+        "saveChanges": "حفظ التغييرات",
+        "updating": "جاري التحديث...",
+        "loadingProfile": "جاري تحميل الملف الشخصي...",
         "tabs": {
             "personalData": "البيانات الشخصية",
-            "orders": "طلباتي"
+            "orders": "طلباتي",
+            "myAddresses": "عناويني",
+            "addNewAddress": "إضافة عنوان جديد"
         },
         "personalData": {
             "title": "البيانات الشخصية",
@@ -183,7 +233,9 @@
             "phone": "رقم الهاتف",
             "email": "البريد الإلكتروني",
             "address": "العنوان",
-            "saveChanges": "حفظ التغييرات"
+            "saveChanges": "حفظ التغييرات",
+            "password": "كلمة المرور",
+            "passwordPlaceholder": "اتركه فارغاً إذا لم ترغب في تغييره"
         },
         "orders": {
             "title": "طلباتي",
@@ -267,5 +319,4 @@
         "update": "تحديث",
         "submit": "إرسال"
     }
-
 }

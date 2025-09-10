@@ -346,7 +346,7 @@
                    Click Number :
                 </span>
                 <span class="font-semibold">
-                  02434dsdsds
+                  {{ click_number }}
                 </span>
               </div>
             </label>
@@ -454,7 +454,7 @@
                     />
 
                     <button
-                      @click="applyCoupon"
+                      @click.prevent.stop="applyCoupon"
                       class="bg-primary text-white px-4 py-2 rounded-xl mx-2"
                     >
                       تطبيق
@@ -612,7 +612,7 @@ import { useRouter } from "vue-router";
 import Toast from "@/components/Toast.vue";
 import api from "@/api/http";
 const user = JSON.parse(localStorage.getItem("user") || "{}");
-
+const click_number = ref("");
 const toast = ref({ visible: false, message: "", type: "success" });
 const addresses = ref([]);
 
@@ -658,7 +658,6 @@ const applyCoupon = async () => {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
 
   const body = {
-    lang: "ar",
     user_id: user.id,
     code: form.value.coupon,
   };
@@ -667,9 +666,9 @@ const applyCoupon = async () => {
     const response = await api.post("/api/check-promo", body);
    if (response.data?.key === 1) {
         showToast(response.data?.msg || "رمز القسيمة صالح", "success");
-        coupon_value.value = response.data?.data;
+        coupon_value.value = response.data?.data?.discount || "";
 
-        discount.value = (subtotal.value * response.data.data) / 100;
+        discount.value = (subtotal.value * response.data.data?.discount) / 100;
       } else {
         discount.value = 0; // عشان ما يفضلش مطبق الخصم
         showToast(response.data?.msg || "رمز القسيمة غير صالح", "error");
@@ -760,7 +759,6 @@ async function submitOrder() {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   console.log(user, "user");  
   const body = {
-    lang: "ar",
     user_id: user.id,
     type: form.value.deliveryMethod === "branch" ? "pickup" : "delivery",
     lat: addresses.value.find((address) => address.vip=== true)?.lat || null,
@@ -783,8 +781,12 @@ async function submitOrder() {
     isSubmitting.value = true;
     console.log(body, "body");  
     const response = await api.post("/api/store-order", body);
-
+    if (response.data?.key !== 1) {
+      showToast(response.data?.msg || "فشل في تأكيد الطلب", "error");
+      return;
+    }
     showToast(response.data?.msg || "تم تأكيد الطلب بنجاح", "success");
+
     localStorage.removeItem("cart_data");
     localStorage.setItem(
       "order_data",
@@ -866,12 +868,12 @@ const getAddresses = async () => {
   try {
     isLoading.value = true;
     const response = await api.post("/api/all-addresses", {
-      lang: "ar",
       user_id: user.id,
     });
 
     if (response.data.key === 1) {
       const data = response.data.data;
+      click_number.value = response.data.click_number || "";
       addresses.value = data;
     } else {
       showToast(response.data.msg || "فشل في جلب البيانات", "error");
@@ -968,7 +970,6 @@ const confirmLocation = async () => {
 
   try {
     const response = await api.post("/api/store-address", {
-      lang: "ar",
       user_id: user.id,
       title: searchBox.value,
       address: selectedAddress.value,

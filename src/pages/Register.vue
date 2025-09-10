@@ -299,7 +299,6 @@ const handleRegister = async () => {
 
   try {
     const { data } = await api.post('/api/register', {
-      lang: 'ar',
       user_type: 'client',
       first_name: form.value.fullName,
       phone: form.value.phone,

@@ -50,7 +50,6 @@ export default {
     async getNotifications() {
       try {
         const response = await api.post("/api/show-notification", {
-          lang: "ar",
           user_id: this.user.id,
         });
         this.notifications = response.data.data || [];
@@ -61,7 +60,6 @@ export default {
     async deleteNotification(id) {
       try {
         await api.post("/api/delete-notification", {
-          lang: "ar",
           notification_id: id,
         });
         this.notifications = this.notifications.filter((n) => n.id !== id);

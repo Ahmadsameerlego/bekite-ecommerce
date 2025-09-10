@@ -7,7 +7,7 @@
       <h1
         class="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent"
       >
-        الملف الشخصي
+        {{  $t('profile.title')  }}
       </h1>
 
       <!-- Tabs -->
@@ -22,29 +22,29 @@
                 : 'text-gray-600 hover:text-primary'
             "
           >
-            البيانات الشخصية
+            {{ $t('profile.tabs.personalData') }}
           </button>
           <button
             @click="activeTab = 'addresses'"
-            class="md:px-6 px-3 py-3 rounded-xl font-semibold transition-all"
+            class="md:px-6 md:px-3 px-1 py-3 rounded-xl font-semibold transition-all"
             :class="
               activeTab === 'addresses'
                 ? 'bg-primary text-white shadow-lg'
                 : 'text-gray-600 hover:text-primary'
             "
           >
-            عناويني
+            {{ $t('profile.tabs.myAddresses') }}
           </button>
           <button
             @click="activeTab = 'orders'"
-            class="md:px-6 px-3 py-3 rounded-xl font-semibold transition-all"
+            class="md:px-6 md:px-3 px-1 py-3 rounded-xl font-semibold transition-all"
             :class="
               activeTab === 'orders'
                 ? 'bg-primary text-white shadow-lg'
                 : 'text-gray-600 hover:text-primary'
             "
           >
-            طلباتي
+            {{  $t('profile.tabs.orders')  }}
           </button>
         </div>
       </div>
@@ -68,13 +68,13 @@
                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
               ></path>
             </svg>
-            البيانات الشخصية
+            {{ $t('profile.personalData.title') }}
           </h2>
 
           <form @submit.prevent="updateProfile" class="space-y-6">
             <div>
               <label class="block mb-3 font-semibold text-gray-700"
-                >الاسم الكامل</label
+                >{{ $t('profile.personalData.name') }}</label
               >
               <input
                 v-model="profile.name"
@@ -85,7 +85,7 @@
 
             <div>
               <label class="block mb-3 font-semibold text-gray-700"
-                >رقم الهاتف</label
+                >{{ $t('profile.personalData.phone') }}</label
               >
               <input
                 v-model="profile.phone"
@@ -97,7 +97,7 @@
 
             <div>
               <label class="block mb-3 font-semibold text-gray-700"
-                >البريد الإلكتروني</label
+                >{{ $t('profile.personalData.email') }}</label
               >
               <input
                 v-model="profile.email"
@@ -119,7 +119,7 @@
 
             <div>
               <label class="block mb-3 font-semibold text-gray-700"
-                >الرقم السري</label
+                >{{ $t('profile.personalData.password') }}</label
               >
               <input
                 v-model="profile.password"
@@ -154,7 +154,7 @@
                   ></path>
                 </svg>
               </span>
-              <span v-else>حفظ التغييرات</span>
+              <span v-else>{{ $t('profile.saveChanges') }}</span>
             </button>
           </form>
         </div>
@@ -178,13 +178,13 @@
                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
               ></path>
             </svg>
-            عناويني
+            {{  $t('profile.tabs.myAddresses')  }}
           </h2>
 
           <form @submit.prevent="" class="space-y-6">
             <div>
               <label class="block mb-3 font-semibold text-gray-700"
-                >الموقع علي الخريطه</label
+                >{{ $t('profile.tabs.myAddresses') }}</label
               >
 
               <div class="space-y-3 max-h-64 overflow-y-auto">
@@ -209,7 +209,7 @@
               @click="openMap()"
               class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 rounded-xl font-bold text-lg hover:from-orange-600 hover:to-red-600 transition-all shadow-lg"
             >
-              إضافة عنوان
+              {{ $t('profile.tabs.addNewAddress')  }}
             </button>
           </form>
         </div>
@@ -234,7 +234,7 @@
                 d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
               ></path>
             </svg>
-            طلباتي
+            {{  $t('profile.tabs.orders')  }}
           </h2>
 
           <div v-if="orders.length" class="space-y-6">
@@ -265,7 +265,7 @@
                   class="flex justify-between"
                 >
                   <span>{{ item.service_title }} × {{ item.count }}</span>
-                  <span>{{ item.total }} د.أ</span>
+                  <span>{{ item.total }} {{  $t('currency')  }}</span>
                 </div>
               </div>
 
@@ -274,7 +274,7 @@
               >
                 <div>
                   <span class="font-semibold"
-                    >الإجمالي: {{ order.sub_total }} د.أ</span
+                    >{{ $t('profile.tabs.orders') }}: {{ order.sub_total }} {{  $t('currency')  }}</span
                   >
                 </div>
                 <button
@@ -485,7 +485,6 @@ const getProfile = async () => {
   try {
     isLoading.value = true;
     const response = await api.post("/api/show-user", {
-      lang: "ar",
       user_id: user.id,
     });
 
@@ -516,7 +515,6 @@ const getOrders = async () => {
   try {
     isLoading.value = true;
     const response = await api.post("/api/show-all-orders", {
-      lang: "ar",
       user_id: user.id,
     });
 
@@ -545,7 +543,6 @@ const getAddresses = async () => {
   try {
     isLoading.value = true;
     const response = await api.post("/api/all-addresses", {
-      lang: "ar",
       user_id: user.id,
     });
 
@@ -573,7 +570,6 @@ const updateProfile = async () => {
   try {
     isLoading.value = true;
     const response = await api.post("/api/update-user", {
-      lang: "ar",
       user_id: user.id,
       first_name: profile.value.name,
       phone: profile.value.phone,
@@ -714,7 +710,6 @@ const confirmLocation = async () => {
 
   try {
     const response = await api.post("/api/store-address", {
-      lang: "ar",
       user_id: user.id,
       title: searchBox.value,
       address: selectedAddress.value,

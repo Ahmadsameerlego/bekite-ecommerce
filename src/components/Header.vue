@@ -162,7 +162,8 @@ function goToCart() {
 function toggleLanguage() {
   const newLocale = currentLanguage.value === 'ar' ? 'en' : 'ar'
   setLanguage(newLocale)
-  open.value = false
+  open.value = false ;
+  window.location.reload()
 }
 const cart_count = ref(null) ;
 const notification_count = ref(null) ;

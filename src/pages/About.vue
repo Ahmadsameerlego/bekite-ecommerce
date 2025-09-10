@@ -3,8 +3,8 @@
     <!-- Header -->
     <div class="bg-white shadow-sm border-b">
       <div class="container mx-auto px-4 py-6">
-        <h1 class="text-3xl font-bold text-gray-900 text-center">من نحن</h1>
-        <p class="text-gray-600 text-center mt-2">تعرف على قصة نجاحنا ورحلتنا في عالم الطعام</p>
+        <h1 class="text-3xl font-bold text-gray-900 text-center">{{  $t('nav.about')  }}</h1>
+        <p class="text-gray-600 text-center mt-2">{{  $t('story')  }}</p>
       </div>
     </div>
 
@@ -42,16 +42,16 @@
             <div class="bg-gradient-to-br from-orange-100 to-red-100 rounded-xl p-6">
               <div class="text-center">
                 <div class="text-4xl font-bold text-orange-600 mb-2">3+</div>
-                <div class="text-gray-700 font-semibold">سنوات من الخبرة</div>
+                <div class="text-gray-700 font-semibold">{{ $t('years') }}</div>
               </div>
               <div class="grid grid-cols-2 gap-4 mt-6">
                 <div class="text-center">
                   <div class="text-2xl font-bold text-orange-600">500+</div>
-                  <div class="text-sm text-gray-600">مطعم شريك</div>
+                  <div class="text-sm text-gray-600">{{ $t('partnerRestaurants') }}</div>
                 </div>
                 <div class="text-center">
                   <div class="text-2xl font-bold text-orange-600">50K+</div>
-                  <div class="text-sm text-gray-600">عميل سعيد</div>
+                  <div class="text-sm text-gray-600">{{ $t('happyCustomers') }}</div>
                 </div>
               </div>
             </div>
@@ -70,7 +70,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
               </div>
-              <h3 class="text-2xl font-bold text-gray-900 mb-4">مهمتنا</h3>
+              <h3 class="text-2xl font-bold text-gray-900 mb-4">{{  $t('mission')  }}</h3>
             </div>
             <p class="text-gray-700 text-lg leading-relaxed text-center" v-html="setting?.mission?.desc">
              
@@ -85,7 +85,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                 </svg>
               </div>
-              <h3 class="text-2xl font-bold text-gray-900 mb-4">رؤيتنا</h3>
+              <h3 class="text-2xl font-bold text-gray-900 mb-4">{{ $t('vision') }}</h3>
             </div>
             <p class="text-gray-700 text-lg leading-relaxed text-center" v-html="setting?.vision?.desc">
             
@@ -97,7 +97,7 @@
       <!-- Our Values -->
       <div class="max-w-6xl mx-auto mb-16">
         <div class="bg-white rounded-2xl shadow-lg p-8">
-          <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">قيمنا</h2>
+          <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">{{ $t('values') }}</h2>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Quality -->
             <div class="text-center">
@@ -106,8 +106,8 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
                 </svg>
               </div>
-              <h3 class="text-xl font-bold text-gray-900 mb-3">الجودة</h3>
-              <p class="text-gray-600">نحرص على تقديم أفضل جودة في الطعام والخدمة</p>
+              <h3 class="text-xl font-bold text-gray-900 mb-3">{{ $t('quality') }}</h3>
+              <p class="text-gray-600">{{ $t('qualityDescription') }}</p>
             </div>
 
             <!-- Speed -->
@@ -117,8 +117,8 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                 </svg>
               </div>
-              <h3 class="text-xl font-bold text-gray-900 mb-3">السرعة</h3>
-              <p class="text-gray-600">نضمن وصول طلبك في أسرع وقت ممكن</p>
+              <h3 class="text-xl font-bold text-gray-900 mb-3">{{ $t('speed') }}</h3>
+              <p class="text-gray-600">{{ $t('speedDescription') }}</p>
             </div>
 
             <!-- Trust -->
@@ -128,8 +128,8 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                 </svg>
               </div>
-              <h3 class="text-xl font-bold text-gray-900 mb-3">الثقة</h3>
-              <p class="text-gray-600">نبنى علاقات طويلة الأمد مع عملائنا ومطاعمنا</p>
+              <h3 class="text-xl font-bold text-gray-900 mb-3">{{ $t('trust') }}</h3>
+              <p class="text-gray-600">{{ $t('trustDescription') }}</p>
             </div>
           </div>
         </div>
@@ -140,13 +140,13 @@
       <!-- Contact CTA -->
       <div class="max-w-4xl mx-auto">
         <div class="bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl shadow-lg p-8 text-center text-white">
-          <h2 class="text-3xl font-bold mb-4">هل تريد معرفة المزيد؟</h2>
-          <p class="text-xl mb-6 opacity-90">تواصل معنا لمعرفة المزيد عن خدماتنا</p>
+          <h2 class="text-3xl font-bold mb-4">{{  $t('contactUs')  }}</h2>
+          <p class="text-xl mb-6 opacity-90">{{  $t('contactUsDescription')  }}</p>
           <router-link 
             to="/contact" 
             class="inline-block bg-white text-orange-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
           >
-            تواصل معنا
+            {{  $t('contactUsButton')  }}
           </router-link>
         </div>
       </div>
@@ -164,7 +164,6 @@ const getData = async () => {
   
   try {
     const response = await api.post("/api/page", {
-      lang: "ar",
       user_id: user.id,
       title:'about'
     });

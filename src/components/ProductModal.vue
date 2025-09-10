@@ -147,7 +147,6 @@ async function toggleFavourite() {
 
   try {
     const body = {
-      lang: 'ar',
       user_id: user.id,
       service_id: props.product.id
     }
@@ -186,7 +185,6 @@ async function addToCart() {
   try {
     const option_ids = selectedAddOns.value.map((o) => o.id);
     const body = {
-      lang: "ar",
       user_id: user.id,
       service_id: props.product.id,
       count: 1,

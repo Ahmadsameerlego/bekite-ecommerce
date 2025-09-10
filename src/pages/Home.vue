@@ -90,7 +90,7 @@
             />
           </div>
           <div v-else>
-            <p class="text-red-600 text-center text-2xl">لا توجد منتجات في هذا القسم !</p>
+            <p class="text-red-600 text-center text-2xl">{{  $t('NotFoundProducts')  }} !</p>
           </div>
         </div>
       </div>
@@ -205,7 +205,7 @@ const getData = async () => {
             user_id: user.id,
 
     })
-    homeData.value = response.data ;
+    homeData.value = response.data 
     console.log('Home data fetched successfully:', homeData.value.data)
   } catch (error) {
     console.error('Error fetching data:', error)

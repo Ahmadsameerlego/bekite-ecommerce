@@ -8,8 +8,8 @@
     <div  class=" py-12">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
-          <h2 class="text-4xl font-bold mb-4 text-red-600">العناصر المفضلة</h2>
-          <p class="text-gray-600 text-lg">استعرض العناصر المفضلة لديك</p>
+          <h2 class="text-4xl font-bold mb-4 text-red-600">{{ $t('favorites') }}</h2>
+          <p class="text-gray-600 text-lg">{{ $t('favoriteItems') }}</p>
         </div>
         <div v-if="homeData.length" class="overflow-x-auto pb-4">
           <div class="flex gap-6" :class="sliderClass">
@@ -24,7 +24,7 @@
           </div>
         </div>
         <div v-else>
-            <p class="text-red-600 text-center text-2xl">لا توجد عناصر مفضلة لديك !</p>
+            <p class="text-red-600 text-center text-2xl">{{ $t('noFavoriteItems') }}</p>
         </div>
       </div>
     </div>
